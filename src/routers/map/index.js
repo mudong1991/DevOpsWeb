@@ -1,6 +1,7 @@
 /**
  * Created by mudong on 2017/9/30 0030.
  */
+import workbenchViewMap from './workbenchViewMap';
 
 const routes = [
   {
@@ -17,11 +18,11 @@ const routes = [
     }
   },
   {
-    path: '/login',
-    name: 'login',
+    path: '/workbench',
     component: resolve => {
-      require(['@/views/login'], resolve);
-    }
+      require(['@/views/workbench/main'], resolve);
+    },
+    children: workbenchViewMap
   },
   {
     path: '*',

@@ -19,7 +19,7 @@
                 </router-link>
               </el-col>
               <el-col :span="6" class="header-nav-item">
-                <router-link :to="{ path: 'login' }">
+                <router-link :to="{ path: 'workbench/login' }">
                   产品
                 </router-link>
               </el-col>
@@ -163,7 +163,7 @@
     },
     methods: {
       goLogin() {
-        this.$router.push({name: 'login'});
+        this.$router.push({name: 'wb_login'});
       }
     }
   };
@@ -174,12 +174,13 @@
   @import '/static/css/animate.css';
   @import '/static/css/animate-element.css';
   @import "/static/css/bootstrap-touch-slider.css";
-  #index{
-    min-width: 998px;
 
+  .index{
+    min-width: 998px !important;
   }
   /*顶部导航*/
   .index-top{
+    min-width: 998px !important;
     position: fixed;
     top:0;
     left: 0;
