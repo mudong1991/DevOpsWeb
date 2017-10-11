@@ -17,7 +17,7 @@ module.exports = {
   ],
   // add your custom rules here
   'rules': {
-    "semi": [2, "always"], // 句尾强制分号
+    "semi": [1, "always"], // 句尾强制分号
     'indent': 0, // 单行缩进值
     // allow paren-less arrow functions
     'arrow-parens': 0,

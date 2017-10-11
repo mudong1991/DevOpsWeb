@@ -45,7 +45,7 @@ module.exports = {
         loader: 'eslint-loader',
         enforce: 'pre',
         include: [resolve('src'), resolve('test')],
-        exclude: [resolve('src/assets')],
+        exclude: [resolve('src/assets'), resolve('static')],
         options: {
           formatter: require('eslint-friendly-formatter')
         }

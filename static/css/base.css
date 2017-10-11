@@ -1,0 +1,23 @@
+*{
+  margin: 0px;
+  padding: 0px;
+}
+body{
+  font-size: 14px;
+  font-family: "微软雅黑";
+  color: darkslategray;
+}
+ul,li{
+  list-style: none;
+  margin: 0;
+}
+a{
+  color: darkslategray;
+  outline: none;
+  -moz-outline-style: none;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover{
+  text-decoration: none;
+}

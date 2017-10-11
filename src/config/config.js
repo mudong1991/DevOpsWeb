@@ -7,8 +7,8 @@
 /**
  * 网站页面相关配置
  * */
-export const title = '四方科技DevOps平台'; // 页面标题
-export const copyright = '成都四方科技信息技术有限公司@版权所有';  // 页面版权
+export const title = '闷葫芦DevOps平台'; // 页面标题
+export const copyright = '东风残雪@版权所有';  // 页面版权
 
 /**
  * 配置接口访问地址

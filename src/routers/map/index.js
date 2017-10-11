@@ -5,9 +5,15 @@
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'index',
     component: resolve => {
-      require(['@/views/main'], resolve);
+      require(['@/views/index'], resolve);
+    }
+  },
+  {
+    path: '/index',
+    component: resolve => {
+      require(['@/views/index'], resolve);
     }
   },
   {

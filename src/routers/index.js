@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
     text: '加载页面中...'
   });
   // 太快了反应不过来
-  setTimeout(next, 10);
+  setTimeout(next, 100);
 });
 
 router.afterEach((to, from, next) => {
