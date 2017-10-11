@@ -242,6 +242,9 @@
 
   /*轮播*/
   #bootstrap-touch-slider{
-
+    height: 520px;
+    img{
+      height: 520px;
+    }
   }
 </style>
