@@ -8,13 +8,13 @@ const routes = [
     path: '/',
     name: 'index',
     component: resolve => {
-      require(['@/views/index'], resolve);
+      require(['@/views/index/index'], resolve);
     }
   },
   {
     path: '/index',
     component: resolve => {
-      require(['@/views/index'], resolve);
+      require(['@/views/index/index'], resolve);
     }
   },
   {

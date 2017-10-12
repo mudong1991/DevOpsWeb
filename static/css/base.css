@@ -21,3 +21,10 @@ a{
 a:hover{
   text-decoration: none;
 }
+.padding-0{
+  padding: 0 !important;
+}
+.padding-top-10{
+  padding-top: 10px;
+}
+

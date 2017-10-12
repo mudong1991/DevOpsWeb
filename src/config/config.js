@@ -7,7 +7,7 @@
 /**
  * 网站页面相关配置
  * */
-export const title = '闷葫芦DevOps平台'; // 页面标题
+export const title = '四方开发云'; // 页面标题
 export const copyright = '东风残雪@版权所有';  // 页面版权
 
 /**
