@@ -68,6 +68,7 @@
           return false;
         }
       });
+      $('li.back').css({'width': '64px !important', 'left': '0 !important'}); // 解决导航兼容性问题
     }
   };
 </script>
