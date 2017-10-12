@@ -44,6 +44,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {title} from 'config/config';
   import $ from 'jquery';
   import 'static/js/jquery.easing.min';
   import 'static/js/jquery.lavalamp.min';
@@ -59,16 +60,25 @@
         default: true
       }
     },
+    data () {
+      return {
+        title: title
+      };
+    },
+    methods: {
+      goLogin () {
+        this.$router.push({name: 'wb_login'});
+      }
+    },
     mounted () {
       // 导航栏
       $('#index-header-nav').lavaLamp({
         fx: 'backout',
-        speed: 700,
+        speed: 600,
         click: function(event, menuItem) {
           return false;
         }
       });
-      $('li.back').css({'width': '64px !important', 'left': '0 !important'}); // 解决导航兼容性问题
     }
   };
 </script>

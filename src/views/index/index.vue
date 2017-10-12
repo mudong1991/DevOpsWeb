@@ -1,7 +1,7 @@
 <template>
   <div id="index" class="index">
     <!--顶部导航开始-->
-    <v-header ></v-header>
+    <v-header></v-header>
     <!--顶部导航结束-->
 
     <!--轮播开始-->
@@ -113,9 +113,7 @@
       };
     },
     methods: {
-      goLogin() {
-        this.$router.push({name: 'wb_login'});
-      }
+
     },
     components: {
       vHeader: header
