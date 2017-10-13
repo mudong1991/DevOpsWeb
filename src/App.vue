@@ -33,6 +33,6 @@
 
 <style lang="scss" rel="stylesheet/scss">
   #app{
-    height: 100%;
+    height: 100% !important;
   }
 </style>

@@ -2,10 +2,11 @@
   margin: 0px;
   padding: 0px;
 }
-body{
+html,body{
   font-size: 14px;
   font-family: "微软雅黑";
   color: darkslategray;
+  height: 100%;
 }
 ul,li{
   list-style: none;

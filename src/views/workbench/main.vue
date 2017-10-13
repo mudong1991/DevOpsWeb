@@ -18,6 +18,8 @@
   };
 </script>
 
-<style>
-
+<style lang="scss" rel="stylesheet/scss" scoped>
+  #workbench-app{
+    height: 100%;
+  }
 </style>

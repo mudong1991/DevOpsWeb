@@ -127,6 +127,9 @@
   @import '/static/css/animate-element.css';
   @import "/static/css/bootstrap-touch-slider.css";
 
+  #index{
+    height: 100%;
+  }
   /*轮播*/
   #bootstrap-touch-slider{
     max-height: 520px;

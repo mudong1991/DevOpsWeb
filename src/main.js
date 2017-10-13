@@ -7,9 +7,9 @@ import config from 'webpack_config/index';
 // 引入全局css和js
 import 'bootstrap/js/bootstrap.min.js';
 import 'bootstrap/css/bootstrap.min.css';
-import 'static/css/base.css';
 import 'static/css/bootstrap-touch-slider.css';
 import 'static/css/font-awesome.min.css';
+import 'static/css/base.css';
 
 // 导入组件
 import './components/registerGlobalComponents';
