@@ -3,9 +3,13 @@ import ElementUI from 'element-ui';
 import VueResource from 'vue-resource';
 import 'element-ui/lib/theme-default/index.css';
 import config from 'webpack_config/index';
-// 引入bootstrap
+
+// 引入全局css和js
 import 'bootstrap/js/bootstrap.min.js';
 import 'bootstrap/css/bootstrap.min.css';
+import 'static/css/base.css';
+import 'static/css/bootstrap-touch-slider.css';
+import 'static/css/font-awesome.min.css';
 
 // 导入组件
 import './components/registerGlobalComponents';

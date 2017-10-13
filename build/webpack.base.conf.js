@@ -29,7 +29,7 @@ module.exports = {
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
       'stores': resolve('src/stores'),
-      'router': resolve('src/router'),
+      'routers': resolve('src/routers'),
       'views': resolve('src/views'),
       'static': resolve('static'),
       'services': resolve('src/services'),

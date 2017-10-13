@@ -4,6 +4,8 @@
  * Created by mudong on 2017/9/30 0030.
  */
 
+export const routerChangeTime = 100;
+
 /**
  * 网站页面相关配置
  * */

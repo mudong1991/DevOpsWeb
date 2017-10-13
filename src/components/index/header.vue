@@ -7,7 +7,7 @@
         <el-button class="visible-sm visible-xs index-logo-caret" v-if="show_menu">
           <i class="fa fa-list-ul"></i>
         </el-button>
-        <img src="static/images/logo.png" :title="title" class="img-responsive" />
+        <router-link :to="{name: 'index'}"><img src="static/images/logo.png" :title="title" class="img-responsive" /></router-link>
       </div>
       <div id="index-header-container" class=" hidden-sm hidden-xs  col-md-6" v-if="show_menu">
         <ul class="index-header-nav" id="index-header-nav">
@@ -20,22 +20,22 @@
       </div>
       <div class="col-sm-4 col-xs-4 col-md-3 padding-0 index-header-tools" >
         <div class="visible-sm visible-xs index-header-user" v-show="show_user">
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
                 <i class="fa fa-user"></i>  用户中心
               </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>登录</el-dropdown-item>
+              <el-dropdown-item command="xsLogin">登录</el-dropdown-item>
               <el-dropdown-item>注册</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
         <ul class="padding-0 hidden-sm hidden-xs" v-show="show_user">
           <li>
-            <a  @click="goLogin()">登录</a>
+            <router-link  :to="{name: 'wb_login'}">登录</router-link>
           </li>
           <li>
-            <a class="active" @click="goLogin()">注册</a>
+            <router-link class="active"  :to="{name: 'wb_login'}">注册</router-link>
           </li>
         </ul>
       </div>
@@ -66,8 +66,10 @@
       };
     },
     methods: {
-      goLogin () {
-        this.$router.push({name: 'wb_login'});
+      handleCommand(command) {
+        if (command === 'xsLogin') {
+          this.$router.push({name: 'wb_login'});
+        }
       }
     },
     mounted () {

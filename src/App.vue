@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <!-- 路由匹配到的组件将渲染在这里 -->
-    <router-view></router-view>
+    <transition :name="transitionName">
+      <router-view ></router-view>
+    </transition>
   </div>
 </template>
 
@@ -12,13 +14,24 @@
       document.title = title;
     },
     data () {
-      return {};
+      return {
+        transitionName: 'slide-left'
+      };
     },
-    methods: {}
+    methods: {
+
+    },
+    watch: {
+      '$route' (to, from) {
+        const toDepth = to.path.split('/').length;
+        const fromDepth = from.path.split('/').length;
+        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+      }
+    }
   };
 </script>
 
-<style>
+<style lang="scss" rel="stylesheet/scss">
   #app{
     height: 100%;
   }

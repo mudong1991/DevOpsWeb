@@ -21,6 +21,9 @@ a{
 a:hover{
   text-decoration: none;
 }
+.theme-color-main{
+  color: #ff0000 !important;
+}
 .padding-0{
   padding: 0 !important;
 }
