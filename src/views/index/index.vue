@@ -1,7 +1,7 @@
 <template>
   <div id="index" class="index">
     <!--顶部导航开始-->
-    <v-header></v-header>
+    <v-header id="v-header"></v-header>
     <!--顶部导航结束-->
 
     <!--轮播开始-->
@@ -93,7 +93,6 @@
   import {title} from 'config/config';
   import $ from 'jquery';
   import 'static/js/jquery.touchSwipe.min';
-  import 'bootstrap/js/bootstrap.min.js';
   import 'static/js/bootstrap-touch-slider';
 
   import header from 'components/index/header';
@@ -105,6 +104,20 @@
     mounted () {
       // 轮播广告
       $('#bootstrap-touch-slider').bsTouchSlider();
+      // 滚动后处理菜单
+      let navTop = $(window).scrollTop();
+      let topAction = () => {
+        if (navTop > 60) {
+          $('.header-bg').css({'height': '100%'});
+        } else {
+          $('.header-bg').css({'height': '0'});
+        }
+      };
+      topAction();
+      $(window).scroll(() => {
+        navTop = $(window).scrollTop();
+        topAction();
+      });
     },
     data () {
       return {
@@ -122,11 +135,8 @@
 
 </script>
 
-<style lang="scss" rel="stylesheet/scss" >
-  @import '/static/css/animate.css';
-  @import '/static/css/animate-element.css';
-  @import "/static/css/bootstrap-touch-slider.css";
-
+<style lang="scss" rel="stylesheet/scss" scoped>
+  @import '/static/css/bootstrap-touch-slider.css';
   #index{
     height: 100%;
   }

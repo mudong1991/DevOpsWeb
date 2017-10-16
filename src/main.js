@@ -10,7 +10,8 @@ import 'bootstrap/js/bootstrap.min.js';  // bootstrap
 
 // 引入全局css
 import 'bootstrap/css/bootstrap.min.css';  // bootstrap 组件
-import 'static/css/bootstrap-touch-slider.css';
+import 'static/css/animate.css';
+import 'static/css/animate-element.css';
 import 'static/css/font-awesome.min.css';
 import 'static/css/base.css';
 
