@@ -35,7 +35,7 @@ module.exports = {
       'services': resolve('src/services'),
       'utils': resolve('src/utils'),
       'config': resolve('src/config'),
-      'validate': resolve('src/validate'),
+      'validate': resolve('src/validate')
     }
   },
   module: {

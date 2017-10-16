@@ -7,7 +7,7 @@ module.exports = {
     sourceType: 'module'
   },
   env: {
-    browser: true,
+    browser: true
   },
   // https://github.com/standard/standard/blob/master/docs/RULES-en.md
   extends: 'standard',
@@ -21,6 +21,8 @@ module.exports = {
     'indent': 0, // 单行缩进值
     // allow paren-less arrow functions
     'arrow-parens': 0,
+    // 不能有未定义的变量
+    "no-undef": 0,
     // allow async-await
     'generator-star-spacing': 0,
     // allow debugger during development
