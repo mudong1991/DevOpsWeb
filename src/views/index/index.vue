@@ -121,8 +121,7 @@
     },
     data () {
       return {
-        title: title,
-        isLogin: false
+        title: title
       };
     },
     methods: {

@@ -5,7 +5,7 @@
 html,body{
   font-size: 14px;
   font-family: "微软雅黑";
-  color: darkslategray;
+  color: #333;
   height: 100%;
 }
 ul,li{
@@ -23,12 +23,26 @@ a:hover{
   text-decoration: none;
 }
 .theme-color-main{
-  color: #ff0000 !important;
+  color: #20a0ff !important;
+}
+.margin-0{
+  margin: 0 !important;
 }
 .padding-0{
   padding: 0 !important;
+}
+.margin-bottom-10{
+  margin-bottom: 10px !important;
+}
+.margin-bottom-30{
+  margin-bottom: 30px !important;
 }
 .padding-top-10{
   padding-top: 10px;
 }
 
+/*解决一些样式冲突*/
+label{
+  margin-bottom: 0 !important;
+  font-weight: normal !important;
+}

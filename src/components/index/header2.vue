@@ -1,8 +1,6 @@
 <template>
-  <div class="header">
-    <div class="header-top navbar-fixed-top clearfix animated fadeInDown">
-      <!--<div class="index-header-bg"></div>-->
-      <div class="header-top-bg-show "></div>
+  <div class="header animated fadeInDown">
+    <div class="header-top navbar-fixed-top clearfix ">
       <div class="col-xs-12 header-top-container clearfix" >
         <router-link :to="{name: 'index'}"><img src="static/images/logo.png" :title="title" class="img-responsive pull-left" /></router-link>
         <ul class="pull-right">
@@ -49,41 +47,22 @@
     top:0;
     left: 0;
     width: 100%;
-    z-index: 10;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.9);
   }
 
   .header-top{
-    width: 100%;
     height: 50px;
     position: relative;
-
-    /*导航背景*/
-    .header-top-bg{
-      position: absolute;
-      z-index: 0;
-      height: 0;
-      width: 100%;
-      transition: all .5s;
-      background: transparent;
-    }
-    .header-top-bg-show{
-      position: absolute;
-      z-index: 0;
-      width: 100%;
-      transition: all .5s;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-    }
-
+    width: 84%;
+    margin: 0 auto;
     /*logo*/
     .header-top-container{
-      padding-left: 6%;
-      padding-right: 6%;
       height: 100%;
       img{
         display: block;
         height: 30px;
-        margin: 8px auto;
+        margin: 10px auto;
       }
       ul{
         height: 100%;
@@ -98,7 +77,7 @@
             color: white;
           }
           a:hover{
-            color: #ff0000;
+            color: #20a0ff;
           }
         }
       }
