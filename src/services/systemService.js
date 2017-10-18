@@ -7,8 +7,8 @@ class SystemService {
   // 登录
   login(data, diyLoading) {
     return xhr({
-      url: '/api/login',
-      method: 'delete',
+      url: '/api/login1',
+      method: 'post',
       data,
       diyLoading
     });

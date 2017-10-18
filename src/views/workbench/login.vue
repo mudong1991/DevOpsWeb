@@ -141,10 +141,9 @@
             // 改变按钮状态
             this.loginBtnLoading = true;
             // 登录API
-            systemService.login({'username': 2, 'password': 1}, true).then(({data}) => {
+            systemService.login({'username': 2, 'password': 1}, true).then(({response}) => {
               this.loginBtnLoading = false;
-            }, ({data}) => {
-              console.log('error');
+            }, ({response}) => {
               this.loginBtnLoading = false;
             });
           } else {
