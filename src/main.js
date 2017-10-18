@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import Vue from 'vue';
 import ElementUI from 'element-ui';
-import VueResource from 'vue-resource';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 import 'element-ui/lib/theme-default/index.css';
 import config from 'webpack_config/index';
 
@@ -26,7 +27,7 @@ import store from './stores/store';
 import App from './App.vue';
 
 Vue.use(ElementUI);
-Vue.use(VueResource);
+Vue.use(VueAxios, axios);
 
 /* eslint-disable no-new */
 new Vue({
