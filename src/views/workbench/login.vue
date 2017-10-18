@@ -25,7 +25,11 @@
           <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="login-rule-form">
             <h2 class="title">用户登录</h2>
             <div class="login-form-content">
-              <el-form-item label="" prop="username" class="margin-bottom-30">
+              <div class="login-form-error" v-show="showNotice">
+                  <i class="fa fa-times-circle-o"></i><span>登录失败，用户名密码错误！</span>
+              </div>
+
+              <el-form-item label="" prop="username" class="margin-bottom-30 margin-top-10">
                 <el-input type="text" size="large" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名"></el-input>
               </el-form-item>
 
@@ -33,11 +37,23 @@
                 <el-input type="password" size="large" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
               </el-form-item>
 
+              <el-row :gutter="20" class="margin-bottom-10" v-if="needVerify">
+                <el-col :span="12">
+                  <el-form-item label="" prop="verifyCode">
+                    <el-input type="text" size="large" v-model="loginForm.verifyCode" auto-complete="off" placeholder="验证码"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" >
+                  <img src="/static/images/verifycode.jpg" class="img-responsive verify-code-image" title="点击重新获取验证码"/>
+                </el-col>
+              </el-row>
+
               <el-form-item class="margin-bottom-10" >
-                <el-button type="primary" @click="loginSubmit('loginForm')" size="large" class="login-form-content-submit">登    录</el-button>
+                <el-button type="primary" @click="loginSubmit('loginForm')" size="large" class="login-form-content-submit" v-show="!loginBtnLoading">登    录</el-button>
+                <el-button type="primary" :loading="true" v-show="loginBtnLoading" size="large" class="login-form-content-submit">登    录   中...</el-button>
               </el-form-item>
 
-              <el-form-item class="margin-bottom-30">
+              <el-form-item class="margin-0">
                 <el-checkbox label="记住用户名" name="type"></el-checkbox>
               </el-form-item>
 
@@ -57,53 +73,63 @@
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
   import header2 from '@/components/index/header2';
+  import systemService from '@/services/systemService';
 
   export default {
     created () {
       document.title = `欢迎登陆${title}`;
     },
     mounted () {
-        // 两个云飘
-        let cloud1Position = 0;
-        let cloud2Position = 600;
-        let imgWith = 405;
-        let maxPosition = $($('body')[0]).width();
-        let speed = 50;
-        console.log(maxPosition);
-        let cloudMove = () => {
-          $('#cloud1').css({'background-position': `${cloud1Position}px 60px`});
-          $('#cloud2').css({'background-position': `${cloud2Position}px 200px`});
-          if (cloud1Position < maxPosition) {
-            cloud1Position += 1;
-          } else {
-            cloud1Position = -imgWith;
-          }
-          if (cloud2Position < maxPosition) {
-            cloud2Position += 1;
-          } else {
-            cloud2Position = -imgWith;
-          }
-        };
-        cloudMove();
-        this.loginCloudT = setInterval(cloudMove, speed);
+      // 两个云飘相关脚本
+      let cloud1Position = 0;
+      let cloud2Position = 600;
+      let imgWith = 405;
+      let maxPosition = $($('body')[0]).width();
+      let speed = 50;
+      let cloudMove = () => {
+        $('#cloud1').css({'background-position': `${cloud1Position}px 60px`});
+        $('#cloud2').css({'background-position': `${cloud2Position}px 200px`});
+        if (cloud1Position < maxPosition) {
+          cloud1Position += 1;
+        } else {
+          cloud1Position = -imgWith;
+        }
+        if (cloud2Position < maxPosition) {
+          cloud2Position += 1;
+        } else {
+          cloud2Position = -imgWith;
+        }
+      };
+      cloudMove();
+      // 定义定时器
+      this.loginCloudT = setInterval(cloudMove, speed);
     },
-    beforeDestoryed() {
+    destroyed() {
+      // 清除定时器
       clearInterval(this.loginCloudT);
     },
     data () {
       return {
+        showNotice: true,  // 显示提示信息
+        needVerify: false,  // 显示验证码
+        loginBtnLoading: false,  // 显示登录中按钮
         loginForm: {
           username: '',
-          password: ''
+          password: '',
+          verifyCode: ''
         },
         loginRules: {
           username: [
             { required: true, message: '请输入用户名', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 100 个字符', trigger: 'blur' }
+            { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+            { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+          ],
+          verifyCode: [
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
           ]
         }
       };
@@ -112,7 +138,15 @@
       loginSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log('submit');
+            // 改变按钮状态
+            this.loginBtnLoading = true;
+            // 登录API
+            systemService.login({'username': 2, 'password': 1}, true).then(({data}) => {
+              this.loginBtnLoading = false;
+            }, ({data}) => {
+              console.log('error');
+              this.loginBtnLoading = false;
+            });
           } else {
             return false;
           }
@@ -171,7 +205,8 @@
       top: 20%;
       z-index: 66;
       .login-form{
-        height: 440px;
+        height: auto;
+
         .login-rule-form{
           width: 80%;
           margin: 0 auto;
@@ -186,11 +221,27 @@
           .title{
             border-bottom: 2px solid #20a0ff;
             padding-bottom: 10px;
+            margin-bottom: 20px;
           }
           .login-form-content{
-            margin-top: 40px;
+            position: relative;
             .login-form-content-submit{
               width: 100%;
+              margin: 0;
+            }
+            .verify-code-image{
+              margin-top: 4px;
+              cursor: pointer;
+            }
+            .login-form-error{
+              width: 100%;
+              color: #ff4949;
+              border: 1px solid #ff4949;
+              padding: 6px;
+              background: #FEEEEB;
+              i{
+                margin-right: 10px;
+              }
             }
           }
         }

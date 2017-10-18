@@ -1,38 +1,38 @@
 /* eslint-disable indent,space-before-function-paren */
 /**
- * Created by lichao on 2016/12/30.
+ * Created by mudong on 2016/12/30.
  */
 class Util {
     parseParam(param) {
         if (param) {
-            let arr = []
+            let arr = [];
             for (let key in param) {
                 if (param[key] !== undefined && (param[key] + '')) {
-                    arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(param[key]))
+                    arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(param[key]));
                 }
             }
-            return arr.join('&')
+            return arr.join('&');
         }
-        return ''
+        return '';
     }
 
     cloneObject(obj) {
         if (typeof obj === 'object') {
             if (obj instanceof Array) {
-                let newArr = []
-                for (let i = 0; i < obj.length; i++) newArr.push(obj[i])
-                return newArr
+                let newArr = [];
+                for (let i = 0; i < obj.length; i++) newArr.push(obj[i]);
+                return newArr;
             } else {
-                let newObj = {}
+                let newObj = {};
                 for (let key in obj) {
-                    newObj[key] = this.cloneObject(obj[key])
+                    newObj[key] = this.cloneObject(obj[key]);
                 }
-                return newObj
+                return newObj;
             }
         } else {
-            return obj
+            return obj;
         }
     };
 }
 
-export default new Util()
+export default new Util();
