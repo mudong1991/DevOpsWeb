@@ -54,6 +54,11 @@ export const errHandler = ({response}) => {  // API错误处理函数
     layerBtnTxt = '好的，我知道了';
     layerContentCode = '服务连接失败！';
     layerContent = '请确认网络是否连通，否则当前工作将会丢失';
+  } else if (response.status < 200) {
+    layerTitle = '接口未响应！';
+    layerBtnTxt = '确认';
+    layerContentCode = `响应${response.status}`;
+    layerContent = '接口未响应';
   } else if (response.status === 404) {  // 接口访问错误
     layerTitle = '接口错误！';
     layerBtnTxt = '原谅你';
@@ -84,14 +89,19 @@ export const errHandler = ({response}) => {  // API错误处理函数
         });
       });
     });
+  } else {
+    layerTitle = '接口响应错误！';
+    layerBtnTxt = '确认';
+    layerContentCode = `响应${response.status}`;
+    layerContent = '接口响应错误';
   }
 
   // layui 弹窗
   if (showAlert) {
     layui.use('layer', () => {
       let layer = layui.layer;
-      layer.alert(layerContent, {
-        title: `${layerTitle}<br />错误原因: <span style="color: red">${layerContentCode}</span>`,
+      layer.alert(`${layerContent}<br />错误原因: <span style="color: red">${layerContentCode}</span>`, {
+        title: `${layerTitle}`,
         icon: 5,
         btn: [layerBtnTxt]
       });

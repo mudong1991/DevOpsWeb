@@ -145,15 +145,15 @@
             // 登录API
             let loginData = {'username': this.loginForm.username, 'password': this.loginForm.password, 'verifyCode': this.loginForm.verifyCode};
             systemService.login(loginData, false, true).then(({data}) => {
-              this.loginBtnLoading = false;
-              if (data.result_code !== 0) {
-                this.showNotice = true;
-                this.noticeTxt = data.result_data;
-              } else {
-                this.showNotice = false;
-                this.noticeTxt = data.result_data;
-                this.$router.push({name: 'wb_home'});
-              }
+                this.loginBtnLoading = false;
+                if (data.result_code !== 0) {
+                  this.showNotice = true;
+                  this.noticeTxt = data.result_data;
+                } else {
+                  this.showNotice = false;
+                  this.noticeTxt = data.result_data;
+                  this.$router.push({name: 'wb_home'});
+                }
             }, ({data}) => {
               this.loginBtnLoading = false;
             });

@@ -63,7 +63,7 @@ export default ({url, method = 'get', data = {}, root, extraParams = {}, diyErro
       if (!diyLoading) {
         store.commit('removeLoading', 'http');
       }
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         resolve(response);
       } else {
         reject(response);
