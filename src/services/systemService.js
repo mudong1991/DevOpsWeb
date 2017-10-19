@@ -5,11 +5,12 @@ import xhr from './xhr/xhr';
 
 class SystemService {
   // 登录
-  login(data, diyLoading) {
+  login(data, diyError, diyLoading) {
     return xhr({
-      url: '/api/login1',
+      url: '/api/login',
       method: 'post',
       data,
+      diyError,
       diyLoading
     });
   }

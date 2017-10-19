@@ -7,6 +7,7 @@ html,body{
   font-family: "微软雅黑";
   color: #333;
   height: 100%;
+  line-height: normal !important;
 }
 ul,li{
   list-style: none;
@@ -51,4 +52,17 @@ a:hover{
 label{
   margin-bottom: 0 !important;
   font-weight: normal !important;
+}
+.layui-layer-btn a{
+  height: 30px !important;
+}
+.layui-more-btn-custom .layui-layer-btn .layui-layer-btn0{
+  border: 1px solid #dedede !important;
+  background-color: white !important;
+  color: #333 !important;
+}
+.layui-more-btn-custom .layui-layer-btn .layui-layer-btn1{
+  border-color: #1E9FFF;
+  background-color: #1E9FFF;
+  color: #fff;
 }

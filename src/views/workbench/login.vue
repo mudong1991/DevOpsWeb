@@ -26,7 +26,7 @@
             <h2 class="title">用户登录</h2>
             <div class="login-form-content">
               <div class="login-form-error" v-show="showNotice">
-                  <i class="fa fa-times-circle-o"></i><span>登录失败，用户名密码错误！</span>
+                  <i class="fa fa-times-circle-o"></i><span v-text="noticeTxt"></span>
               </div>
 
               <el-form-item label="" prop="username" class="margin-bottom-30 margin-top-10">
@@ -110,7 +110,8 @@
     },
     data () {
       return {
-        showNotice: true,  // 显示提示信息
+        showNotice: false,  // 显示提示信息
+        noticeTxt: '',  // 提示信息
         needVerify: false,  // 显示验证码
         loginBtnLoading: false,  // 显示登录中按钮
         loginForm: {
@@ -140,10 +141,20 @@
           if (valid) {
             // 改变按钮状态
             this.loginBtnLoading = true;
+
             // 登录API
-            systemService.login({'username': 2, 'password': 1}, true).then(({response}) => {
+            let loginData = {'username': this.loginForm.username, 'password': this.loginForm.password, 'verifyCode': this.loginForm.verifyCode};
+            systemService.login(loginData, false, true).then(({data}) => {
               this.loginBtnLoading = false;
-            }, ({response}) => {
+              if (data.result_code !== 0) {
+                this.showNotice = true;
+                this.noticeTxt = data.result_data;
+              } else {
+                this.showNotice = false;
+                this.noticeTxt = data.result_data;
+                this.$router.push({name: 'wb_home'});
+              }
+            }, ({data}) => {
               this.loginBtnLoading = false;
             });
           } else {

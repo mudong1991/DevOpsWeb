@@ -50,6 +50,7 @@ export default ({url, method = 'get', data = {}, root, extraParams = {}, diyErro
         }));
       }
     }
+
     // axiso发出请求
     Vue.axios(Object.assign(
       {
@@ -72,6 +73,7 @@ export default ({url, method = 'get', data = {}, root, extraParams = {}, diyErro
         store.commit('removeLoading', 'http');
       }
       reject(response);
+
       if (!diyError) {
         errHandler(response);
       }

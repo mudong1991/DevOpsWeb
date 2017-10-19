@@ -5,17 +5,17 @@
 
 export default {
   state: {
-    userInfo: {}
+    info: {}
   },
   getters: {
 
   },
   mutations: {
       getUserInfo(state) {
-        return state.userInfo;
+        return JSON.parse(window.localStorage.getItem('userInfo'));
       },
       setUserInfo(state, userInfo) {
-        state.userInfo = userInfo;  // 给状态信息重新赋值
+        state.info = userInfo;  // 给状态信息重新赋值
         window.localStorage.setItem('userInfo', JSON.stringify(userInfo)); // 在localStorage中拿用户信息
       }
   },
