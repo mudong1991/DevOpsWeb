@@ -114,23 +114,42 @@ export const errHandler = ({response}) => {  // API错误处理函数
  * 弹窗组件封装
  * */
 export const MessageBox = {
-  alert(content, title, extraParams, btnList) {
+  alert(content, extraParams = {}) {
     layui.use('layer', () => {
       let layer = layui.layer;
       layer.alert(
         content,
-        Object.assign({
-          title: title,
-          btn: btnList
-        }, extraParams),
-        ...Array.from(arguments).slice(4)
+        extraParams,
+        ...Array.from(arguments).slice(2)
       );
+    });
+  },
+  confim(content, extraParams = {}) {
+    layui.use('layer', () => {
+      let layer = layui.layer;
+      layer.confirm(
+        content,
+        extraParams,
+        ...Array.from(arguments).slice(2)
+      );
+    });
+  },
+  open(params = {}) {
+    layui.use('layer', () => {
+      let layer = layui.layer;
+      layer.open(params);
     });
   },
   close(index) {
     layui.use('layer', () => {
       let layer = layui.layer;
       layer.close(index);
+    });
+  },
+  closeAll() {
+    layui.use('layer', () => {
+      let layer = layui.layer;
+      layer.closeAll();
     });
   }
 };

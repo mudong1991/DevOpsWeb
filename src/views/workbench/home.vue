@@ -5,23 +5,19 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {title, MessageBox} from 'config/config';
+  import {title} from 'config/config';
+  import systemService from 'services/systemService';
 
   export default {
     created () {
-      MessageBox.alert('neirong', '标题', {}, ['确认'], (index) => {
-        MessageBox.close(index);
-      });
       // 网页标题
       document.title = title;
       // 获取用户信息
-//      let userInfo = {};
-//      try {
-//        userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
-//        this.$store.commit('setUserInfo', userInfo);
-//      } catch (e) {
-//
-//      }
+      let userInfo = this.$store.commit('getUserInfo');
+      console.log(userInfo);
+      systemService.checkLogin().then(({data}) => {
+        console.log(data);
+      });
     },
     data () {
       return {};

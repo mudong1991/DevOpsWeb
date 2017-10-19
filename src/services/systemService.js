@@ -14,6 +14,17 @@ class SystemService {
       diyLoading
     });
   }
+
+  // 检查登录，登录成功得到用户信息
+  checkLogin(data, diyError, diyLoading) {
+    return xhr({
+      url: '/api/check_login',
+      method: 'get',
+      data,
+      diyError,
+      diyLoading
+    });
+  }
 }
 
 export default new SystemService();
