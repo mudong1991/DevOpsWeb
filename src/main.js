@@ -3,6 +3,7 @@ import Vue from 'vue';
 import ElementUI from 'element-ui';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import VueCookie from 'vue-cookie';
 import 'element-ui/lib/theme-default/index.css';
 import config from 'webpack_config/index';
 
@@ -28,6 +29,7 @@ import App from './App.vue';
 
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
+Vue.use(VueCookie);
 
 /* eslint-disable no-new */
 new Vue({

@@ -16,6 +16,12 @@ export const title = '四方开发云'; // 页面标题
 export const copyright = '东风残雪@版权所有';  // 页面版权
 
 /**
+ * 登录有效时间
+ * */
+export const loginExpiresTime = '3m';  // Y M D h m s 单位
+export const userNoOperationLogout = true; // 配置该项表示，用户长时间停留页面没有进行任何操作，然后自动注销
+
+/**
  * 配置接口访问地址
  * */
 export const rootPath = 'http://127.0.0.1:8810'; // 根据实际业务填写
@@ -107,49 +113,5 @@ export const errHandler = ({response}) => {  // API错误处理函数
       });
     });
     return false;
-  }
-};
-
-/**
- * 弹窗组件封装
- * */
-export const MessageBox = {
-  alert(content, extraParams = {}) {
-    layui.use('layer', () => {
-      let layer = layui.layer;
-      layer.alert(
-        content,
-        extraParams,
-        ...Array.from(arguments).slice(2)
-      );
-    });
-  },
-  confim(content, extraParams = {}) {
-    layui.use('layer', () => {
-      let layer = layui.layer;
-      layer.confirm(
-        content,
-        extraParams,
-        ...Array.from(arguments).slice(2)
-      );
-    });
-  },
-  open(params = {}) {
-    layui.use('layer', () => {
-      let layer = layui.layer;
-      layer.open(params);
-    });
-  },
-  close(index) {
-    layui.use('layer', () => {
-      let layer = layui.layer;
-      layer.close(index);
-    });
-  },
-  closeAll() {
-    layui.use('layer', () => {
-      let layer = layui.layer;
-      layer.closeAll();
-    });
   }
 };

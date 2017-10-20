@@ -74,6 +74,7 @@
   import {title} from 'config/config';
   import header2 from '@/components/index/header2';
   import systemService from '@/services/systemService';
+  import {loginExpiresTime} from '@/config/config';
 
   export default {
     created () {
@@ -146,13 +147,15 @@
             let loginData = {'username': this.loginForm.username, 'password': this.loginForm.password, 'verifyCode': this.loginForm.verifyCode};
             systemService.login(loginData, false, true).then(({data}) => {
                 this.loginBtnLoading = false;
-                if (data.result_code !== 0) {
+                if (data.result_code === 0) { // 登录成功
+                  this.showNotice = false;
+                  // 保存用户信息
+                  this.$cookie.set('userInfo', JSON.stringify(data.result_data), {expires: loginExpiresTime});  // 直接设置，不要直接调用store方法，这里要强制刷新cookies中的值
+                  // 跳转
+                  this.$router.push({name: 'wb_home'});
+                } else {  // 登录失败
                   this.showNotice = true;
                   this.noticeTxt = data.result_data;
-                } else {
-                  this.showNotice = false;
-                  this.noticeTxt = data.result_data;
-                  this.$router.push({name: 'wb_home'});
                 }
             }, ({data}) => {
               this.loginBtnLoading = false;
