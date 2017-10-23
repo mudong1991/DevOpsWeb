@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 import store from '@/stores/store';
 import routes from './map/index';
 import webpackConfig from 'webpack_config/index';
-import {routerChangeTime} from 'config/config';
+import {routerChangeTime, loginExpiresTime} from 'config/config';
 
 Vue.use(VueRouter);
 
@@ -18,6 +18,14 @@ router.beforeEach((to, from, next) => {
   let fromPath = from.path;
   if (webpackConfig.__DEV__) {
     console.log(`to: ${toPath} from: ${fromPath}`);
+  }
+
+  // 更新用户信息
+  let userInfoStr = Vue.cookie.get('userInfo');
+  if (userInfoStr !== null) {
+    try {
+      Vue.cookie.set('userInfo', userInfoStr, {expires: window.localStorage.getItem('keepLogin') === 'true' ? '10Y' : loginExpiresTime});
+    } catch (e) {}
   }
 
   // 判断用户是否登录，没有登录重定向到登录页面（只过滤workench后台的路由）

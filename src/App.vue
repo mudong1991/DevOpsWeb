@@ -9,18 +9,10 @@
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
-  import {loginExpiresTime} from '@/config/config';
 
   export default {
     created () {
       document.title = title;
-      // 更新用户信息
-      let userInfoStr = this.$cookie.get('userInfo');
-      if (userInfoStr !== null) {
-        try {
-          this.$cookie.set('userInfo', userInfoStr, {expires: window.localStorage.getItem('keepLogin') === 'true' ? '10Y' : loginExpiresTime});
-        } catch (e) {}
-      }
     },
     data () {
       return {
