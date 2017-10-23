@@ -20,19 +20,19 @@
             <router-link :to="{name: 'wb_home'}" class="header-tools-workbench">工作台</router-link>
           </div>
 
-          <div class="header-tools-item pull-left" v-show="!isLogin">
+          <div class="header-tools-item pull-left" v-if="userInfo === null">
             <router-link :to="{name: 'wb_login'}" class="header-tools-login">登录</router-link>
           </div>
 
-          <div class="header-tools-item pull-left" v-show="isLogin">
+          <div class="header-tools-item pull-left" v-if="userInfo !== null">
             <el-dropdown class="header-tools-item-content">
               <span class="el-dropdown-link">
-                mudong1991<i class="el-icon-caret-bottom el-icon--right"></i>
+                {{ userInfo.username !== undefined ? userInfo.username : '' }}<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown" class="header-tools-item-content-dropdown">
                 <el-dropdown-item >个人中心</el-dropdown-item>
                 <el-dropdown-item divided>个人中心</el-dropdown-item>
-                <el-dropdown-item >退出</el-dropdown-item>
+                <el-dropdown-item ><div @click="logout()">退出</div></el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -51,6 +51,7 @@
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
+  import systemService from '@/services/systemService';
 
   export default {
     props: {
@@ -66,7 +67,7 @@
     data () {
       return {
         title: title,
-        isLogin: false
+        userInfo: null
       };
     },
     methods: {
@@ -74,7 +75,29 @@
         if (command === 'xsLogin') {
           this.$router.push({name: 'wb_login'});
         }
+      },
+      getUserInfo () {
+        let userInfoStr = this.$cookie.get('userInfo');
+        if (userInfoStr !== null) {
+          let userInfo = JSON.parse(userInfoStr);
+          if (userInfo.user_id !== undefined) {
+            systemService.getUserInfoBySession({session_id: userInfo.session_id}, false, true).then(({data}) => {
+              console.log(data);
+              this.userInfo = data;
+            });
+          }
+        } else {
+          this.userInfo = null;
+        }
+      },
+      logout() {
+        this.$cookie.delete('userInfo');
+        this.getUserInfo();
       }
+    },
+    created () {
+      // 获取用户信息
+      this.getUserInfo();
     },
     mounted () {
       layui.use('element', function () {

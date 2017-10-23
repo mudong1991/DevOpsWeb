@@ -18,8 +18,8 @@ export const copyright = '东风残雪@版权所有';  // 页面版权
 /**
  * 登录有效时间
  * */
-export const loginExpiresTime = '3m';  // Y M D h m s 单位
-export const userNoOperationLogout = true; // 配置该项表示，用户长时间停留页面没有进行任何操作，然后自动注销
+export const loginExpiresTime = '20m';  // Y M D h m s 单位
+export const userNoOperationLogout = true; // 配置该项表示，监听用户认证是否过期，弹窗退出。
 
 /**
  * 配置接口访问地址

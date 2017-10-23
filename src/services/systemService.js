@@ -16,9 +16,9 @@ class SystemService {
   }
 
   // 检查登录，登录成功得到用户信息
-  checkLogin(data, diyError, diyLoading) {
+  getUserInfoBySession(data, diyError, diyLoading) {
     return xhr({
-      url: '/api/check_login',
+      url: '/api/getUserInfoBySession',
       method: 'get',
       data,
       diyError,

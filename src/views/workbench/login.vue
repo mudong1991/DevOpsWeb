@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-4 col-sm-12 login-form animated pulse">
           <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="login-rule-form">
-            <h2 class="title">用户登录</h2>
+            <h2 class="title" >用户登录</h2>
             <div class="login-form-content">
               <div class="login-form-error" v-show="showNotice">
                   <i class="fa fa-times-circle-o"></i><span v-text="noticeTxt"></span>
@@ -53,8 +53,8 @@
                 <el-button type="primary" :loading="true" v-show="loginBtnLoading" size="large" class="login-form-content-submit">登    录   中...</el-button>
               </el-form-item>
 
-              <el-form-item class="margin-0">
-                <el-checkbox label="记住用户名" name="type"></el-checkbox>
+              <el-form-item class="margin-0" >
+                  <el-checkbox label="保持登录状态" name="type" v-model="loginForm.keepLogin" @change="changeKeepLogin(loginForm.keepLogin)"></el-checkbox>
               </el-form-item>
 
               <div class="help-block clearfix">
@@ -77,8 +77,19 @@
   import {loginExpiresTime} from '@/config/config';
 
   export default {
+    beforeCreate () {
+      // 判断是否登录
+      let userInfoStr = this.$cookie.get('userInfo');
+      if (userInfoStr !== null) {
+        this.$router.push({name: 'index'});
+      }
+    },
     created () {
       document.title = `欢迎登陆${title}`;
+      // 记住密码
+      if (window.localStorage.getItem('keepLogin') === null) {
+        this.$store.commit('setKeepLogin', true);
+      }
     },
     mounted () {
       // 两个云飘相关脚本
@@ -110,6 +121,7 @@
       clearInterval(this.loginCloudT);
     },
     data () {
+      window.localStorage.getItem('keepLogin');
       return {
         showNotice: false,  // 显示提示信息
         noticeTxt: '',  // 提示信息
@@ -118,7 +130,8 @@
         loginForm: {
           username: '',
           password: '',
-          verifyCode: ''
+          verifyCode: '',
+          keepLogin: window.localStorage.getItem('keepLogin') === 'true'  // 保持登录状态
         },
         loginRules: {
           username: [
@@ -137,6 +150,7 @@
       };
     },
     methods: {
+      // 登录
       loginSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -150,7 +164,7 @@
                 if (data.result_code === 0) { // 登录成功
                   this.showNotice = false;
                   // 保存用户信息
-                  this.$cookie.set('userInfo', JSON.stringify(data.result_data), {expires: loginExpiresTime});  // 直接设置，不要直接调用store方法，这里要强制刷新cookies中的值
+                  this.$cookie.set('userInfo', JSON.stringify(data.result_data), {expires: window.localStorage.getItem('keepLogin') === 'true' ? '10Y' : loginExpiresTime});  // 直接设置，不要直接调用store方法，这里要强制刷新cookies中的值
                   // 跳转
                   this.$router.push({name: 'wb_home'});
                 } else {  // 登录失败
@@ -164,6 +178,10 @@
             return false;
           }
         });
+      },
+      // 保持登录
+      changeKeepLogin(keepLogin) {
+        this.$store.commit('setKeepLogin', keepLogin);
       }
     },
     components: {

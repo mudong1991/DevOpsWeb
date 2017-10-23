@@ -98,6 +98,15 @@
   import header from 'components/index/header';
 
   export default {
+    data () {
+      return {
+        title: title,
+        userInfo: null
+      };
+    },
+    methods: {
+
+    },
     created () {
       document.title = `首页 | ${title}`;
     },
@@ -118,14 +127,6 @@
         navTop = $(window).scrollTop();
         topAction();
       });
-    },
-    data () {
-      return {
-        title: title
-      };
-    },
-    methods: {
-
     },
     components: {
       vHeader: header

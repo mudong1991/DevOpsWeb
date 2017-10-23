@@ -1,5 +1,5 @@
 <template>
-  <div id="home-app" @click="updateUserInfo()">
+  <div id="home-app">
     213123
   </div>
 </template>
@@ -10,22 +10,13 @@
   import Vue from 'vue';
   import router from '@/routers/index';
   import {MessageBox} from '@/utils/util';
-  import {userNoOperationLogout, loginExpiresTime} from '@/config/config';
+  import {userNoOperationLogout} from '@/config/config';
 
   export default {
     data () {
       return {};
     },
     methods: {
-      // 界面有点击，表示用户活跃，更新用户信息
-      updateUserInfo() {
-        let userInfoStr = this.$cookie.get('userInfo');
-        if (userInfoStr !== null) {
-          try {
-            this.$cookie.set('userInfo', userInfoStr, {expires: loginExpiresTime});
-          } catch (e) {}
-        }
-      }
     },
     created () {
       // 网页标题
@@ -36,7 +27,7 @@
           let userInfoStr = Vue.cookie.get('userInfo');
           if (userInfoStr === null) {
             clearInterval(this.checkUserInfoT);  // 停止定时器
-            MessageBox.alert('亲爱的用户，由于您长时间未操作，为了账户的安全请重新登录！',
+            MessageBox.alert('亲爱的用户，由于您的登录凭证已过期，为了账户的安全请重新登录！',
               {
                 title: '登录失效',
                 icon: 5,
