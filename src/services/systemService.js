@@ -14,6 +14,16 @@ class SystemService {
       diyLoading
     });
   }
+  // 获取验证码
+  getVerfiy(data, diyError = true, diyLoading = true) {
+    return xhr({
+      url: '/api/getVerify',
+      method: 'get',
+      data,
+      diyError,
+      diyLoading
+    });
+  }
 
   // 检查登录，登录成功得到用户信息
   getUserInfoBySession(data, diyError, diyLoading) {

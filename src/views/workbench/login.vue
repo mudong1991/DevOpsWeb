@@ -44,7 +44,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" >
-                  <img src="/static/images/verifycode.jpg" class="img-responsive verify-code-image" title="点击重新获取验证码"/>
+                  <img :src="this.verifySrc" class="img-responsive verify-code-image" @click="getVerify()" title="点击重新获取验证码"/>
                 </el-col>
               </el-row>
 
@@ -71,10 +71,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {title} from 'config/config';
+  import {title, rootPath, loginExpiresTime} from '@/config/config';
   import header2 from '@/components/index/header2';
   import systemService from '@/services/systemService';
-  import {loginExpiresTime} from '@/config/config';
 
   export default {
     beforeCreate () {
@@ -86,6 +85,8 @@
     },
     created () {
       document.title = `欢迎登陆${title}`;
+      // 获取验证码
+      this.getVerify();
       // 记住密码
       if (window.localStorage.getItem('keepLogin') === null) {
         this.$store.commit('setKeepLogin', true);
@@ -127,6 +128,7 @@
         noticeTxt: '',  // 提示信息
         needVerify: false,  // 显示验证码
         loginBtnLoading: false,  // 显示登录中按钮
+        verifySrc: '',  // 验证码路径
         loginForm: {
           username: '',
           password: '',
@@ -156,6 +158,8 @@
           if (valid) {
             // 改变按钮状态
             this.loginBtnLoading = true;
+            // 清除定时器
+            clearInterval(this.lockLoginT);
 
             // 登录API
             let loginData = {'username': this.loginForm.username, 'password': this.loginForm.password, 'verifyCode': this.loginForm.verifyCode};
@@ -167,9 +171,34 @@
                   this.$cookie.set('userInfo', JSON.stringify(data.result_data), {expires: window.localStorage.getItem('keepLogin') === 'true' ? '10Y' : loginExpiresTime});  // 直接设置，不要直接调用store方法，这里要强制刷新cookies中的值
                   // 跳转
                   this.$router.push({name: 'wb_home'});
+                } else if (data.result_code === 2) {  // 用户被锁定
+                  this.showNotice = true;
+                  this.needVerify = data.result_data.need_verify;
+                  let lockSurplusSecond = data.result_data.lock_surplus_second || 0;
+                  let surplusTime = () => {
+                    if (lockSurplusSecond > 0) {
+                      this.noticeTxt = `用户已经被锁定，请${lockSurplusSecond}秒后再试。`;
+                      lockSurplusSecond -= 1;
+                    } else {
+                      this.showNotice = false;
+                    }
+                  };
+                  surplusTime();
+                  this.lockLoginT = setInterval(surplusTime, 1000);
                 } else {  // 登录失败
                   this.showNotice = true;
-                  this.noticeTxt = data.result_data;
+                  this.needVerify = data.result_data.need_verify;
+                  this.noticeTxt = data.result_data.result_msg;
+                }
+
+                // 验证码
+                if (data.result_data.need_verify === true) {
+                  let verifyUrl = data.result_data.verify_url;
+                  if (!verifyUrl.startsWith('/')) {
+                    verifyUrl = '/' + verifyUrl;
+                  }
+                  verifyUrl += '?t=' + Math.random();
+                  this.verifySrc = rootPath + verifyUrl;
                 }
             }, ({data}) => {
               this.loginBtnLoading = false;
@@ -178,6 +207,21 @@
             return false;
           }
         });
+      },
+      // 获取验证码
+      getVerify() {
+        this.verifySrc = '/static/images/lodImg.gif';
+        systemService.getVerfiy({}, true, true).then(({data}) => {
+            this.needVerify = data.need_verify;
+            if (this.needVerify) {
+              let verifyUrl = data.verify_url;
+              if (!verifyUrl.startsWith('/')) {
+                verifyUrl = '/' + verifyUrl;
+              }
+              verifyUrl += '?t=' + Math.random();
+              this.verifySrc = rootPath + verifyUrl;
+            }
+          }, () => { this.verifySrc = ''; });
       },
       // 保持登录
       changeKeepLogin(keepLogin) {
@@ -261,8 +305,10 @@
               margin: 0;
             }
             .verify-code-image{
-              margin-top: 4px;
+              margin-top: 2px;
               cursor: pointer;
+              width: 140px;
+              height: 38px;
             }
             .login-form-error{
               width: 100%;
