@@ -121,7 +121,7 @@ strong {
   font-weight: inherit;
 }
 /**
- * Add the correct fonts weight in Chrome, Edge, and Safari.
+ * Add the correct font weight in Chrome, Edge, and Safari.
  */
 
 b,
@@ -129,14 +129,14 @@ strong {
   font-weight: bolder;
 }
 /**
- * Add the correct fonts style in Android 4.3-.
+ * Add the correct font style in Android 4.3-.
  */
 
 dfn {
   font-style: italic;
 }
 /**
- * Correct the fonts size and margin on `h1` elements within `section` and
+ * Correct the font size and margin on `h1` elements within `section` and
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 
@@ -153,7 +153,7 @@ mark {
   color: #000;
 }
 /**
- * Add the correct fonts size in all browsers.
+ * Add the correct font size in all browsers.
  */
 
 small {
@@ -198,8 +198,8 @@ svg:not(:root) {
 /* Grouping content
    ========================================================================== */
 /**
- * 1. Correct the inheritance and scaling of fonts size in all browsers.
- * 2. Correct the odd `em` fonts sizing in all browsers.
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
  */
 
 code,
@@ -236,7 +236,7 @@ hr {
 /**
  * 1. Correct color not being inherited.
       Known issue: affects color of disabled elements.
- * 2. Change fonts properties to `inherit` in all browsers (opinionated).
+ * 2. Change font properties to `inherit` in all browsers (opinionated).
  * 3. Remove the margin in Firefox and Safari.
  */
 
@@ -254,7 +254,7 @@ textarea {
   vertical-align: middle;
 }
 /**
- * Restore the fonts weight unset by the previous rule.
+ * Restore the font weight unset by the previous rule.
  */
 
 optgroup {
@@ -432,7 +432,7 @@ input::-ms-reveal {
 }
 /**
  * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change fonts properties to `inherit` in Safari.
+ * 2. Change font properties to `inherit` in Safari.
  */
 
 ::-webkit-file-upload-button {

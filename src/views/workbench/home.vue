@@ -1,6 +1,6 @@
 <template>
   <div id="home-app">
-    213123
+    <v-workbench-header></v-workbench-header>
   </div>
 </template>
 
@@ -11,6 +11,7 @@
   import router from '@/routers/index';
   import {MessageBox} from '@/utils/util';
   import {userNoOperationLogout} from '@/config/config';
+  import workbenchHeader from '@/components/workbench/header.vue';
 
   export default {
     data () {
@@ -47,6 +48,9 @@
     destroyed() {
       // 清除定时器
        clearInterval(this.checkUserInfoT);
+    },
+    components: {
+      vWorkbenchHeader: workbenchHeader
     }
   };
 </script>
