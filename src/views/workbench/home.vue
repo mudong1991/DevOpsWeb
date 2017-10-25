@@ -40,6 +40,7 @@
               });
           }
         };
+        checkUserInfo();
         this.checkUserInfoT = setInterval(checkUserInfo, 5000);
       }
     },

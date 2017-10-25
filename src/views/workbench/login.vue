@@ -44,7 +44,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" >
-                  <img :src="this.verifySrc" class="img-responsive verify-code-image" @click="getVerify()" title="点击重新获取验证码"/>
+                  <div class="verify-code-image">
+                    <img :src="this.verifySrc" class="img-responsive " @click="getVerify()" title="点击重新获取验证码"/>
+                    <div class="verify-code-image-loading" v-show="showVerifyLoading"><i class="fa fa-spinner fa-pulse fa-fw"></i></div>
+                  </div>
                 </el-col>
               </el-row>
 
@@ -129,6 +132,7 @@
         needVerify: false,  // 显示验证码
         loginBtnLoading: false,  // 显示登录中按钮
         verifySrc: '',  // 验证码路径
+        showVerifyLoading: false,  // 验证码加载显示
         loginForm: {
           username: '',
           password: '',
@@ -210,7 +214,7 @@
       },
       // 获取验证码
       getVerify() {
-        this.verifySrc = '/static/images/lodImg.gif';
+        this.showVerifyLoading = true;
         systemService.getVerfiy({}, true, true).then(({data}) => {
             this.needVerify = data.need_verify;
             if (this.needVerify) {
@@ -221,7 +225,8 @@
               verifyUrl += '?t=' + Math.random();
               this.verifySrc = rootPath + verifyUrl;
             }
-          }, () => { this.verifySrc = ''; });
+            this.showVerifyLoading = false;
+          }, () => { this.verifySrc = ''; this.showVerifyLoading = false; });
       },
       // 保持登录
       changeKeepLogin(keepLogin) {
@@ -309,6 +314,22 @@
               cursor: pointer;
               width: 140px;
               height: 38px;
+              position: relative;
+              img{
+                width: 100%;
+                height: 100%;
+              }
+              .verify-code-image-loading{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                line-height: 38px;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 20;
+              }
             }
             .login-form-error{
               width: 100%;
