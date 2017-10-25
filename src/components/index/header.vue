@@ -101,7 +101,8 @@
     },
     mounted () {
       layui.use('element', function () {
-
+        let element = layui.element;
+        element.init();  //  这样element对动态生成的元素才会重新有效
       });
     }
   };
