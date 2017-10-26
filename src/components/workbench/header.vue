@@ -76,7 +76,7 @@
       let windowSizeChange = () => {
         let domWidth = $(document).width();
         if (domWidth < 991) {
-          this.showHeaderMenu = false;
+//          this.showHeaderMenu = false;
         } else {
           this.showHeaderMenu = true;
         }
