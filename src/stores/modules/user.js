@@ -5,8 +5,7 @@
 
 export default {
   state: {
-    info: {},
-    keepLogin: false
+    info: null
   },
   getters: {
 
@@ -14,10 +13,6 @@ export default {
   mutations: {
       setUserInfo(state, userInfo) {
         state.info = userInfo;  // 给状态信息重新赋值
-      },
-      setKeepLogin(state, status) {
-        state.keepLogin = status;
-        window.localStorage.setItem('keepLogin', state.keepLogin);
       }
   },
   actions: {

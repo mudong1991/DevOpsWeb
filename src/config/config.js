@@ -18,7 +18,7 @@ export const copyright = '东风残雪@版权所有';  // 页面版权
 /**
  * 登录有效时间
  * */
-export const loginExpiresTime = '20m';  // Y M D h m s 单位
+export const loginExpiresTime = 5 * 60 * 1000;  // ms 单位
 export const userNoOperationLogout = true; // 配置该项表示，监听用户认证是否过期，弹窗退出。
 
 /**

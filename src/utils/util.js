@@ -54,14 +54,22 @@ export const MessageBox = {
       );
     });
   },
-  confim(content, extraParams = {}) {
+  confirm(content, extraParams = {}) {
     layui.use('layer', () => {
       let layer = layui.layer;
-      layer.confirm(
-        content,
-        extraParams,
-        ...Array.from(arguments).slice(2)
-      );
+      if (typeof extraParams === Object) {
+        layer.confirm(
+          content,
+          Object.assign({icon: 3, title: '提示'}, extraParams),
+          ...Array.from(arguments).slice(2)
+        );
+      } else {
+        layer.confirm(
+          content,
+          {icon: 3, title: '提示'},
+          ...Array.from(arguments).slice(1)
+        );
+      }
     });
   },
   open(params = {}) {

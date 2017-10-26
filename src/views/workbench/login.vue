@@ -57,7 +57,7 @@
               </el-form-item>
 
               <el-form-item class="margin-0" >
-                  <el-checkbox label="保持登录状态" name="type" v-model="loginForm.keepLogin" @change="changeKeepLogin(loginForm.keepLogin)"></el-checkbox>
+                  <el-checkbox label="保持登录状态" name="type" v-model="loginForm.keepLogin" ></el-checkbox>
               </el-form-item>
 
               <div class="help-block clearfix">
@@ -74,7 +74,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {title, rootPath, loginExpiresTime} from '@/config/config';
+  import {title, rootPath} from '@/config/config';
   import header2 from '@/components/index/header2';
   import systemService from '@/services/systemService';
 
@@ -90,10 +90,6 @@
       document.title = `欢迎登陆${title}`;
       // 获取验证码
       this.getVerify();
-      // 记住密码
-      if (window.localStorage.getItem('keepLogin') === null) {
-        this.$store.commit('setKeepLogin', true);
-      }
     },
     mounted () {
       // 两个云飘相关脚本
@@ -125,7 +121,6 @@
       clearInterval(this.loginCloudT);
     },
     data () {
-      window.localStorage.getItem('keepLogin');
       return {
         showNotice: false,  // 显示提示信息
         noticeTxt: '',  // 提示信息
@@ -172,7 +167,15 @@
                 if (data.result_code === 0) { // 登录成功
                   this.showNotice = false;
                   // 保存用户信息
-                  this.$cookie.set('userInfo', JSON.stringify(data.result_data), {expires: window.localStorage.getItem('keepLogin') === 'true' ? '10Y' : loginExpiresTime});  // 直接设置，不要直接调用store方法，这里要强制刷新cookies中的值
+                  if (this.loginForm.keepLogin) {
+                    window.localStorage.setItem('keepLogin', 'true');
+                    window.localStorage.removeItem('userSession');
+                    window.localStorage.setItem('userId', data.result_data.user_id);
+                  } else {
+                    window.localStorage.setItem('keepLogin', 'false');
+                    window.localStorage.removeItem('userId');
+                    window.localStorage.setItem('userSession', data.result_data.user_session);
+                  }
                   // 跳转
                   this.$router.push({name: 'wb_home'});
                 } else if (data.result_code === 2) {  // 用户被锁定
@@ -227,10 +230,6 @@
             }
             this.showVerifyLoading = false;
           }, () => { this.verifySrc = ''; this.showVerifyLoading = false; });
-      },
-      // 保持登录
-      changeKeepLogin(keepLogin) {
-        this.$store.commit('setKeepLogin', keepLogin);
       }
     },
     components: {

@@ -1,7 +1,7 @@
 <template>
   <div id="index" class="index">
     <!--顶部导航开始-->
-    <v-header id="v-header"></v-header>
+    <v-header id="v-header" :userInfo="this.userInfo"></v-header>
     <!--顶部导航结束-->
 
     <!--轮播开始-->
@@ -20,7 +20,7 @@
         <div class="item active">
 
           <!-- Slide Background -->
-          <img src="static/images/banner_bg.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
+          <img src="/static/images/banner_bg.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
           <div class="bs-slider-overlay"></div>
 
           <div class="container">
@@ -41,7 +41,7 @@
         <div class="item">
 
           <!-- Slide Background -->
-          <img src="static/images/banner_bg01.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
+          <img src="/static/images/banner_bg01.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
           <div class="bs-slider-overlay"></div>
           <!-- Slide Text Layer -->
           <div class="slide-text slide_style_center">
@@ -55,7 +55,7 @@
         <div class="item">
 
           <!-- Slide Background -->
-          <img src="static/images/banner_bg02.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
+          <img src="/static/images/banner_bg02.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
           <div class="bs-slider-overlay"></div>
           <!-- Slide Text Layer -->
           <div class="slide-text slide_style_right">
@@ -94,6 +94,8 @@
   import $ from 'jquery';
   import 'static/js/jquery.touchSwipe.min';
   import 'static/js/bootstrap-touch-slider';
+  import systemService from '@/services/systemService';
+  import {MessageBox} from '@/utils/util';
 
   import header from 'components/index/header';
 
@@ -105,10 +107,49 @@
       };
     },
     methods: {
+      // 获取用户信息
+      getUserInfo () {
+        let userId = window.localStorage.getItem('userId');
+        let userSession = window.localStorage.getItem('userSession');
 
+        if (userSession !== null) {
+          systemService.getUserInfoBySession({session_id: userSession}, false, true).then(({data}) => {
+            if (data.result_code === 0) {
+              this.userInfo = data.result_data;
+            } else {  // 登录的session失效，删除session
+              MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
+                window.localStorage.removeItem('userSession');
+                this.$router.go(0);
+              }}, () => {
+                window.localStorage.removeItem('userSession');
+                this.$router.go(0);
+              });
+            }
+          });
+        } else if (userId !== null) {
+          systemService.getUserInfoById({user_id: userId}, false, true).then(({data}) => {
+            if (data.result_code === 0) {
+              this.userInfo = data.result_data;
+            } else {
+              MessageBox.alert('查询用户信息失败！', {'cancel': () => {
+                window.localStorage.removeItem('userId');
+                this.$router.go(0);
+              }}, () => {
+                window.localStorage.removeItem('userId');
+                this.$router.go(0);
+              });
+            }
+          });
+        } else {
+          this.userInfo = null;
+        }
+      }
     },
     created () {
       document.title = `首页 | ${title}`;
+
+      // 获取用户信息
+      this.getUserInfo();
     },
     mounted () {
       // 轮播广告

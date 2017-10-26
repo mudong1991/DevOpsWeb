@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/stores/store';
-import routes from './map/index';
+import routes from './map/converge';
 import webpackConfig from 'webpack_config/index';
 import {routerChangeTime, loginExpiresTime} from 'config/config';
 
@@ -20,20 +20,18 @@ router.beforeEach((to, from, next) => {
     console.log(`to: ${toPath} from: ${fromPath}`);
   }
 
-  // 更新用户信息
-  let userInfoStr = Vue.cookie.get('userInfo');
-  if (userInfoStr !== null) {
-    try {
-      Vue.cookie.set('userInfo', userInfoStr, {expires: window.localStorage.getItem('keepLogin') === 'true' ? '10Y' : loginExpiresTime});
-    } catch (e) {}
+  let userId = window.localStorage.getItem('userId');
+  let userSession = window.localStorage.getItem('userSession');
+  // 更新超时时间
+  if (userId !== null || userSession !== null) {
+    window.localStorage.setItem('userTimeOut', new Date().getTime() + loginExpiresTime);
   }
 
   // 判断用户是否登录，没有登录重定向到登录页面（只过滤workench后台的路由）
   if (toPath.startsWith('/workbench') && toPath !== '/workbench/login' && toPath !== '/workbench/login/') {
     // 获取用户信息
     try {
-      let userInfoStr = Vue.cookie.get('userInfo');
-      if (userInfoStr === null) {
+      if (userId === null && userSession === null) {
         router.push({name: 'wb_login'});
       } else {
         // 太快了反应不过来

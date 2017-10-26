@@ -19,7 +19,6 @@
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
-  import systemService from '@/services/systemService';
 
   export default {
     props: {
@@ -32,22 +31,7 @@
       };
     },
     methods: {
-      getUserInfo () {
-        let userInfoStr = this.$cookie.get('userInfo');
-        if (userInfoStr !== null) {
-          let userInfo = JSON.parse(userInfoStr);
-          if (userInfo.user_id !== undefined) {
-            systemService.getUserInfoBySession({session_id: userInfo.session_id}, false, true).then(({data}) => {
-              this.userInfo = data;
-            });
-          }
-        } else {
-          this.userInfo = null;
-        }
-      },
       logout() {
-        this.$cookie.delete('userInfo');
-        this.getUserInfo();
       }
     },
     created () {

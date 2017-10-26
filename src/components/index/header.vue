@@ -17,11 +17,11 @@
 
         <div class="header-tools clearfix">
           <div class="header-tools-item pull-left">
-            <router-link :to="{name: 'wb_home'}" class="header-tools-workbench">工作台</router-link>
+            <router-link :to="{name: 'wb_home'}" class="header-tools-workbench" target="_blank">工作台</router-link>
           </div>
 
           <div class="header-tools-item pull-left" v-if="userInfo === null">
-            <router-link :to="{name: 'wb_login'}" class="header-tools-login">登录</router-link>
+            <router-link :to="{name: 'wb_login'}" class="header-tools-login" target="_blank">登录</router-link>
           </div>
 
           <div class="header-tools-item pull-left" v-if="userInfo !== null">
@@ -51,53 +51,33 @@
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
-  import systemService from '@/services/systemService';
+  import {MessageBox} from '@/utils/util';
 
   export default {
     props: {
-      show_menu: {
-        type: Boolean,
-        default: true
-      },
-      show_user: {
-        type: Boolean,
-        default: true
+      userInfo: {
+        type: [Object, null],
+        default: null
       }
     },
     data () {
       return {
-        title: title,
-        userInfo: null
+        title: title
       };
     },
     methods: {
-      handleCommand(command) {
-        if (command === 'xsLogin') {
-          this.$router.push({name: 'wb_login'});
-        }
-      },
-      getUserInfo () {
-        let userInfoStr = this.$cookie.get('userInfo');
-        if (userInfoStr !== null) {
-          let userInfo = JSON.parse(userInfoStr);
-          if (userInfo.user_id !== undefined) {
-            systemService.getUserInfoBySession({session_id: userInfo.session_id}, false, true).then(({data}) => {
-              console.log(data);
-              this.userInfo = data;
-            });
-          }
-        } else {
-          this.userInfo = null;
-        }
-      },
-      logout() {
-        this.$cookie.delete('userInfo');
-        this.getUserInfo();
+      // 退出登录
+      logout () {
+        // 删除用户id和session
+        MessageBox.confirm('确定要退出登录吗？', () => {
+          window.localStorage.removeItem('userId');
+          window.localStorage.removeItem('userSession');
+          this.$router.go(0);
+        });
       }
     },
     created () {
-      // 获取用户信息
-      this.getUserInfo();
+
     },
     mounted () {
       layui.use('element', function () {

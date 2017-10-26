@@ -7,7 +7,6 @@
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
 //  import systemService from 'services/systemService';
-  import Vue from 'vue';
   import router from '@/routers/index';
   import {MessageBox} from '@/utils/util';
   import {userNoOperationLogout} from '@/config/config';
@@ -25,9 +24,12 @@
       // 定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
       if (userNoOperationLogout) {
         let checkUserInfo = () => {
-          let userInfoStr = Vue.cookie.get('userInfo');
-          if (userInfoStr === null) {
+          let userTimeOut = window.localStorage.getItem('userTimeOut');
+          console.log(userTimeOut);
+          if (userTimeOut !== null && (parseInt(new Date().getTime()) > parseInt(userTimeOut))) {
             clearInterval(this.checkUserInfoT);  // 停止定时器
+            window.localStorage.removeItem('userId');
+            window.localStorage.removeItem('userSession');
             MessageBox.alert('亲爱的用户，由于您的登录凭证已过期，为了账户的安全请重新登录！',
               {
                 title: '登录失效',

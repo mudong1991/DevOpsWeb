@@ -25,10 +25,21 @@ class SystemService {
     });
   }
 
-  // 检查登录，登录成功得到用户信息
+  // 根据生成的用户session查用户信息
   getUserInfoBySession(data, diyError, diyLoading) {
     return xhr({
       url: '/api/getUserInfoBySession',
+      method: 'get',
+      data,
+      diyError,
+      diyLoading
+    });
+  }
+
+  // 根据用户id查用户信息
+  getUserInfoById(data, diyError, diyLoading) {
+    return xhr({
+      url: '/api/getUserInfoById',
       method: 'get',
       data,
       diyError,
