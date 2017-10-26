@@ -3,7 +3,7 @@
     <div class="header layui-header header-index">
       <div class="custom-layui-main container">
         <router-link :to="{name: 'index'}" class="logo">
-          <img src="static/images/logo.png" :alt="title" />
+          <img src="/static/images/logo.png" :alt="title" />
         </router-link>
 
         <ul class="layui-nav  hidden-xs" lay-filter="">
@@ -17,7 +17,7 @@
 
         <div class="header-tools clearfix">
           <div class="header-tools-item pull-left">
-            <router-link :to="{name: 'wb_home'}" class="header-tools-workbench" target="_blank">工作台</router-link>
+            <router-link :to="{name: 'wb_home'}" class="header-tools-workbench">工作台</router-link>
           </div>
 
           <div class="header-tools-item pull-left" v-if="userInfo === null">
