@@ -6,7 +6,7 @@
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
-//  import systemService from 'services/systemService';
+  import systemService from 'services/systemService';
   import router from '@/routers/index';
   import {MessageBox} from '@/utils/util';
   import {userNoOperationLogout} from '@/config/config';
@@ -17,15 +17,55 @@
       return {};
     },
     methods: {
+      // 获取用户信息
+      getUserInfo () {
+        let userId = window.localStorage.getItem('userId');
+        let userSession = window.localStorage.getItem('userSession');
+
+        if (userSession !== null) {
+          systemService.getUserInfoBySession({session_id: userSession}, false, true).then(({data}) => {
+            if (data.result_code === 0) {
+              this.userInfo = data.result_data;
+              this.$store.commit('setUserInfo', this.userInfo);
+            } else {  // 登录的session失效，删除session
+              MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
+                window.localStorage.removeItem('userSession');
+                this.$router.go(0);
+              }}, () => {
+                window.localStorage.removeItem('userSession');
+                this.$router.go(0);
+              });
+            }
+          });
+        } else if (userId !== null) {
+          systemService.getUserInfoById({user_id: userId}, false, true).then(({data}) => {
+            if (data.result_code === 0) {
+              this.userInfo = data.result_data;
+              this.$store.commit('setUserInfo', this.userInfo);
+            } else {
+              MessageBox.alert('查询用户信息失败！', {'cancel': () => {
+                window.localStorage.removeItem('userId');
+                this.$router.go(0);
+              }}, () => {
+                window.localStorage.removeItem('userId');
+                this.$router.go(0);
+              });
+            }
+          });
+        } else {
+          this.userInfo = null;
+          this.$store.commit('setUserInfo', null);
+        }
+      }
     },
     created () {
       // 网页标题
       document.title = title;
+
       // 定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
       if (userNoOperationLogout) {
         let checkUserInfo = () => {
           let userTimeOut = window.localStorage.getItem('userTimeOut');
-          console.log(userTimeOut);
           if (userTimeOut !== null && (parseInt(new Date().getTime()) > parseInt(userTimeOut))) {
             clearInterval(this.checkUserInfoT);  // 停止定时器
             window.localStorage.removeItem('userId');
@@ -46,6 +86,9 @@
         checkUserInfo();
         this.checkUserInfoT = setInterval(checkUserInfo, 5000);
       }
+
+      // 获取用户信息
+      this.getUserInfo();
     },
     destroyed() {
       // 清除定时器

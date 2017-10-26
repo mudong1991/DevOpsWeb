@@ -70,8 +70,7 @@
       logout () {
         // 删除用户id和session
         MessageBox.confirm('确定要退出登录吗？', () => {
-          window.localStorage.removeItem('userId');
-          window.localStorage.removeItem('userSession');
+          window.localStorage.clear();
           this.$router.go(0);
         });
       }
