@@ -142,7 +142,7 @@
   .w-logo{
     text-align: left;
     height: 60px;
-    padding: 10px 12px;
+    padding: 10px 14px;
     a{
       width: 140px;
       height: 32px;
@@ -171,7 +171,7 @@
     text-align: left;
     .tools-item{
       display: inline-block;
-      margin-right: 10px;
+      margin-left: 10px;
       float: left;
       a{
         display: block;
