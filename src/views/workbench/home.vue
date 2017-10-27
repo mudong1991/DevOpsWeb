@@ -1,6 +1,6 @@
 <template>
   <div id="home-app">
-    <v-workbench-header></v-workbench-header>
+    <v-workbench-header :userInfo="userInfo"></v-workbench-header>
   </div>
 </template>
 
@@ -14,7 +14,9 @@
 
   export default {
     data () {
-      return {};
+      return {
+        userInfo: null
+      };
     },
     methods: {
       // 获取用户信息
@@ -103,5 +105,7 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   #home-app{
     height: 100%;
+    width: 100%;
+    background: transparent url("/static/images/workbench-bg.jpg") center center;
   }
 </style>

@@ -26,8 +26,11 @@
 
           <div class="header-tools-item pull-left" v-if="userInfo !== null">
             <el-dropdown class="header-tools-item-content">
-              <span class="el-dropdown-link">
-                {{ userInfo.username !== undefined ? userInfo.username : '' }}<i class="el-icon-caret-bottom el-icon--right"></i>
+              <span class="el-dropdown-link clearfix">
+                 <span class="user-info">
+                   <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
+                   <span>{{ userInfo.username !== undefined ? userInfo.username : '' }}</span>
+                 </span><i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown" class="header-tools-item-content-dropdown">
                 <el-dropdown-item >个人中心</el-dropdown-item>
@@ -109,7 +112,7 @@
 
   .header-tools-item-content-dropdown{
     margin: 0 !important;
-    width: 200px !important;
+    width: 160px !important;
   }
 
   .custom-layui-main{
@@ -167,15 +170,13 @@
             border-radius: 12px;
           }
           .header-tools-item-content{
-            height: 40px;
             margin-top: 12px;
             cursor: pointer;
             width: 100%;
             color: rgba(255,255,255,.7);
-            display: block !important;
             transition: all 0.5s;
           }
-          .header-tools-workbench:hover, .header-tools-item-content:hover,{
+          .header-tools-workbench:hover, .header-tools-item-content:hover{
             color: white !important;
           }
           .header-tools-login:hover{
@@ -183,8 +184,36 @@
             background: #20a0ff;
           }
           .el-dropdown-link{
-            padding: 8px 10px;
-            display: block;
+            height: 100%;
+            display: inline-block;
+            cursor: pointer;
+            color: rgb(191, 203, 217);
+            margin-top: 4px;
+            .user-info{
+              max-width: 120px;
+              float: left;
+              .avatar{
+                height: 32px;
+                float: left;
+                width: 32px;
+                display: inline-block;
+              }
+              span{
+                float: left;
+                max-width: 88px;
+                display: inline-block;
+                padding-top: 4px;
+                padding-right: 4px;
+                padding-left: 4px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+            i{
+              float: left;
+              display: inline-block;
+              padding-top: 7px;
+            }
           }
         }
     }
