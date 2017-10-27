@@ -1,7 +1,7 @@
 <template>
   <div id="index" class="index">
     <!--顶部导航开始-->
-    <v-header id="v-header" :userInfo="this.userInfo"></v-header>
+    <v-header id="v-header" :userInfo="userInfo"></v-header>
     <!--顶部导航结束-->
 
     <!--轮播开始-->

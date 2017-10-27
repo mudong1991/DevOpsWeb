@@ -1,6 +1,11 @@
 <template>
   <div id="home-app">
-    <v-workbench-header :userInfo="userInfo"></v-workbench-header>
+    <v-workbench-header :userInfoObj="userInfoObj"></v-workbench-header>
+
+    <!--子路由视图显示区-->
+    <transition :name="transitionName">
+      <router-view ></router-view>
+    </transition>
   </div>
 </template>
 
@@ -15,7 +20,8 @@
   export default {
     data () {
       return {
-        userInfo: null
+        transitionName: 'el-zoom-in-top',
+        userInfoObj: null
       };
     },
     methods: {
@@ -27,8 +33,8 @@
         if (userSession !== null) {
           systemService.getUserInfoBySession({session_id: userSession}, false, true).then(({data}) => {
             if (data.result_code === 0) {
-              this.userInfo = data.result_data;
-              this.$store.commit('setUserInfo', this.userInfo);
+              this.userInfoObj = data.result_data;
+              this.$store.commit('setUserInfo', this.userInfoObj);
             } else {  // 登录的session失效，删除session
               MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
                 window.localStorage.removeItem('userSession');
@@ -42,8 +48,8 @@
         } else if (userId !== null) {
           systemService.getUserInfoById({user_id: userId}, false, true).then(({data}) => {
             if (data.result_code === 0) {
-              this.userInfo = data.result_data;
-              this.$store.commit('setUserInfo', this.userInfo);
+              this.userInfoObj = data.result_data;
+              this.$store.commit('setUserInfo', this.userInfoObj);
             } else {
               MessageBox.alert('查询用户信息失败！', {'cancel': () => {
                 window.localStorage.removeItem('userId');
@@ -55,7 +61,7 @@
             }
           });
         } else {
-          this.userInfo = null;
+          this.userInfoObj = null;
           this.$store.commit('setUserInfo', null);
         }
       }
@@ -105,7 +111,7 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   #home-app{
     height: 100%;
-    width: 100%;
+    padding-top: 60px;
     background: transparent url("/static/images/workbench-bg.jpg") center center;
   }
 </style>

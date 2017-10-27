@@ -41,12 +41,12 @@
                 <a  @click="fullScreen()" v-if="!isFullScreen"><i class="fa fa-arrows-alt"></i><span >开启全屏</span></a>
                 <a  @click="exitFullScreen()" v-if="isFullScreen"><i class="fa fa-arrows-alt"></i><span >退出全屏</span></a>
               </li>
-              <li class="user-options tools-item" v-show="userInfo !== null">
+              <li class="user-options tools-item" v-if="userInfoObj !== null">
                 <el-dropdown>
                   <span class="el-dropdown-link clearfix">
                      <span class="user-info">
                        <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
-                        {{ userInfo.username !== undefined ? userInfo.username : '' }}
+                        {{ userInfoObj.username !== undefined ? userInfoObj.username : '' }}
                      </span><i class="el-icon-caret-bottom el-icon--right"></i>
                   </span>
                   <el-dropdown-menu slot="dropdown">
@@ -69,7 +69,7 @@
 
   export default {
     props: {
-      userInfo: {
+      userInfoObj: {
         type: [Object, null],
         default: null
       }
@@ -142,7 +142,7 @@
   .w-logo{
     text-align: left;
     height: 60px;
-    padding: 10px 14px;
+    padding: 10px 30px;
     a{
       width: 140px;
       height: 32px;
