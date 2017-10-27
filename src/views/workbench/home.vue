@@ -4,7 +4,7 @@
 
     <!--子路由视图显示区-->
     <transition :name="transitionName">
-      <router-view ></router-view>
+        <router-view></router-view>
     </transition>
   </div>
 </template>
@@ -112,6 +112,7 @@
   #home-app{
     height: 100%;
     padding-top: 60px;
+    overflow: hidden;
     background: transparent url("/static/images/workbench-bg.jpg") center center;
   }
 </style>

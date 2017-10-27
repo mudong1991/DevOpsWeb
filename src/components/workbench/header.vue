@@ -1,5 +1,5 @@
 <template>
-  <div id="workbench-header" class="navbar-fixed-top animated fadeInDown clearfix el-menu--dark">
+  <div id="workbench-header" class="navbar-fixed-top  clearfix el-menu--dark">
     <div class="col-xs-12 col-sm-12 col-md-2 w-logo clearfix">
       <router-link :to="{name: 'index'}" class="pull-left">
         <img src="/static/images/logo.png" class="img-responsive" />
@@ -13,9 +13,9 @@
     <el-collapse-transition>
       <div v-show="showHeaderMenu" id="header-menu">
         <div class="col-xs-12 col-sm-12 col-md-6" >
-              <el-menu theme="dark"  class="el-menu-demo" mode="horizontal" >
-                <el-menu-item index="1">首页</el-menu-item>
-                <el-menu-item index="2">项目</el-menu-item>
+              <el-menu theme="dark"  class="el-menu-demo" mode="horizontal" :default-active="defaultMenu" >
+                <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
+                <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
                 <el-menu-item index="3">待办</el-menu-item>
                 <el-submenu index="4">
                   <template slot="title">服务</template>
@@ -25,7 +25,7 @@
                 </el-submenu>
                 <el-menu-item index="5"><a href="https://www.ele.me" target="_blank">代码广场</a></el-menu-item>
                 <el-menu-item index="6"><a href="https://www.ele.me" target="_blank">自动化运维</a></el-menu-item>
-                <el-menu-item index="7"><a href="https://www.ele.me" target="_blank">系统设置</a></el-menu-item>
+                <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
               </el-menu>
         </div>
 
@@ -82,6 +82,11 @@
         isFullScreen: false  // 是否全屏
       };
     },
+    computed: {
+        defaultMenu: () => {
+          return window.localStorage.getItem('defaultMenu') || 'wb_index';
+        }
+    },
     methods: {
       logout() {
       },
@@ -119,10 +124,15 @@
           //  浏览器不支持全屏API或已被禁用
           MessageBox.alert('当前浏览器暂不支持全屏操作');
         }
+      },
+      // page跳转
+      goPage(name) {
+        window.localStorage.setItem('defaultMenu', name);
+        this.$router.push({name});
       }
     },
     created () {
-
+        console.log(this.$router.option);
     },
     mounted () {
       // 简单浏览器窗口大小
@@ -160,9 +170,13 @@
   .el-menu-demo{
     .el-menu-item{
       transition: all .4s;
+      margin-right: 2px;
     }
     .el-menu-item:hover{
       color: white;
+    }
+    .is-active {
+      border-bottom: 5px solid #20A0FF;
     }
   }
   .tools{
