@@ -1,9 +1,5 @@
 <template>
   <div id="index" class="index">
-    <!--顶部导航开始-->
-    <v-header id="v-header" :userInfo="userInfo"></v-header>
-    <!--顶部导航结束-->
-
     <!--轮播开始-->
     <div id="bootstrap-touch-slider" class="carousel animated fadeIn bs-slider fade  control-round indicators-line" data-ride="carousel" data-pause="hover" data-interval="6000" >
       <!-- Indicators -->
@@ -94,10 +90,6 @@
   import $ from 'jquery';
   import 'static/js/jquery.touchSwipe.min';
   import 'static/js/bootstrap-touch-slider';
-  import systemService from '@/services/systemService';
-  import {MessageBox} from '@/utils/util';
-
-  import header from 'components/index/header';
 
   export default {
     data () {
@@ -107,49 +99,9 @@
       };
     },
     methods: {
-      // 获取用户信息
-      getUserInfo () {
-        let userId = window.localStorage.getItem('userId');
-        let userSession = window.localStorage.getItem('userSession');
-
-        if (userSession !== null) {
-          systemService.getUserInfoBySession({session_id: userSession}, false, true).then(({data}) => {
-            if (data.result_code === 0) {
-              this.userInfo = data.result_data;
-            } else {  // 登录的session失效，删除session
-              MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
-                window.localStorage.removeItem('userSession');
-                this.$router.go(0);
-              }}, () => {
-                window.localStorage.removeItem('userSession');
-                this.$router.go(0);
-              });
-            }
-          });
-        } else if (userId !== null) {
-          systemService.getUserInfoById({user_id: userId}, false, true).then(({data}) => {
-            if (data.result_code === 0) {
-              this.userInfo = data.result_data;
-            } else {
-              MessageBox.alert('查询用户信息失败！', {'cancel': () => {
-                window.localStorage.removeItem('userId');
-                this.$router.go(0);
-              }}, () => {
-                window.localStorage.removeItem('userId');
-                this.$router.go(0);
-              });
-            }
-          });
-        } else {
-          this.userInfo = null;
-        }
-      }
     },
     created () {
       document.title = `首页 | ${title}`;
-
-      // 获取用户信息
-      this.getUserInfo();
     },
     mounted () {
       // 轮播广告
@@ -168,9 +120,6 @@
         navTop = $(window).scrollTop();
         topAction();
       });
-    },
-    components: {
-      vHeader: header
     }
   };
 

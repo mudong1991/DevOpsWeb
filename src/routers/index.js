@@ -20,18 +20,17 @@ router.beforeEach((to, from, next) => {
     console.log(`to: ${toPath} from: ${fromPath}`);
   }
 
-  let userId = window.localStorage.getItem('userId');
-  let userSession = window.localStorage.getItem('userSession');
+  let sessionid = this.$cookie.get('sessionid');
   // 更新超时时间
-  if (userId !== null || userSession !== null) {
-    window.localStorage.setItem('userTimeOut', new Date().getTime() + loginExpiresTime);
+  if (sessionid !== null) {
+    this.$cookie.set('sessionid', data.result_data.sessionid, {expires: loginExpiresTime});
   }
 
   // 判断用户是否登录，没有登录重定向到登录页面（只过滤workench后台的路由）
   if (toPath.startsWith('/workbench') && toPath !== '/workbench/login' && toPath !== '/workbench/login/') {
     // 获取用户信息
     try {
-      if (userId === null && userSession === null) {
+      if (sessionid) {
         router.push({name: 'wb_login'});
       } else {
         // 太快了反应不过来

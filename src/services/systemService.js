@@ -10,6 +10,7 @@ class SystemService {
       url: '/api/login',
       method: 'post',
       data,
+      extraParams: {'withCredentials': false},
       diyError,
       diyLoading
     });
@@ -25,21 +26,10 @@ class SystemService {
     });
   }
 
-  // 根据生成的用户session查用户信息
-  getUserInfoBySession(data, diyError, diyLoading) {
+  // 获取用户信息（没有登录返回空）
+  checkUserInfo(data, diyError, diyLoading) {
     return xhr({
-      url: '/api/getUserInfoBySession',
-      method: 'get',
-      data,
-      diyError,
-      diyLoading
-    });
-  }
-
-  // 根据用户id查用户信息
-  getUserInfoById(data, diyError, diyLoading) {
-    return xhr({
-      url: '/api/getUserInfoById',
+      url: '/api/checkUserInfo',
       method: 'get',
       data,
       diyError,

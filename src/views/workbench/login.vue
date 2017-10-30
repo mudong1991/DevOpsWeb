@@ -77,6 +77,7 @@
   import {title, rootPath} from '@/config/config';
   import header2 from '@/components/index/header2';
   import systemService from '@/services/systemService';
+  import {loginExpiresTime} from 'config/config';
 
   export default {
     beforeCreate () {
@@ -165,16 +166,14 @@
             systemService.login(loginData, false, true).then(({data}) => {
                 this.loginBtnLoading = false;
                 if (data.result_code === 0) { // 登录成功
+                  // 保存cookies
+                  this.$cookie.set('sessionid', data.result_data.sessionid, {expires: loginExpiresTime});
                   this.showNotice = false;
-                  // 保存用户信息
+                  // 是否保持用户登录状态
                   if (this.loginForm.keepLogin) {
                     window.localStorage.setItem('keepLogin', 'true');
-                    window.localStorage.removeItem('userSession');
-                    window.localStorage.setItem('userId', data.result_data.user_id);
                   } else {
                     window.localStorage.setItem('keepLogin', 'false');
-                    window.localStorage.removeItem('userId');
-                    window.localStorage.setItem('userSession', data.result_data.user_session);
                   }
                   // 跳转
                   this.$router.push({name: 'wb_home'});
