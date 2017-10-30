@@ -27,42 +27,31 @@
     methods: {
       // 获取用户信息
       getUserInfo () {
-        let userId = window.localStorage.getItem('userId');
-        let userSession = window.localStorage.getItem('userSession');
+        // 保持登录
+        let keepLogin = window.localStorage.getItem('keepLogin') || null;
 
-        if (userSession !== null) {
-          systemService.getUserInfoBySession({session_id: userSession}, false, true).then(({data}) => {
+        let getUserInfoAction = () => {
+          systemService.checkUserInfo({}, false, true).then(({data}) => {
             if (data.result_code === 0) {
-              this.userInfoObj = data.result_data;
-              this.$store.commit('setUserInfo', this.userInfoObj);
-            } else {  // 登录的session失效，删除session
-              MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
-                window.localStorage.removeItem('userSession');
-                this.$router.go(0);
-              }}, () => {
-                window.localStorage.removeItem('userSession');
-                this.$router.go(0);
-              });
-            }
-          });
-        } else if (userId !== null) {
-          systemService.getUserInfoById({user_id: userId}, false, true).then(({data}) => {
-            if (data.result_code === 0) {
-              this.userInfoObj = data.result_data;
-              this.$store.commit('setUserInfo', this.userInfoObj);
+              this.userInfo = data.result_data;
             } else {
-              MessageBox.alert('查询用户信息失败！', {'cancel': () => {
-                window.localStorage.removeItem('userId');
+              MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
                 this.$router.go(0);
               }}, () => {
-                window.localStorage.removeItem('userId');
                 this.$router.go(0);
               });
             }
           });
-        } else {
-          this.userInfoObj = null;
-          this.$store.commit('setUserInfo', null);
+        };
+
+        if (keepLogin === 'true' || keepLogin === 'false') {
+          if (keepLogin === 'false') { // 没有保持登录，验证单点登录
+            systemService.checkUserIsLogin({}, false, true).then(({data}) => {
+              getUserInfoAction();
+            });
+          } else {
+            getUserInfoAction();
+          }
         }
       }
     },

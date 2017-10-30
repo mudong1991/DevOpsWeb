@@ -5,16 +5,9 @@ import workbenchViewMap from './workbenchViewMap';
 import indexViewMap from './indexViewMap';
 
 const routes = [
-  {
-    path: '/',
-    name: 'index',
-    component: resolve => {
-      require(['@/views/index/index'], resolve);
-    }
-  },
   // 首页相关路由
   {
-    path: '/index',
+    path: '/',
     component: resolve => {
       require(['@/views/index/main'], resolve);
     },

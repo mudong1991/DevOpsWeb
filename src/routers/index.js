@@ -20,17 +20,18 @@ router.beforeEach((to, from, next) => {
     console.log(`to: ${toPath} from: ${fromPath}`);
   }
 
-  let sessionid = this.$cookie.get('sessionid');
+  let sessionid = Vue.cookie.get('sessionid');
+  console.log(sessionid);
   // 更新超时时间
   if (sessionid !== null) {
-    this.$cookie.set('sessionid', data.result_data.sessionid, {expires: loginExpiresTime});
+    Vue.cookie.set('sessionid', sessionid, {expires: loginExpiresTime});
   }
 
   // 判断用户是否登录，没有登录重定向到登录页面（只过滤workench后台的路由）
   if (toPath.startsWith('/workbench') && toPath !== '/workbench/login' && toPath !== '/workbench/login/') {
     // 获取用户信息
     try {
-      if (sessionid) {
+      if (sessionid === null) {
         router.push({name: 'wb_login'});
       } else {
         // 太快了反应不过来
