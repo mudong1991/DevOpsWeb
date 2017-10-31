@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "element-ui": "^1.4.6",
+    "element-ui": "^2.0.1",
     "popper": "^1.0.0",
     "popper.js": "^1.12.5",
     "vue": "^2.5.2",
@@ -39,6 +39,7 @@
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.0",
     "cssnano": "^3.10.0",
+    "element-theme-chalk": "https://github.com/ElementUI/theme-chalk",
     "element-theme-default": "https://github.com/ElementUI/theme-default",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^6.2.1",

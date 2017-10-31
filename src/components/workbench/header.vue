@@ -1,5 +1,5 @@
 <template>
-  <div id="workbench-header" class="navbar-fixed-top  clearfix el-menu--dark">
+  <div id="workbench-header" class="clearfix">
     <div class="col-xs-12 col-sm-12 col-md-2 w-logo clearfix">
       <router-link :to="{name: 'index'}" class="pull-left">
         <img src="/static/images/logo.png" class="img-responsive" />
@@ -13,20 +13,26 @@
     <el-collapse-transition>
       <div v-show="showHeaderMenu" id="header-menu">
         <div class="col-xs-12 col-sm-12 col-md-6" >
-              <el-menu theme="dark"  class="el-menu-demo" mode="horizontal" :default-active="defaultMenu" >
-                <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
-                <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
-                <el-menu-item index="3">待办</el-menu-item>
-                <el-submenu index="4">
-                  <template slot="title">服务</template>
-                  <el-menu-item index="2-1">选项1</el-menu-item>
-                  <el-menu-item index="2-2">选项2</el-menu-item>
-                  <el-menu-item index="2-3">选项3</el-menu-item>
-                </el-submenu>
-                <el-menu-item index="5"><a href="https://www.ele.me" target="_blank">代码广场</a></el-menu-item>
-                <el-menu-item index="6"><a href="https://www.ele.me" target="_blank">自动化运维</a></el-menu-item>
-                <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
-              </el-menu>
+          <el-menu
+            :default-active="defaultMenu"
+            class="el-menu-demo"
+            mode="horizontal"
+            background-color="#324157"
+            text-color="#fff"
+            active-text-color="#20A0FF" >
+            <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
+            <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
+            <el-menu-item index="3">待办</el-menu-item>
+            <el-submenu index="4" id="el-submenu">
+              <template slot="title">服务</template>
+              <el-menu-item index="2-1">选项1</el-menu-item>
+              <el-menu-item index="2-2">选项2</el-menu-item>
+              <el-menu-item index="2-3">选项3</el-menu-item>
+            </el-submenu>
+            <el-menu-item index="5"><a href="https://www.ele.me" target="_blank">代码广场</a></el-menu-item>
+            <el-menu-item index="6"><a href="https://www.ele.me" target="_blank">自动化运维</a></el-menu-item>
+            <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
+          </el-menu>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4 tools clearfix">
@@ -152,6 +158,9 @@
         let domWidth = $(document).width();
         if (domWidth > 991) {
           this.showHeaderMenu = true;
+        } else {
+          console.log('aa');
+          this.showHeaderMenu = false;
         }
       };
       windowSizeChange();
@@ -160,7 +169,16 @@
   };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped="">
+<style lang="scss" rel="stylesheet/scss" scoped>
+  #workbench-header{
+    background-color: #324157;
+  }
+  .el-menu--horizontal{
+    border: none;
+  }
+  .el-menu--horizontal > .el-menu-item.is-active{
+    border-width: 4px;
+  }
   .w-logo{
     text-align: left;
     height: 60px;
@@ -177,18 +195,6 @@
       cursor: pointer;
       border: 1px solid white;
       border-radius: 4px;
-    }
-  }
-  .el-menu-demo{
-    .el-menu-item{
-      transition: all .4s;
-      margin-right: 2px;
-    }
-    .el-menu-item:hover{
-      color: white;
-    }
-    .is-active {
-      border-bottom: 5px solid #20A0FF;
     }
   }
   .tools{
@@ -224,6 +230,7 @@
       height: 40px;
     }
   }
+
   .el-dropdown-link{
     height: 100%;
     display: inline-block;
@@ -253,3 +260,4 @@
     margin-top: -2px;
   }
 </style>
+

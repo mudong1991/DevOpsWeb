@@ -2,10 +2,18 @@
   <div id="home-app">
     <v-workbench-header :userInfoObj="userInfoObj"></v-workbench-header>
 
-    <!--子路由视图显示区-->
-    <transition :name="transitionName">
-        <router-view></router-view>
-    </transition>
+    <el-container>
+      <el-header>
+        123
+      </el-header>
+      <el-container>
+        <!--子路由视图显示区-->
+        <transition :name="transitionName">
+          <router-view></router-view>
+        </transition>
+      </el-container>
+    </el-container>
+
   </div>
 </template>
 
@@ -111,8 +119,14 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   #home-app{
     height: 100%;
-    padding-top: 60px;
     overflow: hidden;
     background: transparent url("/static/images/workbench-bg.jpg") center center;
+  }
+  .el-container{
+    height: 100%;
+  }
+  .el-header{
+    height: 32px !important;
+    line-height: 32px;
   }
 </style>

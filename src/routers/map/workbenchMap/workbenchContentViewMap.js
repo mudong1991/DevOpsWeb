@@ -1,6 +1,7 @@
 /**
  * Created by mudong on 2017/10/11 0011.
  */
+import workbenchSystemViewMap from './workbenchSystemViewMap';
 
 export default [
   {
@@ -26,9 +27,9 @@ export default [
   },
   {
     path: 'system',
-    name: 'wb_system',
     component: resolve => {
       require(['@/views/workbench/system/main'], resolve);
-    }
+    },
+    children: workbenchSystemViewMap
   }
 ];
