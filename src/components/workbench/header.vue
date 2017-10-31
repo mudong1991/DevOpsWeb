@@ -48,7 +48,7 @@
                 <a  @click="exitFullScreen()" v-if="isFullScreen"><i class="fa fa-arrows-alt"></i><span >退出全屏</span></a>
               </li>
               <li class="user-options tools-item" v-if="userInfoObj !== null">
-                <el-dropdown>
+                <el-dropdown @command="handleCommand">
                   <span class="el-dropdown-link clearfix">
                      <span class="user-info">
                        <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
@@ -58,7 +58,7 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>个人中心</el-dropdown-item>
                     <el-dropdown-item>设置</el-dropdown-item>
-                    <el-dropdown-item divided><div @click="logout()"><i class="fa fa-power-off"></i>  退出</div></el-dropdown-item>
+                    <el-dropdown-item divided command="logout"><i class="fa fa-power-off"></i>  退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </li>
@@ -86,18 +86,21 @@
         title: title,
         userInfo: null,
         showHeaderMenu: true,  // 显示头部菜单
-        defaultMenu: 'wb_index',
+        defaultMenu: this.$route.name,
         isFullScreen: this.$store.state.common.isFullScreen  // 是否全屏
       };
     },
     methods: {
-      logout() {
-        MessageBox.confirm('确定要退出登录吗？', () => {
-          systemService.logout({}, false, true).then(({data}) => {
-            this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
-            this.$router.go(0);
+      handleCommand(command) {
+        // 退出登录
+        if (command === 'logout') {
+          MessageBox.confirm('确定要退出登录吗？', () => {
+            systemService.logout({}, false, true).then(({data}) => {
+              this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
+              this.$router.go(0);
+            });
           });
-        });
+        }
       },
       fullScreen() {
         let elem = document.body;

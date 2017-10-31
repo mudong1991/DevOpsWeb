@@ -6,12 +6,12 @@ import xhr from './xhr/xhr';
 class SystemService {
   // 登录
   login(data, diyError, diyLoading) {
-    return xhr({url: '/api/login', method: 'post', data, diyError, diyLoading});
+    return xhr({url: '/api/login', method: 'get', data, diyError, diyLoading});
   }
 
   // 退出
   logout(data, diyError, diyLoading) {
-    return xhr({url: '/api/logout', method: 'post', data, extraParams: {withCredentials: false}, diyError, diyLoading});
+    return xhr({url: '/api/logout', method: 'get', data, diyError, diyLoading});
   }
 
   // 获取验证码

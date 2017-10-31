@@ -25,7 +25,7 @@
           </div>
 
           <div class="header-tools-item pull-left" v-if="userInfo !== null">
-            <el-dropdown class="header-tools-item-content">
+            <el-dropdown class="header-tools-item-content" @command="handleCommand">
               <span class="el-dropdown-link clearfix">
                  <span class="user-info">
                    <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
@@ -35,7 +35,7 @@
               <el-dropdown-menu slot="dropdown" class="header-tools-item-content-dropdown">
                 <el-dropdown-item >个人中心</el-dropdown-item>
                 <el-dropdown-item divided>个人中心</el-dropdown-item>
-                <el-dropdown-item ><div @click="logout()">退出</div></el-dropdown-item>
+                <el-dropdown-item command="logout"><i class="fa fa-power-off"></i>  退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -55,6 +55,7 @@
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
   import {MessageBox} from '@/utils/util';
+  import systemService from '@/services/systemService';
 
   export default {
     props: {
@@ -69,14 +70,16 @@
       };
     },
     methods: {
-      // 退出登录
-      logout () {
-        MessageBox.confirm('确定要退出登录吗？', () => {
-          systemService.logout({}, false, true).then(({data}) => {
-            this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
-            this.$router.go(0);
+      handleCommand(command) {
+        // 退出登录
+        if (command === 'logout') {
+          MessageBox.confirm('确定要退出登录吗？', () => {
+            systemService.logout({}, false, true).then(({data}) => {
+              this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
+              this.$router.go(0);
+            });
           });
-        });
+        }
       }
     },
     created () {
