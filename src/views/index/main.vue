@@ -42,11 +42,7 @@
               this.userInfo = null;
             }
           }, ({data}) => {
-            MessageBox.alert('查询用户信息失败,请先登录系统！', {'cancel': () => {
-              this.userInfo = null;
-            }}, () => {
-              this.userInfo = null;
-            });
+            this.userInfo = null;
           });
         };
 
