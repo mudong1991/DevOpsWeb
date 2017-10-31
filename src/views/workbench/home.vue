@@ -28,7 +28,7 @@
   export default {
     data () {
       return {
-        transitionName: 'el-zoom-in-top',
+        transitionName: 'el-fade-in-linear',
         userInfoObj: null
       };
     },
