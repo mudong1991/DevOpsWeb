@@ -74,6 +74,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  /* eslint-disable no-useless-escape */
+
   import {title, rootPath} from '@/config/config';
   import header2 from '@/components/index/header2';
   import systemService from '@/services/systemService';
@@ -156,6 +158,8 @@
       loginSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            // 清空cookie
+
             // 改变按钮状态
             this.loginBtnLoading = true;
             // 清除定时器

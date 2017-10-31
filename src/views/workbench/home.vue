@@ -3,17 +3,11 @@
     <v-workbench-header :userInfoObj="userInfoObj"></v-workbench-header>
 
     <el-container>
-      <el-header>
-        123
-      </el-header>
-      <el-container>
-        <!--子路由视图显示区-->
-        <transition :name="transitionName">
-          <router-view></router-view>
-        </transition>
-      </el-container>
+      <!--子路由视图显示区-->
+      <transition :name="transitionName">
+        <router-view></router-view>
+      </transition>
     </el-container>
-
   </div>
 </template>
 
@@ -33,8 +27,36 @@
       };
     },
     methods: {
+      // 定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
+      checkSessinId () {
+        if (userNoOperationLogout) {
+          let checkUserInfo = () => {
+            let sessionid = this.$cookie.get('sessionid');
+            if (sessionid === null) {
+              clearInterval(this.checkUserInfoT);  // 停止定时器
+              MessageBox.alert('亲爱的用户，由于您的登录凭证已过期，为了账户的安全请重新登录！',
+                {
+                  title: '登录失效',
+                  icon: 5,
+                  cancel: () => {
+                    router.push({name: 'wb_login'});
+                  }
+                }, () => {
+                  router.push({name: 'wb_login'});
+                  MessageBox.closeAll();
+                });
+            }
+          };
+
+          // 清除定时器
+          clearInterval(this.checkUserInfoT);
+          checkUserInfo();
+          this.checkUserInfoT = setInterval(checkUserInfo, 5000);
+        }
+      },
+
       // 获取用户信息
-      getUserInfo () {
+      getUserInfo (callBack) {
         // 保持登录
         let keepLogin = window.localStorage.getItem('keepLogin') || null;
 
@@ -62,13 +84,16 @@
               });
             } else {
               getUserInfoAction();
+              callBack();
             }
           }, ({data}) => { // 接口出错，删除keepLogin，获取用户信息
             window.localStorage.removeItem('keepLogin');
             getUserInfoAction();
+            callBack();
           });
         } else {
           getUserInfoAction();
+          callBack();
         }
       }
     },
@@ -77,30 +102,7 @@
       document.title = title;
 
       // 获取用户信息
-      this.getUserInfo();
-
-      // 定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
-      if (userNoOperationLogout) {
-        let checkUserInfo = () => {
-          let sessionid = this.$cookie.get('sessionid');
-          if (sessionid === null) {
-            clearInterval(this.checkUserInfoT);  // 停止定时器
-            MessageBox.alert('亲爱的用户，由于您的登录凭证已过期，为了账户的安全请重新登录！',
-              {
-                title: '登录失效',
-                icon: 5,
-                cancel: () => {
-                  router.push({name: 'wb_login'});
-                }
-              }, () => {
-                router.push({name: 'wb_login'});
-                MessageBox.closeAll();
-              });
-          }
-        };
-        checkUserInfo();
-        this.checkUserInfoT = setInterval(checkUserInfo, 5000);
-      }
+      this.getUserInfo(this.checkSessinId);
     },
     destroyed() {
       // 清除定时器
@@ -120,9 +122,5 @@
   }
   .el-container{
     height: 100%;
-  }
-  .el-header{
-    height: 32px !important;
-    line-height: 32px;
   }
 </style>

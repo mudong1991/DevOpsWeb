@@ -72,6 +72,7 @@
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
   import {MessageBox} from '@/utils/util';
+  import systemService from '@/services/systemService';
 
   export default {
     props: {
@@ -91,10 +92,11 @@
     },
     methods: {
       logout() {
-        // 删除sessionid
         MessageBox.confirm('确定要退出登录吗？', () => {
-          this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
-          this.$router.go(0);
+          systemService.logout({}, false, true).then(({data}) => {
+            this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
+            this.$router.go(0);
+          });
         });
       },
       fullScreen() {

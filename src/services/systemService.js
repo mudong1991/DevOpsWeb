@@ -9,6 +9,11 @@ class SystemService {
     return xhr({url: '/api/login', method: 'post', data, diyError, diyLoading});
   }
 
+  // 退出
+  logout(data, diyError, diyLoading) {
+    return xhr({url: '/api/logout', method: 'post', data, extraParams: {withCredentials: false}, diyError, diyLoading});
+  }
+
   // 获取验证码
   getVerfiy(data, diyError = true, diyLoading = true) {
     return xhr({url: '/api/getVerify', method: 'get', data, diyError, diyLoading});

@@ -47,17 +47,24 @@ export const MessageBox = {
   alert(content, extraParams = {}) {
     layui.use('layer', () => {
       let layer = layui.layer;
-      layer.alert(
-        content,
-        extraParams,
-        ...Array.from(arguments).slice(2)
-      );
+      if (arguments.length > 2) {
+        layer.alert(
+          content,
+          extraParams,
+          ...Array.from(arguments).slice(2)
+        );
+      } else {
+        layer.alert(
+          content,
+          ...Array.from(arguments).slice(1)
+        );
+      }
     });
   },
   confirm(content, extraParams = {}) {
     layui.use('layer', () => {
       let layer = layui.layer;
-      if (typeof extraParams === Object) {
+      if (extraParams.length > 2) {
         layer.confirm(
           content,
           Object.assign({icon: 3, title: '提示'}, extraParams),
