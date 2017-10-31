@@ -52,7 +52,7 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>个人中心</el-dropdown-item>
                     <el-dropdown-item>设置</el-dropdown-item>
-                    <el-dropdown-item divided><div><i class="fa fa-power-off"></i>  退出</div></el-dropdown-item>
+                    <el-dropdown-item divided><div @click="logout()"><i class="fa fa-power-off"></i>  退出</div></el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </li>
@@ -79,7 +79,7 @@
         title: title,
         userInfo: null,
         showHeaderMenu: true,  // 显示头部菜单
-        isFullScreen: false  // 是否全屏
+        isFullScreen: this.$store.state.common.isFullScreen  // 是否全屏
       };
     },
     computed: {
@@ -89,17 +89,25 @@
     },
     methods: {
       logout() {
+        // 删除sessionid
+        MessageBox.confirm('确定要退出登录吗？', () => {
+          this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
+          this.$router.go(0);
+        });
       },
       fullScreen() {
         let elem = document.body;
         if (elem.webkitRequestFullScreen) {
           this.isFullScreen = true;
+          this.$store.state.common.isFullScreen = true;
           elem.webkitRequestFullScreen();
         } else if (elem.mozRequestFullScreen) {
           this.isFullScreen = true;
+          this.$store.state.common.isFullScreen = true;
           elem.mozRequestFullScreen();
         } else if (elem.requestFullScreen) {
           this.isFullScreen = true;
+          this.$store.state.common.isFullScreen = true;
           elem.requestFullscreen();
         } else {
           // 浏览器不支持全屏API或已被禁用
@@ -110,15 +118,19 @@
         let elem = document;
         if (elem.webkitCancelFullScreen) {
           this.isFullScreen = false;
+          this.$store.state.common.isFullScreen = false;
           elem.webkitCancelFullScreen();
         } else if (elem.mozCancelFullScreen) {
           this.isFullScreen = false;
+          this.$store.state.common.isFullScreen = false;
           elem.mozCancelFullScreen();
         } else if (elem.cancelFullScreen) {
           this.isFullScreen = false;
+          this.$store.state.common.isFullScreen = false;
           elem.cancelFullScreen();
         } else if (elem.exitFullscreen) {
           this.isFullScreen = false;
+          this.$store.state.common.isFullScreen = false;
           elem.exitFullscreen();
         } else {
           //  浏览器不支持全屏API或已被禁用
@@ -132,7 +144,7 @@
       }
     },
     created () {
-        console.log(this.$router.option);
+        //
     },
     mounted () {
       // 简单浏览器窗口大小

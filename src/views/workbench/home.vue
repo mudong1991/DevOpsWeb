@@ -33,15 +33,15 @@
         let getUserInfoAction = () => {
           systemService.checkUserInfo({}, false, true).then(({data}) => {
             if (data.result_code === 0) {
-              this.userInfo = data.result_data;
+              this.userInfoObj = data.result_data;
             } else {
-              this.userInfo = null;
+              this.userInfoObj = null;
             }
           }, ({data}) => {
             MessageBox.alert('查询用户信息失败,请先登录系统！', {'cancel': () => {
-              this.userInfo = null;
+              this.userInfoObj = null;
             }}, () => {
-              this.userInfo = null;
+              this.userInfoObj = null;
             });
           });
         };
