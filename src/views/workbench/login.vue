@@ -77,7 +77,7 @@
   import {title, rootPath} from '@/config/config';
   import header2 from '@/components/index/header2';
   import systemService from '@/services/systemService';
-  import {loginExpiresTime} from 'config/config';
+  import {loginExpiresTime, userNoOperationLogout} from 'config/config';
 
   export default {
     beforeCreate () {
@@ -167,7 +167,7 @@
                 this.loginBtnLoading = false;
                 if (data.result_code === 0) { // 登录成功
                   // 保存cookies
-                  this.$cookie.set('sessionid', data.result_data.sessionid, {expires: loginExpiresTime});
+                  this.$cookie.set('sessionid', data.result_data.sessionid, {expires: userNoOperationLogout ? loginExpiresTime : '1M'});
                   this.showNotice = false;
                   // 是否保持用户登录状态
                   if (this.loginForm.keepLogin) {

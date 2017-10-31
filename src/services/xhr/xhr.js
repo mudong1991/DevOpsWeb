@@ -9,7 +9,8 @@ import {rootPath, errHandler} from '@/config/config';
 
 Vue.axios.defaults.headers.common['Content-Type'] = 'application/json';
 Vue.axios.defaults.headers.common['Accept'] = 'application/json';
-Vue.axios.defaults.withCredentials = false;  // 带上验证信息
+Vue.axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true;
+Vue.axios.defaults.withCredentials = true;  // 带上cookie中的信息
 Vue.axios.defaults.timeout = 5000;
 
 /**
@@ -57,8 +58,7 @@ export default ({url, method = 'get', data = {}, root, extraParams = {}, diyErro
         url: url,
         method: method,
         data: data,
-        headers: {'cookie': `sessionid=${Vue.cookie.get('sessionid')}; csrftoken: ${Vue.cookie.get('csrftoken')}`,
-                  'sessionid': Vue.cookie.get('sessionid'),
+        headers: {'sessionid': Vue.cookie.get('sessionid'),
                   'X-CSRFToken': Vue.cookie.get('csrftoken')}
       },
       extraParams

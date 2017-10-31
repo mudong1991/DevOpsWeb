@@ -71,9 +71,9 @@
     methods: {
       // 退出登录
       logout () {
-        // 删除用户id和session
+        // 删除sessionid
         MessageBox.confirm('确定要退出登录吗？', () => {
-          window.localStorage.clear();
+          this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
           this.$router.go(0);
         });
       }

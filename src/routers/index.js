@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 import store from '@/stores/store';
 import routes from './map/converge';
 import webpackConfig from 'webpack_config/index';
-import {routerChangeTime, loginExpiresTime} from 'config/config';
+import {routerChangeTime, loginExpiresTime, userNoOperationLogout} from 'config/config';
 
 Vue.use(VueRouter);
 
@@ -21,10 +21,9 @@ router.beforeEach((to, from, next) => {
   }
 
   let sessionid = Vue.cookie.get('sessionid');
-  console.log(sessionid);
   // 更新超时时间
   if (sessionid !== null) {
-    Vue.cookie.set('sessionid', sessionid, {expires: loginExpiresTime});
+    Vue.cookie.set('sessionid', sessionid, {expires: userNoOperationLogout ? loginExpiresTime : '1M'});
   }
 
   // 判断用户是否登录，没有登录重定向到登录页面（只过滤workench后台的路由）

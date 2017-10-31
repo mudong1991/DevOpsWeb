@@ -35,23 +35,36 @@
             if (data.result_code === 0) {
               this.userInfo = data.result_data;
             } else {
+              this.userInfo = null;
+            }
+          }, ({data}) => {
+            MessageBox.alert('查询用户信息失败,请先登录系统！', {'cancel': () => {
+              this.userInfo = null;
+            }}, () => {
+              this.userInfo = null;
+            });
+          });
+        };
+
+        if (keepLogin === 'false') { // 没有保持登录，验证单点登录
+          systemService.checkUserIsLogin({}, false, true).then(({data}) => {
+            if (data.result_code === 1) {
+              this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
+              window.localStorage.removeItem('keepLogin');
               MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
                 this.$router.go(0);
               }}, () => {
                 this.$router.go(0);
               });
-            }
-          });
-        };
-
-        if (keepLogin === 'true' || keepLogin === 'false') {
-          if (keepLogin === 'false') { // 没有保持登录，验证单点登录
-            systemService.checkUserIsLogin({}, false, true).then(({data}) => {
+            } else {
               getUserInfoAction();
-            });
-          } else {
+            }
+          }, ({data}) => { // 接口出错，删除keepLogin，获取用户信息
+            window.localStorage.removeItem('keepLogin');
             getUserInfoAction();
-          }
+          });
+        } else {
+          getUserInfoAction();
         }
       }
     },
@@ -59,14 +72,15 @@
       // 网页标题
       document.title = title;
 
+      // 获取用户信息
+      this.getUserInfo();
+
       // 定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
       if (userNoOperationLogout) {
         let checkUserInfo = () => {
-          let userTimeOut = window.localStorage.getItem('userTimeOut');
-          if (userTimeOut !== null && (parseInt(new Date().getTime()) > parseInt(userTimeOut))) {
+          let sessionid = this.$cookie.get('sessionid');
+          if (sessionid === null) {
             clearInterval(this.checkUserInfoT);  // 停止定时器
-            window.localStorage.removeItem('userId');
-            window.localStorage.removeItem('userSession');
             MessageBox.alert('亲爱的用户，由于您的登录凭证已过期，为了账户的安全请重新登录！',
               {
                 title: '登录失效',
@@ -83,9 +97,6 @@
         checkUserInfo();
         this.checkUserInfoT = setInterval(checkUserInfo, 5000);
       }
-
-      // 获取用户信息
-      this.getUserInfo();
     },
     destroyed() {
       // 清除定时器
