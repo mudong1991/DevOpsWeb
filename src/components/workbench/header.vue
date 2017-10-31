@@ -85,13 +85,9 @@
         title: title,
         userInfo: null,
         showHeaderMenu: true,  // 显示头部菜单
+        defaultMenu: 'wb_index',
         isFullScreen: this.$store.state.common.isFullScreen  // 是否全屏
       };
-    },
-    computed: {
-        defaultMenu: () => {
-          return window.localStorage.getItem('defaultMenu') || 'wb_index';
-        }
     },
     methods: {
       logout() {
@@ -145,12 +141,15 @@
       },
       // page跳转
       goPage(name) {
-        window.localStorage.setItem('defaultMenu', name);
         this.$router.push({name});
+      },
+      // 路由变化执行的方法
+      fetchRoute () {
+        this.defaultMenu = this.$route.name;  // 更新菜单选中
       }
     },
     created () {
-        //
+
     },
     mounted () {
       // 简单浏览器窗口大小
@@ -159,12 +158,15 @@
         if (domWidth > 991) {
           this.showHeaderMenu = true;
         } else {
-          console.log('aa');
           this.showHeaderMenu = false;
         }
       };
       windowSizeChange();
       $(window).resize(windowSizeChange);
+    },
+    watch: {
+      // 如果路由有变化执行这个方法
+      '$route': 'fetchRoute'
     }
   };
 </script>
