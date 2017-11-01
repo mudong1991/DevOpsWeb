@@ -57,7 +57,9 @@ export default ({url, method = 'get', data = {}, root, extraParams = {}, diyErro
       {
         url: url,
         method: method,
-        data: data
+        data: data,
+        headers: {'sessionid': Vue.cookie.get('sessionid'),
+                  'X-CSRFToken': Vue.cookie.get('csrftoken')}
       },
       extraParams
     )).then((response) => { // 正常
