@@ -10,7 +10,7 @@
                  background-color="#324157"
                  text-color="#fff"
                  active-text-color="white"
-               unique-opened="true">
+                 :unique-opened="true">
         <el-submenu style="border-bottom: 1px solid #59677B; border-top: 1px solid #59677B" index="1">
             <template slot="title" style="background-color: red !important;">
               <i class="el-icon-location"></i>

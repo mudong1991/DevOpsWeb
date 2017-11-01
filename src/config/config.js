@@ -18,7 +18,7 @@ export const copyright = '东风残雪@版权所有';  // 页面版权
 /**
  * 登录有效时间
  * */
-export const loginExpiresTime = '10m';  // 登录超时时长
+export const loginExpiresTime = '20m';  // 登录超时时长
 export const userNoOperationLogout = true; // 配置该项表示，监听用户认证是否过期，弹窗退出，如果为false，表示不检测，loginExpiresTime配置项会失效。
 
 /**
@@ -115,3 +115,9 @@ export const errHandler = ({response}) => {  // API错误处理函数
     return false;
   }
 };
+
+/**
+ * 和风天气接口和密钥
+ * */
+export const locationIP = returnCitySN.cip;
+

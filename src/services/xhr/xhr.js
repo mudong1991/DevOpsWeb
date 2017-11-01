@@ -26,7 +26,7 @@ Vue.axios.defaults.timeout = 5000;
  */
 export default ({url, method = 'get', data = {}, root, extraParams = {}, diyError = false, diyLoading = false}) => {
   // 处理url，末尾加/
-  if (!url.endsWith('/')) {
+  if (!url.endsWith('/') && url) {
     url += '/';
   }
   if (!root) {
@@ -41,8 +41,10 @@ export default ({url, method = 'get', data = {}, root, extraParams = {}, diyErro
       });
     }
     if (method.toUpperCase() === 'GET') {
-      url += ('?' + util.parseParam(data));
-      data = {};
+      if (Object.keys(data).length !== 0) {
+        url += ('?' + util.parseParam(data));
+        data = {};
+      }
     } else {
       if (data.page || data.page_size) {
         url += ('?' + util.parseParam({

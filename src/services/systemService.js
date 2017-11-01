@@ -24,9 +24,14 @@ class SystemService {
     return xhr({url: '/api/checkUserInfo', method: 'get', data, diyError, diyLoading});
   }
 
-  // 单点登录
+  // 单点登录验证
   checkUserIsLogin(data, diyError, diyLoading) {
     return xhr({url: '/api/checkUserIsLogin', method: 'get', data, diyError, diyLoading});
+  }
+
+  // 天气数据获取
+  getWeather(data, diyError, diyLoading) {
+    return xhr({url: '/api/getNowWeather', method: 'get', data, diyError, diyLoading});
   }
 }
 
