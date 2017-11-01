@@ -6853,7 +6853,7 @@
         top: 0;
         left: 100%;
         z-index: 10;
-        border: 1px solid #dfe4ed;
+        /*border: 1px solid #dfe4ed;*/
         border-radius: 2px;
         -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
