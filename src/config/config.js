@@ -16,9 +16,10 @@ export const title = '四方开发云'; // 页面标题
 export const copyright = '东风残雪@版权所有';  // 页面版权
 
 /**
- * 登录有效时间
+ * 登录认证控制
  * */
-export const loginExpiresTime = '60s';  // 如果用户没有选择保持登录，前端设置登录超时时长（后端会设置会话超时时长，一般为1天，主要看后端设置）
+export const loginExpiresTime = '10m';  // 如果用户没有选择保持登录，前端设置登录超时时长（后端会设置会话超时时长，一般为1天，主要看后端设置）
+export const indexSessionExpiresAutoCheck = false;  // 介绍系列网页，是否启动登录session自动检测，后端默认是有的。
 export const uniqueLogin = true;  // 是否启用用户单点登录
 
 /**

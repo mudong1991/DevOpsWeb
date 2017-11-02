@@ -10,7 +10,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {title} from 'config/config';
+  import {title, indexSessionExpiresAutoCheck} from 'config/config';
   import systemService from 'services/systemService';
   import {MessageBox} from '@/utils/util';
   import router from '@/routers/index';
@@ -47,9 +47,8 @@
       checkSessinId () {
         let keepLogin = window.localStorage.getItem('keepLogin') || null;
 
-        if (keepLogin === null && this.userInfo !== null) {
+        if (keepLogin === null && this.userInfo !== null && indexSessionExpiresAutoCheck === true) {
           let checkUserInfo = () => {
-            console.log('检查sessionid');
             let sessionid = this.$cookie.get('sessionid');
             if (sessionid === null) {
               clearInterval(this.checkUserInfoT);  // 停止定时器

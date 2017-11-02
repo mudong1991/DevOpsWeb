@@ -46,7 +46,6 @@
 
         if (keepLogin === null && this.userInfoObj !== null) {
           let checkUserInfo = () => {
-            console.log('检查sessionid');
             let sessionid = this.$cookie.get('sessionid');
             if (sessionid === null) {
               clearInterval(this.checkUserInfoT);  // 停止定时器
