@@ -11,9 +11,9 @@
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
-  import systemService from '@/services/systemService';
+  import systemService from 'services/systemService';
   import {MessageBox} from '@/utils/util';
-
+  import router from '@/routers/index';
   import header from 'components/index/header';
 
   export default {
@@ -21,7 +21,7 @@
       document.title = title;
 
       // 获取用户信息
-      this.getUserInfo();
+      this.getUserInfo(this.checkSessinId);
     },
     data () {
       return {
@@ -30,41 +30,47 @@
     },
     methods: {
       // 获取用户信息
-      getUserInfo () {
-        // 保持登录
+      getUserInfo (callBack) {
+        systemService.checkUserInfo({}, false, true).then(({data}) => {
+          if (data.result_code === 0) {
+            this.userInfo = data.result_data;
+          } else {
+            this.userInfo = null;
+          }
+          callBack(); //  定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
+        }, ({data}) => {
+          this.userInfo = null;
+        });
+      },
+
+      // 检测用户sessionid信息。
+      checkSessinId () {
         let keepLogin = window.localStorage.getItem('keepLogin') || null;
 
-        let getUserInfoAction = () => {
-          systemService.checkUserInfo({}, false, true).then(({data}) => {
-            if (data.result_code === 0) {
-              this.userInfo = data.result_data;
-            } else {
-              this.userInfo = null;
+        if (keepLogin === null && this.userInfo !== null) {
+          let checkUserInfo = () => {
+            console.log('检查sessionid');
+            let sessionid = this.$cookie.get('sessionid');
+            if (sessionid === null) {
+              clearInterval(this.checkUserInfoT);  // 停止定时器
+              MessageBox.alert('亲爱的用户，由于您的登录凭证已过期，为了账户的安全请重新登录！',
+                {
+                  title: '登录失效',
+                  icon: 5,
+                  cancel: () => {
+                    router.push({name: 'wb_login'});
+                  }
+                }, () => {
+                  router.push({name: 'wb_login'});
+                  MessageBox.closeAll();
+                });
             }
-          }, ({data}) => {
-            this.userInfo = null;
-          });
-        };
+          };
 
-        if (keepLogin === 'false') { // 没有保持登录，验证单点登录
-          systemService.checkUserIsLogin({}, false, true).then(({data}) => {
-            if (data.result_code === 1) {
-              this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
-              window.localStorage.removeItem('keepLogin');
-              MessageBox.alert('亲爱的用户，您已经在其他终端登录！', {'cancel': () => {
-                this.$router.go(0);
-              }}, () => {
-                this.$router.go(0);
-              });
-            } else {
-              getUserInfoAction();
-            }
-          }, ({data}) => { // 接口出错，删除keepLogin，获取用户信息
-            window.localStorage.removeItem('keepLogin');
-            getUserInfoAction();
-          });
-        } else {
-          getUserInfoAction();
+          // 清除定时器
+          clearInterval(this.checkUserInfoT);
+          checkUserInfo();
+          this.checkUserInfoT = setInterval(checkUserInfo, 5000);
         }
       }
     },

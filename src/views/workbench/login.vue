@@ -76,10 +76,9 @@
 <script type="text/ecmascript-6">
   /* eslint-disable no-useless-escape */
 
-  import {title, rootPath} from '@/config/config';
+  import {title, rootPath, loginExpiresTime} from '@/config/config';
   import header2 from '@/components/index/header2';
   import systemService from '@/services/systemService';
-  import {loginExpiresTime, userNoOperationLogout} from 'config/config';
 
   export default {
     beforeCreate () {
@@ -135,7 +134,7 @@
           username: '',
           password: '',
           verifyCode: '',
-          keepLogin: window.localStorage.getItem('keepLogin') === 'true'  // 保持登录状态
+          keepLogin: false  // 保持登录状态
         },
         loginRules: {
           username: [
@@ -170,15 +169,14 @@
             systemService.login(loginData, false, true).then(({data}) => {
                 this.loginBtnLoading = false;
                 if (data.result_code === 0) { // 登录成功
-                  // 保存cookies
-                  this.$cookie.set('sessionid', data.result_data.sessionid, {expires: userNoOperationLogout ? loginExpiresTime : '1M'});
-                  this.$cookie.set('csrftoken', data.result_data.csrftoken, {expires: '1Y'});  // 后端做了csrf跨站伪造，必须添加csrftoken，否则所有接口将没有权限访问
                   this.showNotice = false;
                   // 是否保持用户登录状态
-                  if (this.loginForm.keepLogin) {
+                  if (this.loginForm.keepLogin) {   // 保持登录，sessionid设置超时一天
                     window.localStorage.setItem('keepLogin', 'true');
-                  } else {
-                    window.localStorage.setItem('keepLogin', 'false');
+                    this.$cookie.set('sessionid', data.result_data.sessionid, {expires: '1D'});
+                  } else {   // 不保持登录，sessionid设置配置项的时长，用户没有访问路由就不会更新超时时长
+                    window.localStorage.removeItem('keepLogin');
+                    this.$cookie.set('sessionid', data.result_data.sessionid, {expires: loginExpiresTime});
                   }
                   // 跳转
                   this.$router.push({name: 'wb_home'});

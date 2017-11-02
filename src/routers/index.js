@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 import store from '@/stores/store';
 import routes from './map/converge';
 import webpackConfig from 'webpack_config/index';
-import {routerChangeTime, loginExpiresTime, userNoOperationLogout} from 'config/config';
+import {routerChangeTime, loginExpiresTime} from '@/config/config';
 
 Vue.use(VueRouter);
 
@@ -21,9 +21,10 @@ router.beforeEach((to, from, next) => {
   }
 
   let sessionid = Vue.cookie.get('sessionid');
+  let keepLogin = window.localStorage.getItem('keepLogin') || null;
   // 更新超时时间
-  if (sessionid !== null) {
-    Vue.cookie.set('sessionid', sessionid, {expires: userNoOperationLogout ? loginExpiresTime : '1M'});
+  if (sessionid !== null && keepLogin === null) {
+    Vue.cookie.set('sessionid', sessionid, {expires: loginExpiresTime});
   }
 
   // 判断用户是否登录，没有登录重定向到登录页面（只过滤workench后台的路由）
@@ -39,11 +40,12 @@ router.beforeEach((to, from, next) => {
     } catch (e) {
       router.push({name: 'wb_login'});
     }
-  } else {
+   } else {
     store.commit('addLoading', {
       key: 'view',
       text: '加载页面中...'
     });
+
     // 太快了反应不过来
     setTimeout(next, routerChangeTime);
   }
@@ -53,6 +55,7 @@ router.afterEach((to, from, next) => {
   if (webpackConfig.__DEV__) {
     console.log(`成功浏览到: ${to.path}`);
   }
+
   store.commit('removeLoading', 'view');
 });
 
