@@ -42,9 +42,7 @@
 
       // 检测用户sessionid信息。
       checkSessinId () {
-        let keepLogin = window.localStorage.getItem('keepLogin') || null;
-
-        if (keepLogin === null && this.userInfoObj !== null) {
+        if (this.userInfoObj !== null) {
           let checkUserInfo = () => {
             let sessionid = this.$cookie.get('sessionid');
             if (sessionid === null) {

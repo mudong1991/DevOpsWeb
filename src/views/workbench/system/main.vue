@@ -13,7 +13,7 @@
                    background-color="#324157"
                    text-color="#fff"
                    active-text-color="white"
-                   :unique-opened="false" :style="{'margin-top': menuMarginTop + 'px'}">
+                   :unique-opened="true" :style="{'margin-top': menuMarginTop + 'px'}">
             <div class="noneBlock">
 
             </div>

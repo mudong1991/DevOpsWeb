@@ -1,10 +1,16 @@
 <template>
   <div class="main-header clearfix">
-    <div class="col-sm-12 col-md-8"><strong>位置:</strong> </div>
-    <div class="col-sm-12 col-md-4">
-      <strong>时间：</strong> <span v-text="`${datetime.getFullYear()}年${datetime.getMonth()}月${datetime.getDate()}日 ${datetime.getHours()}:${datetime.getMinutes()}:${datetime.getSeconds() < 10 ? '0' + datetime.getSeconds(): datetime.getSeconds()} 星期${week}`"></span>
+    <div class="col-sm-12 col-md-6"><strong>位置:</strong> </div>
+    <div class="col-sm-12 col-md-6">
+      <strong><i class="fa fa-clock-o"></i> 时间：</strong> <span v-text="`${datetime.getFullYear()}年${datetime.getMonth()}月${datetime.getDate()}日 ${datetime.getHours()}:${datetime.getMinutes()}:${datetime.getSeconds() < 10 ? '0' + datetime.getSeconds(): datetime.getSeconds()} 星期${week}`"></span>
       <small class="seg"></small>
-      <strong>天气：</strong>晴
+      <span v-if="weather !== null">
+        <img :src="'https://cdn.heweather.com/cond_icon/' + weather.now.cond_code + '.png'" width="24" height="24">
+        <strong>天气：</strong><span v-text="`${weather.basic.admin_area}-${weather.basic.location}    ${weather.now.cond_txt}    ${weather.now.wind_sc}   ${weather.now.tmp}°C`"></span>
+      </span>
+      <span v-else>
+        <i class="fa fa-sun-o"></i><strong>天气：</strong> --
+      </span>
     </div>
   </div>
 </template>
@@ -19,7 +25,8 @@
     },
     data () {
       return {
-        datetime: new Date()
+        datetime: new Date(),
+        weather: null
       };
     },
     computed: {
@@ -54,7 +61,11 @@
       this.getTimeT = setInterval(this.getCurrentTime, 1000);
       // 获取天气
       systemService.getWeather({'location_ip': locationIP}, false, true).then(({data}) => {
-        console.log(data);
+        if (data.HeWeather6 !== undefined) {
+          this.weather = data.HeWeather6[0];
+        } else {
+          this.weather = null;
+        }
       });
     },
     destroyed () {
