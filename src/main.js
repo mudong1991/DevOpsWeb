@@ -2,8 +2,9 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import axios from 'axios';
-import VueAxios from 'vue-axios';
-import VueCookie from 'vue-cookie';
+import VueAxios from 'vue-axios';   //  axios请求插件
+import VueCookie from 'vue-cookie';   // cookie插件
+import Vuebar from 'vuebar';  // 滚动条优化插件
 import '../theme/index.css';
 import config from 'webpack_config/index';
 
@@ -30,6 +31,7 @@ import App from './App.vue';
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 Vue.use(VueCookie);
+Vue.use(Vuebar);
 
 /* eslint-disable no-new */
 new Vue({

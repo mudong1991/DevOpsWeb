@@ -1,53 +1,120 @@
 <template>
   <div id="system-app" class="clearfix">
-    <div class="aside"  :class="{'aside-overflow': !isCollapse}">
-      <div class="handle-menu" @click="collapseMenu()">
-        <i class="fa fa-reorder"></i>
-      </div>
-      <el-menu default-active="1-4-1"
-                 class="el-menu-vertical-demo"
-                 :collapse="isCollapse"
-                 background-color="#324157"
-                 text-color="#fff"
-                 active-text-color="white"
-                 :unique-opened="true">
-        <el-submenu style="border-bottom: 1px solid #59677B; border-top: 1px solid #59677B" index="1">
-            <template slot="title" style="background-color: red !important;">
-              <i class="el-icon-location"></i>
-              <span slot="title" >导航一</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
+    <div class="aside" id="aside"  :class="{'aside-overflow': !isCollapse}">
+        <div class="handle-menu" @click="collapseMenu()">
+          <i class="fa fa-reorder"></i>
+        </div>
+
+
+        <el-menu default-active="1-4-1"
+                   class="el-menu-vertical-demo"
+                   id="aside-menu"
+                   :collapse="isCollapse"
+                   background-color="#324157"
+                   text-color="#fff"
+                   active-text-color="white"
+                   :unique-opened="false" :style="{'margin-top': menuMarginTop + 'px'}">
+            <div class="noneBlock">
+
+            </div>
+            <el-submenu style="" index="1">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title" >导航一</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+                <el-menu-item index="1-2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>
             </el-submenu>
-          </el-submenu>
-        <el-submenu style="border-bottom: 1px solid #59677B" index="4">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span slot="title">导航一</span>
-          </template>
-          <el-menu-item-group>
-            <span slot="title">分组一</span>
-            <el-menu-item index="4-1">选项1</el-menu-item>
-            <el-menu-item index="4-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="4-3">选项3</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
-        <el-menu-item style="border-bottom: 1px solid #59677B"  index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-        <el-menu-item  index="3">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航三</span>
-          </el-menu-item>
-        </el-menu>
+
+            <el-submenu style="" index="2">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title" >导航一</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+                <el-menu-item index="1-2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>
+            </el-submenu>
+
+            <el-submenu style="" index="3">
+              <template slot="title" >
+                <i class="el-icon-location"></i>
+                <span slot="title" >导航一</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+                <el-menu-item index="1-2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>
+            </el-submenu>
+
+            <el-submenu style="" index="4">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title" >导航一</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+                <el-menu-item index="1-2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>
+            </el-submenu>
+
+            <el-submenu style="" index="5">
+              <template slot="title" >
+                <i class="el-icon-location"></i>
+                <span slot="title" >导航一</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+                <el-menu-item index="1-2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>
+            </el-submenu>
+
+            <el-submenu style="" index="6">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title" >导航一</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+                <el-menu-item index="1-2">选项2</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>
+            </el-submenu>
+
+          </el-menu>
+
+        <div class="move-menu-up" @click="moveMenu('up')" v-if="isCollapse">
+          <i class="fa fa-chevron-up"></i>
+        </div>
+        <div class="move-menu-down" @click="moveMenu('down')" v-if="isCollapse">
+          <i class="fa fa-chevron-down"></i>
+        </div>
     </div>
 
       <div class="main">
@@ -55,9 +122,13 @@
           <el-main>
             <el-container>
               <el-header style="height: auto !important; padding: 0 !important;"><main-header></main-header></el-header>
-              <el-main style="overflow: auto; padding: 15px !important; background-color: white">
-                <!-- 路由匹配到的组件将渲染在这里 -->
-                <router-view></router-view>
+              <el-main style="overflow: auto; padding: 8px 15px !important; background-color: white">
+                <div v-bar class="vuebar-element">
+                  <div>
+                    <!-- 路由匹配到的组件将渲染在这里 -->
+                    <router-view></router-view>
+                  </div>
+                </div>
               </el-main>
             </el-container>
           </el-main>
@@ -80,13 +151,42 @@
     },
     data () {
       return {
-        isCollapse: false
+        isCollapse: false,
+        menuMarginTop: 0,
+        asideHeight: 0,
+        asideMenuHeight: 0
       };
     },
     methods: {
       collapseMenu () {
         this.isCollapse = !this.isCollapse;
+        if (!this.isCollapse) {
+          this.menuMarginTop = 0;
+        }
+      },
+      moveMenu(direction) {
+        if (direction === 'up') {
+          console.log(-this.menuMarginTop, this.asideMenuHeight - 90);
+          if ((-this.menuMarginTop) < (this.asideMenuHeight - 90)) {
+            this.menuMarginTop -= 57;
+          }
+        } else if (direction === 'down') {
+          if (this.menuMarginTop + this.asideMenuHeight + 70 < this.asideHeight) {
+            this.menuMarginTop += 57;
+          }
+        }
       }
+    },
+    mounted () {
+      // 监听浏览器窗口大小
+      let windowSizeChange = () => {
+        let asideHeight = $('#aside').height();
+        let asideMenuHeight = $('#aside-menu').height();
+        this.asideHeight = asideHeight;
+        this.asideMenuHeight = asideMenuHeight;
+      };
+      windowSizeChange();
+      $(window).resize(windowSizeChange);
     },
     components: {
       mainFooter,
@@ -100,9 +200,23 @@
     height: 100%;
     width: 100%;
     padding: 0 0 60px;
+    overflow: hidden;
+  }
+  .noneBlock{
+    width: 100%;
+    height: 30px;
+    background: #59677B !important;
   }
   .el-menu{
     border: none !important;
+    z-index: 100;
+    margin-top: 30px;
+  }
+  #aside-menu {
+    transition: all .4s;
+  }
+  #aside-menu>li{
+    border-top: 1px solid #59677B;
   }
   .el-submenu .el-menu{
     border-radius: 2px;
@@ -116,6 +230,10 @@
     float: left;
     position: relative;
     background-color: #59677B;
+  }
+  .wrapper-menu{
+    height: 100%;
+    width: 100%;
   }
   .aside-overflow{
     overflow-x: hidden;
@@ -131,10 +249,44 @@
     line-height: 30px;
     cursor: pointer;
     transition: all 0.4s;
+    z-index: 1000;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .move-menu-up{
+    background-color: #283446;
+    text-align: center;
+    color: white;
+    line-height: 20px;
+    height: 24px;
+    cursor: pointer;
+    transition: all 0.4s;
     z-index: 100;
     width: 100%;
+    font-size: 14px;
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    border-bottom: 1px solid #59677B;
   }
-  .handle-menu:hover{
+  .move-menu-down{
+    background-color: #283446;
+    text-align: center;
+    font-size: 14px;
+    height: 22px;
+    color: white;
+    line-height: 20px;
+    cursor: pointer;
+    transition: all 0.4s;
+    z-index: 100;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  .handle-menu:hover, .move-menu-down:hover, .move-menu-up:hover{
     color: #20A0FF;
   }
   .el-menu-item.is-active{
