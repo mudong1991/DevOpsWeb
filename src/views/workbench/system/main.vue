@@ -6,7 +6,7 @@
         </div>
 
 
-        <el-menu default-active="1-4-1"
+        <el-menu
                    class="el-menu-vertical-demo"
                    id="aside-menu"
                    :collapse="isCollapse"
@@ -17,96 +17,26 @@
             <div class="noneBlock">
 
             </div>
-            <el-submenu style="" index="1">
+            <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-location"></i>
-                <span slot="title" >导航一</span>
+                <span slot="title" >账户管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
+                <el-menu-item index="1-1">用户管理</el-menu-item>
+                <el-menu-item index="1-2">权限管理</el-menu-item>
               </el-menu-item-group>
-              <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
             </el-submenu>
 
-            <el-submenu style="" index="2">
+            <el-submenu index="2">
               <template slot="title">
                 <i class="el-icon-location"></i>
-                <span slot="title" >导航一</span>
+                <span slot="title" >日志管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
+                <el-menu-item index="2-1">用户日志</el-menu-item>
               </el-menu-item-group>
-              <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
             </el-submenu>
-
-            <el-submenu style="" index="3">
-              <template slot="title" >
-                <i class="el-icon-location"></i>
-                <span slot="title" >导航一</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-
-            <el-submenu style="" index="4">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title" >导航一</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-
-            <el-submenu style="" index="5">
-              <template slot="title" >
-                <i class="el-icon-location"></i>
-                <span slot="title" >导航一</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-
-            <el-submenu style="" index="6">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title" >导航一</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-
           </el-menu>
 
         <div class="move-menu-up" @click="moveMenu('up')" v-if="isCollapse">
@@ -117,26 +47,17 @@
         </div>
     </div>
 
-      <div class="main">
-        <el-container>
-          <el-main>
-            <el-container>
-              <el-header style="height: auto !important; padding: 0 !important;"><main-header></main-header></el-header>
-              <el-main style="overflow: auto; padding: 8px 15px !important; background-color: white">
-                <div v-bar class="vuebar-element">
-                  <div>
-                    <!-- 路由匹配到的组件将渲染在这里 -->
-                    <router-view></router-view>
-                  </div>
-                </div>
-              </el-main>
-            </el-container>
-          </el-main>
-          <el-footer>
-            <main-footer></main-footer>
-          </el-footer>
-        </el-container>
-      </div>
+    <div class="main">
+      <el-container>
+        <el-main>
+          <!-- 路由匹配到的组件将渲染在这里 -->
+          <router-view></router-view>
+        </el-main>
+        <el-footer >
+          <main-footer></main-footer>
+        </el-footer>
+      </el-container>
+    </div>
   </div>
 </template>
 
@@ -199,7 +120,6 @@
   #system-app{
     height: 100%;
     width: 100%;
-    padding: 0 0 60px;
     overflow: hidden;
   }
   .noneBlock{
@@ -220,6 +140,9 @@
   }
   .el-submenu .el-menu{
     border-radius: 2px;
+  }
+  .el-menu-item-group__title{
+    padding: 0 0 0 20px !important;
   }
   .el-container{
     height: 100%;
@@ -302,7 +225,7 @@
   }
   .el-footer{
     background: #F5F7F9;
-    height: 40px !important;
+    height: auto !important;
     padding: 0 !important;
   }
 </style>

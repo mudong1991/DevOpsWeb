@@ -10,62 +10,60 @@
       </div>
     </div>
 
-    <el-collapse-transition>
-      <div v-show="showHeaderMenu" id="header-menu">
-        <div class="col-xs-12 col-sm-12 col-md-6" >
-          <el-menu
-            :default-active="defaultMenu"
-            class="el-menu-demo"
-            mode="horizontal"
-            background-color="#324157"
-            text-color="#fff"
-            active-text-color="#20A0FF" >
-            <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
-            <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
-            <el-menu-item index="3">待办</el-menu-item>
-            <el-submenu index="4" id="el-submenu">
-              <template slot="title">服务</template>
-              <el-menu-item index="2-1">选项1</el-menu-item>
-              <el-menu-item index="2-2">选项2</el-menu-item>
-              <el-menu-item index="2-3">选项3</el-menu-item>
-            </el-submenu>
-            <el-menu-item index="5"><a href="https://www.ele.me" target="_blank">代码广场</a></el-menu-item>
-            <el-menu-item index="6"><a href="https://www.ele.me" target="_blank">自动化运维</a></el-menu-item>
-            <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
-          </el-menu>
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-4 tools clearfix">
-            <ul>
-              <li class="tools-item tools-alert">
-                <a><i class="fa fa-bell-o"></i>提醒  <span class="badge">50</span></a>
-              </li>
-              <li class="tools-item tools-message">
-                <a><i class="fa fa-comment-o"></i>消息  <span class="badge">50</span></a>
-              </li>
-              <li class="tools-item">
-                <a  @click="fullScreen()" v-if="!isFullScreen"><i class="fa fa-arrows-alt"></i><span >开启全屏</span></a>
-                <a  @click="exitFullScreen()" v-if="isFullScreen"><i class="fa fa-arrows-alt"></i><span >退出全屏</span></a>
-              </li>
-              <li class="user-options tools-item" v-if="userInfoObj !== null">
-                <el-dropdown @command="handleCommand">
-                  <span class="el-dropdown-link clearfix">
-                     <span class="user-info">
-                       <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
-                        {{ userInfoObj.username !== undefined ? userInfoObj.username : '' }}
-                     </span><i class="el-icon-caret-bottom el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>个人中心</el-dropdown-item>
-                    <el-dropdown-item>设置</el-dropdown-item>
-                    <el-dropdown-item divided command="logout"><i class="fa fa-power-off"></i>  退出</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </li>
-            </ul>
-        </div>
+    <div v-show="showHeaderMenu" id="header-menu" class="animated fadeInDown">
+      <div class="col-xs-12 col-sm-12 col-md-6" >
+        <el-menu
+          :default-active="defaultMenu"
+          class="el-menu-demo"
+          mode="horizontal"
+          background-color="#324157"
+          text-color="#fff"
+          active-text-color="#20A0FF" >
+          <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
+          <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
+          <el-menu-item index="3">待办</el-menu-item>
+          <el-submenu index="4" id="el-submenu">
+            <template slot="title">服务</template>
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-3">选项3</el-menu-item>
+          </el-submenu>
+          <el-menu-item index="5"><a href="https://www.ele.me" target="_blank">代码广场</a></el-menu-item>
+          <el-menu-item index="6"><a href="https://www.ele.me" target="_blank">自动化运维</a></el-menu-item>
+          <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
+        </el-menu>
       </div>
-    </el-collapse-transition>
+
+      <div class="col-xs-12 col-sm-12 col-md-4 tools clearfix">
+          <ul>
+            <li class="tools-item tools-alert">
+              <a><i class="fa fa-bell-o"></i>提醒  <span class="badge">50</span></a>
+            </li>
+            <li class="tools-item tools-message">
+              <a><i class="fa fa-comment-o"></i>消息  <span class="badge">50</span></a>
+            </li>
+            <li class="tools-item">
+              <a  @click="fullScreen()" v-if="!isFullScreen"><i class="fa fa-arrows-alt"></i><span >开启全屏</span></a>
+              <a  @click="exitFullScreen()" v-if="isFullScreen"><i class="fa fa-arrows-alt"></i><span >退出全屏</span></a>
+            </li>
+            <li class="user-options tools-item" v-if="userInfoObj !== null">
+              <el-dropdown @command="handleCommand">
+                <span class="el-dropdown-link clearfix">
+                   <span class="user-info">
+                     <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
+                      {{ userInfoObj.username !== undefined ? userInfoObj.username : '' }}
+                   </span><i class="el-icon-caret-bottom el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>个人中心</el-dropdown-item>
+                  <el-dropdown-item>设置</el-dropdown-item>
+                  <el-dropdown-item divided command="logout"><i class="fa fa-power-off"></i>  退出</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </li>
+          </ul>
+      </div>
+    </div>
   </div>
 </template>
 

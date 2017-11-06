@@ -1,12 +1,15 @@
 <template>
-  <div id="home-app">
-    <v-workbench-header :userInfoObj="userInfoObj"></v-workbench-header>
-
-    <el-container>
-      <!--子路由视图显示区-->
-      <transition :name="transitionName">
-        <router-view></router-view>
-      </transition>
+  <div id="home-app" class="clearfix">
+    <el-container >
+      <el-header class="padding-0">
+        <v-workbench-header :userInfoObj="userInfoObj"></v-workbench-header>
+      </el-header>
+      <el-main class="padding-0">
+        <!--子路由视图显示区-->
+        <transition :name="transitionName">
+          <router-view></router-view>
+        </transition>
+      </el-main>
     </el-container>
   </div>
 </template>
@@ -33,10 +36,14 @@
             this.userInfoObj = data.result_data;
           } else {
             this.userInfoObj = null;
+            this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
+            this.$cookie.delete('csrftoken');
           }
           callBack();  //  定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
         }, ({data}) => {
           this.userInfoObj = null;
+          this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
+          this.$cookie.delete('csrftoken');
         });
       },
 
@@ -88,10 +95,17 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   #home-app{
     height: 100%;
-    overflow: hidden;
+    position: relative;
+    overflow: auto;
     background: transparent url("/static/images/workbench-bg.jpg") center center;
   }
   .el-container{
     height: 100%;
+  }
+  .el-header{
+    height: auto !important;
+  }
+  .el-main{
+    height: 100% !important;
   }
 </style>

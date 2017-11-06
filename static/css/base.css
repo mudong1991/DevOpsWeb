@@ -27,11 +27,20 @@ a:hover{
 .theme-color-main{
   color: #20a0ff !important;
 }
+.main-content-header{
+  height: auto !important;
+  padding: 0 !important;
+}
 .margin-0{
   margin: 0 !important;
 }
 .padding-0{
   padding: 0 !important;
+}
+.main-content-container{
+  overflow: auto;
+  padding: 8px 15px !important;
+  background-color: white;
 }
 .margin-top-10{
   margin-top: 10px;
@@ -47,6 +56,11 @@ a:hover{
 }
 .padding-top-10{
   padding-top: 10px;
+}
+.seg{
+  width: 1px;
+  border-right: 1px solid #cccccc;
+  margin: 0 6px;
 }
 
 /*解决一些样式冲突*/

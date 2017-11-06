@@ -36,10 +36,14 @@
             this.userInfo = data.result_data;
           } else {
             this.userInfo = null;
+            this.$cookie.delete('sessionid');
+            this.$cookie.delete('csrftoken');
           }
           callBack(); //  定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
         }, ({data}) => {
           this.userInfo = null;
+          this.$cookie.delete('sessionid');
+          this.$cookie.delete('csrftoken');
         });
       },
 

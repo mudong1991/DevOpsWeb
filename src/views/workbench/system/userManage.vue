@@ -1,15 +1,22 @@
 <template>
-  <div id="user-manage-app">
-        <p>sdafds122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222sdafds122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222sdafds122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222sdafds122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222sdafds122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222sdafds122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</p>
-        <p>sdafds</p>
-        <p>sdafds</p>
-        <p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p>
-        <p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p><p>sdafds</p>
-  </div>
+  <el-container>
+    <el-header class="main-content-header">
+      <main-header></main-header>
+    </el-header>
+    <el-main class="main-content-container">
+      <div v-bar class="vuebar-element">
+        <div>
+            123123
+        </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
+  import mainHeader from '@/components/workbench/mainHeader';
+
   export default {
     created () {
       document.title = title;
@@ -17,7 +24,12 @@
     data () {
       return {};
     },
-    methods: {}
+    methods: {
+
+    },
+    components: {
+      mainHeader
+  }
   };
 </script>
 
