@@ -19,9 +19,9 @@
           background-color="#324157"
           text-color="#fff"
           active-text-color="#20A0FF">
-          <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
+          <el-menu-item index="wb_index" @click="goPage('wb_index')"><i class="fa fa-home"></i>  首页</el-menu-item>
           <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
-          <el-menu-item index="3">待办</el-menu-item>
+          <el-menu-item index="3"><i class="fa fa-tasks"></i>  待办</el-menu-item>
           <el-submenu index="4" id="el-submenu" >
             <template slot="title">服务</template>
             <el-menu-item index="2-1" >选项1</el-menu-item>
@@ -30,7 +30,7 @@
           </el-submenu>
           <el-menu-item index="5"><a href="https://www.ele.me" target="_blank">代码广场</a></el-menu-item>
           <el-menu-item index="6"><a href="https://www.ele.me" target="_blank">自动化运维</a></el-menu-item>
-          <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
+          <el-menu-item index="wb_system" @click="goPage('wb_system')"><i class="fa fa-cogs"></i>  系统设置</el-menu-item>
         </el-menu>
       </div>
 
