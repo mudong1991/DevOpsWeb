@@ -1,6 +1,6 @@
 <template>
   <div id="workbench-header" class="clearfix">
-    <div class="w-logo clearfix pull-left" id="w-logo">
+    <div class="w-logo clearfix pull-left animated fadeInDown" id="w-logo">
       <router-link :to="{name: 'index'}" class="pull-left">
         <img src="/static/images/logo.png" class="img-responsive" />
       </router-link>
