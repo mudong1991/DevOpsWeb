@@ -18,7 +18,7 @@
 
           <div class="noneBlock"></div>
 
-          <el-submenu index="0" v-show="false">
+          <el-submenu index="wb_system_all" v-show="false">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span slot="title" >系统设置</span>
@@ -28,27 +28,27 @@
             </el-menu-item-group>
           </el-submenu>
 
-            <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title" >账户管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="wb_userAdmin" @click="goPage('wb_userAdmin')">用户管理</el-menu-item>
-                <el-menu-item index="wb_permissionAdmin" @click="goPage('wb_permissionAdmin')">权限管理</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+          <el-submenu index="wb_user_all">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title" >账户管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="wb_userAdmin" @click="goPage('wb_userAdmin')">用户管理</el-menu-item>
+              <el-menu-item index="wb_permissionAdmin" @click="goPage('wb_permissionAdmin')">权限管理</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
 
-            <el-submenu index="2">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title" >日志管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="/workbench/system/userLog">用户日志</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-          </el-menu>
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title" >日志管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="/workbench/system/userLog">用户日志</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+        </el-menu>
 
         <div class="move-menu-up" @click="moveMenu('up')" v-if="isCollapse">
           <i class="fa fa-chevron-up"></i>
