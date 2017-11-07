@@ -7,24 +7,35 @@
 
 
         <el-menu
-                   class="el-menu-vertical-demo"
-                   id="aside-menu"
-                   :collapse="isCollapse"
-                   background-color="#324157"
-                   text-color="#fff"
-                   active-text-color="white"
-                   :unique-opened="true" :style="{'margin-top': menuMarginTop + 'px'}">
-            <div class="noneBlock">
+           class="el-menu-vertical-demo"
+           id="aside-menu"
+           :collapse="isCollapse"
+           background-color="#324157"
+           text-color="#fff"
+           active-text-color="white"
+           :default-active="defaultMenu"
+           :unique-opened="true" :style="{'margin-top': menuMarginTop + 'px'}">
 
-            </div>
+          <div class="noneBlock"></div>
+
+          <el-submenu index="0" v-show="false">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title" >系统设置</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span slot="title" >账户管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="1-1">用户管理</el-menu-item>
-                <el-menu-item index="1-2">权限管理</el-menu-item>
+                <el-menu-item index="wb_userAdmin" @click="goPage('wb_userAdmin')">用户管理</el-menu-item>
+                <el-menu-item index="wb_permissionAdmin" @click="goPage('wb_permissionAdmin')">权限管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -34,7 +45,7 @@
                 <span slot="title" >日志管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="2-1">用户日志</el-menu-item>
+                <el-menu-item index="/workbench/system/userLog">用户日志</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -75,10 +86,18 @@
         isCollapse: false,
         menuMarginTop: 0,
         asideHeight: 0,
-        asideMenuHeight: 0
+        asideMenuHeight: 0,
+        defaultMenu: this.$route.name
       };
     },
     methods: {
+      fetchRoute () {
+        this.defaultMenu = this.$route.name;
+      },
+      // page跳转
+      goPage(name) {
+        this.$router.push({name});
+      },
       collapseMenu () {
         this.isCollapse = !this.isCollapse;
         if (!this.isCollapse) {
@@ -87,7 +106,6 @@
       },
       moveMenu(direction) {
         if (direction === 'up') {
-          console.log(-this.menuMarginTop, this.asideMenuHeight - 90);
           if ((-this.menuMarginTop) < (this.asideMenuHeight - 90)) {
             this.menuMarginTop -= 57;
           }
@@ -112,6 +130,10 @@
     components: {
       mainFooter,
       mainHeader
+    },
+    watch: {
+      // 如果路由有变化执行这个方法
+      '$route': 'fetchRoute'
     }
   };
 </script>

@@ -6,7 +6,7 @@
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element">
         <div>
-            123213
+          系统设置
         </div>
       </div>
     </el-main>
@@ -24,9 +24,7 @@
     data () {
       return {
         breadcrumbList: [
-          {'name': '系统设置', 'linkObject': {name: 'wb_system'}},
-          {'name': '账户管理'},
-          {'name': '用户管理', 'linkObject': {name: 'wb_userAdmin'}}
+          {'name': '系统设置', 'linkObject': {name: 'wb_system'}}
         ]
       };
     },
@@ -35,7 +33,7 @@
     },
     components: {
       mainHeader
-  }
+    }
   };
 </script>
 

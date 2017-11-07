@@ -71,6 +71,7 @@
   import {title} from 'config/config';
   import {MessageBox} from '@/utils/util';
   import systemService from '@/services/systemService';
+  import workbenchSystemViewMap from 'routers/map/workbenchMap/workbenchSystemViewMap';
 
   export default {
     props: {
@@ -149,11 +150,16 @@
       },
       // 路由变化执行的方法
       fetchRoute () {
-        this.defaultMenu = this.$route.name;  // 更新菜单选中
+        // 更新菜单选中状态
+        let systemRouteList = workbenchSystemViewMap.map((item) => item.name);
+        let presentRoute = this.$route.name;
+
+        if (systemRouteList.includes(presentRoute)) {
+          this.defaultMenu = 'wb_system';
+        }
       }
     },
     created () {
-
     },
     mounted () {
       // 简单浏览器窗口大小
@@ -188,9 +194,7 @@
   .el-menu--horizontal{
     border: none;
   }
-  .el-menu--horizontal > .el-menu-item.is-active{
-    border-width: 4px;
-  }
+
   .w-logo{
     text-align: left;
     height: 60px;

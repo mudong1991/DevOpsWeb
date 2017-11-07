@@ -6,7 +6,7 @@
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element">
         <div>
-            123213
+            日志管理
         </div>
       </div>
     </el-main>
