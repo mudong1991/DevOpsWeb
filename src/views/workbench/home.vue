@@ -37,13 +37,11 @@
           } else {
             this.userInfoObj = null;
             this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
-            this.$cookie.delete('csrftoken');
           }
           callBack();  //  定时检测用户信息，如果获取失败，则表示登录失效，提示重新登录。
         }, ({data}) => {
           this.userInfoObj = null;
           this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
-          this.$cookie.delete('csrftoken');
         });
       },
 

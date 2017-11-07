@@ -174,9 +174,11 @@
                   if (this.loginForm.keepLogin) {   // 保持登录，sessionid设置超时一天
                     window.localStorage.setItem('keepLogin', 'true');
                     this.$cookie.set('sessionid', data.result_data.sessionid, {expires: '1D'});
+                    this.$cookie.set('csrftoken', data.result_data.csrftoken, {expires: '1Y'});
                   } else {   // 不保持登录，sessionid设置配置项的时长，用户没有访问路由就不会更新超时时长
                     window.localStorage.removeItem('keepLogin');
                     this.$cookie.set('sessionid', data.result_data.sessionid, {expires: loginExpiresTime});
+                    this.$cookie.set('csrftoken', data.result_data.csrftoken, {expires: '1Y'});
                   }
                   // 跳转
                   this.$router.push({name: 'wb_home'});

@@ -1,24 +1,24 @@
 <template>
   <div id="workbench-header" class="clearfix">
-    <div class="col-xs-12 col-sm-12 col-md-2 w-logo clearfix" >
+    <div class="w-logo clearfix pull-left" id="w-logo">
       <router-link :to="{name: 'index'}" class="pull-left">
         <img src="/static/images/logo.png" class="img-responsive" />
       </router-link>
 
-      <div class="sm-menu pull-right visible-xs visible-sm" @click="showHeaderMenu = !showHeaderMenu">
+      <div class="sm-menu pull-right " v-show="showSmMenu" @click="showHeaderMenu = !showHeaderMenu">
         <i class="fa fa-bars"></i>
       </div>
     </div>
 
-    <div v-show="showHeaderMenu" id="header-menu" class="animated fadeInDown clearfix">
-      <div class="col-xs-12 col-sm-12 col-md-6" style="z-index: 100">
+    <div v-show="showHeaderMenu" id="header-menu" class="animated fadeInDown clearfix padding-0 ">
+      <div class="col-xs-12 col-sm-12 col-md-6 padding-0" >
         <el-menu
           :default-active="defaultMenu"
           class="el-menu-demo"
           mode="horizontal"
           background-color="#324157"
           text-color="#fff"
-          active-text-color="#20A0FF" >
+          active-text-color="#20A0FF">
           <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
           <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
           <el-menu-item index="3">待办</el-menu-item>
@@ -34,7 +34,7 @@
         </el-menu>
       </div>
 
-      <div class="col-xs-12 col-sm-12 col-md-4 tools clearfix">
+      <div class="col-xs-12 col-sm-12 col-md-4 padding-0 tools clearfix" >
           <ul>
             <li class="tools-item tools-alert">
               <a><i class="fa fa-bell-o"></i>提醒  <span class="badge">50</span></a>
@@ -84,6 +84,7 @@
         title: title,
         userInfo: null,
         showHeaderMenu: true,  // 显示头部菜单
+        showSmMenu: false,
         defaultMenu: this.$route.name,
         isFullScreen: this.$store.state.common.isFullScreen  // 是否全屏
       };
@@ -158,10 +159,16 @@
       // 简单浏览器窗口大小
       let windowSizeChange = () => {
         let domWidth = $(document).width();
-        if (domWidth > 991) {
+        if (domWidth > 1300) {
           this.showHeaderMenu = true;
+          this.showSmMenu = false;
+          $('#header-menu').css('float', 'none');
+          $('#w-logo').css('width', '220px');
         } else {
           this.showHeaderMenu = false;
+          this.showSmMenu = true;
+          $('#header-menu').css('float', 'left');
+          $('#w-logo').css('width', '100%');
         }
       };
       windowSizeChange();
@@ -203,10 +210,14 @@
       border-radius: 4px;
     }
   }
+  #header-menu{
+    z-index: 500;
+    width: 100%;
+  }
   .tools{
     height: auto;
     margin: 10px 0 6px 0;
-    text-align: left;
+    text-align: center;
     .tools-item{
       display: inline-block;
       margin-left: 10px;
@@ -235,9 +246,6 @@
     .user-options{
       height: 40px;
     }
-  }
-  #header-menu{
-    z-index: 500;
   }
   .el-dropdown-link{
     height: 100%;
