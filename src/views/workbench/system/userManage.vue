@@ -6,7 +6,7 @@
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element">
         <div>
-            123123
+
         </div>
       </div>
     </el-main>

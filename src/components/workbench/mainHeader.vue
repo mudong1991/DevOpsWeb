@@ -1,7 +1,6 @@
 <template>
   <div class="main-header clearfix">
     <div class="col-xs-12">
-      <strong>位置:</strong>
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>活动管理</el-breadcrumb-item>
@@ -40,6 +39,8 @@
     height: auto;
     line-height: 30px;
     text-align: left;
+    padding: 8px 0;
     border-bottom: 1px solid #DDDDDD;
   }
 </style>
+

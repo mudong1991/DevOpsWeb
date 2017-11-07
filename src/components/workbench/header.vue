@@ -1,6 +1,6 @@
 <template>
   <div id="workbench-header" class="clearfix">
-    <div class="col-xs-12 col-sm-12 col-md-2 w-logo clearfix">
+    <div class="col-xs-12 col-sm-12 col-md-2 w-logo clearfix" >
       <router-link :to="{name: 'index'}" class="pull-left">
         <img src="/static/images/logo.png" class="img-responsive" />
       </router-link>
@@ -10,8 +10,8 @@
       </div>
     </div>
 
-    <div v-show="showHeaderMenu" id="header-menu" class="animated fadeInDown">
-      <div class="col-xs-12 col-sm-12 col-md-6" >
+    <div v-show="showHeaderMenu" id="header-menu" class="animated fadeInDown clearfix">
+      <div class="col-xs-12 col-sm-12 col-md-6" style="z-index: 100">
         <el-menu
           :default-active="defaultMenu"
           class="el-menu-demo"
@@ -22,9 +22,9 @@
           <el-menu-item index="wb_index" @click="goPage('wb_index')">首页</el-menu-item>
           <el-menu-item index="wb_project" @click="goPage('wb_project')">项目</el-menu-item>
           <el-menu-item index="3">待办</el-menu-item>
-          <el-submenu index="4" id="el-submenu">
+          <el-submenu index="4" id="el-submenu" >
             <template slot="title">服务</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-1" >选项1</el-menu-item>
             <el-menu-item index="2-2">选项2</el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
           </el-submenu>
@@ -188,6 +188,7 @@
     text-align: left;
     height: 60px;
     padding: 10px 30px;
+    z-index: 1000;
     a{
       width: 140px;
       height: 32px;
@@ -235,7 +236,9 @@
       height: 40px;
     }
   }
-
+  #header-menu{
+    z-index: 500;
+  }
   .el-dropdown-link{
     height: 100%;
     display: inline-block;
