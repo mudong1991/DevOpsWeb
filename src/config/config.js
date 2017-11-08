@@ -66,6 +66,11 @@ export const errHandler = ({response}) => {  // API错误处理函数
     layerBtnTxt = '确认';
     layerContentCode = `响应${response.status}`;
     layerContent = '接口未响应';
+  } else if (response.status === 403) {  // 没有权限访问接口
+    layerTitle = '权限不足！';
+    layerBtnTxt = '好的';
+    layerContentCode = '响应403';
+    layerContent = '您没有权限访问该接口，请联系管理员！';
   } else if (response.status === 404) {  // 接口访问错误
     layerTitle = '接口错误！';
     layerBtnTxt = '原谅你';
@@ -122,3 +127,8 @@ export const errHandler = ({response}) => {  // API错误处理函数
  * */
 export const locationIP = returnCitySN.cip;
 
+/**
+ * 数据表格相关设置
+ * */
+export const defaultPageSize = 10;
+export const defaultPageSizeList = [10, 15, 30, 50];

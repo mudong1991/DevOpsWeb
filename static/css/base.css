@@ -68,6 +68,12 @@ label{
   margin-bottom: 0 !important;
   font-weight: normal !important;
 }
+table{
+  border-collapse: inherit !important;
+}
+.el-table th, .el-table td{
+  padding: 8px 0 !important;
+}
 .layui-layer-btn a{
   height: 30px !important;
 }

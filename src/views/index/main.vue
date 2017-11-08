@@ -31,7 +31,7 @@
     methods: {
       // 获取用户信息
       getUserInfo (callBack) {
-        systemService.checkUserInfo({}, false, true).then(({data}) => {
+        systemService.checkUserInfo({}, true, true).then(({data}) => {
           if (data.result_code === 0) {
             this.userInfo = data.result_data;
           } else {

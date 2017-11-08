@@ -1,10 +1,13 @@
 <template>
   <div class="main-header clearfix">
-    <div class="col-xs-12">
-      <el-breadcrumb separator="/">
+    <div class="col-xs-12 clearfix">
+      <div class="pull-left">
+        <strong>位置：</strong>
+      </div>
+      <el-breadcrumb separator="/" class="pull-left">
         <el-breadcrumb-item v-for="breadcrumb in breadcrumbList" :key="breadcrumb.id">
-          <router-link  :to="breadcrumb.linkObject" v-if="breadcrumb.linkObject" v-text="breadcrumb.name"></router-link>
-          <span v-else v-text="breadcrumb.name"></span>
+          <router-link  :to="breadcrumb.linkObject" v-if="breadcrumb.linkObject"><i :class="breadcrumb.icon"></i>  {{ breadcrumb.name }}</router-link>
+          <span v-else><i :class="breadcrumb.icon"></i> {{ breadcrumb.name }}</span>
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -42,8 +45,10 @@
     height: 31px;
     line-height: 31px;
     text-align: left;
-    padding: 8px 0;
     border-bottom: 1px solid #DDDDDD;
+  }
+  .el-breadcrumb{
+    margin-top: 8px;
   }
 </style>
 

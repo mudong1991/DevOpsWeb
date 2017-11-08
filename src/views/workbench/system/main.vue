@@ -30,12 +30,12 @@
 
           <el-submenu index="wb_user_all">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i class="fa fa-users"></i>
               <span slot="title" >账户管理</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="wb_userAdmin" @click="goPage('wb_userAdmin')">用户管理</el-menu-item>
-              <el-menu-item index="wb_permissionAdmin" @click="goPage('wb_permissionAdmin')">权限管理</el-menu-item>
+              <el-menu-item index="wb_userAdmin" @click="goPage('wb_userAdmin')"><i class="fa fa-user"></i>用户管理</el-menu-item>
+              <el-menu-item index="wb_permissionAdmin" @click="goPage('wb_permissionAdmin')"><i class="fa fa-sitemap"></i>权限管理</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -159,6 +159,11 @@
   }
   #aside-menu>li{
     border-top: 1px solid #59677B;
+  }
+  .el-submenu{
+    i[class*='fa']{
+      margin-right: 10px;
+    }
   }
   .el-submenu .el-menu{
     border-radius: 2px;
