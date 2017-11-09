@@ -5,6 +5,11 @@
     </el-header>
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element"><div>
+        <div class="margin-bottom-10">
+          <el-button type="primary" size="small"><i class="fa fa-plus"></i>添加用户</el-button>
+          <el-button type="danger" size="small"><i class="fa fa-trash-o"></i>批量删除</el-button>
+        </div>
+
         <el-table
             :data="tableData"
             border
@@ -75,15 +80,17 @@
 
             <el-table-column
               prop="last_login"
-              label="最近登录">
+              label="最近登录"
+              width="162">
             </el-table-column>
 
             <el-table-column
               prop="login_times"
-              label="登录次数">
+              label="登录次数"
+              sortable>
             </el-table-column>
 
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="160">
               <template slot-scope="scope">
                 <el-button
                   size="mini"

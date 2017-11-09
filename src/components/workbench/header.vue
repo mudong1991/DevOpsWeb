@@ -160,6 +160,7 @@
       }
     },
     created () {
+      this.fetchRoute();  // 初始化菜单选中
     },
     mounted () {
       // 简单浏览器窗口大小

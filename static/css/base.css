@@ -71,8 +71,11 @@ label{
 table{
   border-collapse: inherit !important;
 }
+i[class*='fa']{
+  margin-right: 4px !important;
+}
 .el-table th, .el-table td{
-  padding: 8px 0 !important;
+  padding: 7px 0 !important;
 }
 .layui-layer-btn a{
   height: 30px !important;

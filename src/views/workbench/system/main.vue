@@ -160,11 +160,6 @@
   #aside-menu>li{
     border-top: 1px solid #59677B;
   }
-  .el-submenu{
-    i[class*='fa']{
-      margin-right: 10px;
-    }
-  }
   .el-submenu .el-menu{
     border-radius: 2px;
   }
