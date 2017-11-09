@@ -55,7 +55,7 @@
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
   import {MessageBox} from '@/utils/util';
-  import systemService from '@/services/systemService';
+  import baseService from '@/services/baseService';
 
   export default {
     props: {
@@ -74,7 +74,7 @@
         // 退出登录
         if (command === 'logout') {
           MessageBox.confirm('确定要退出登录吗？', () => {
-            systemService.logout({}, false, true).then(({data}) => {
+            baseService.logout({}, false, true).then(({data}) => {
               this.$cookie.delete('sessionid'); // 删除sessionid，重新登录
               this.$router.go(0);
             });

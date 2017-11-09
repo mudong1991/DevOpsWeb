@@ -11,7 +11,7 @@
 
 <script type="text/ecmascript-6">
   import {title, indexSessionExpiresAutoCheck} from 'config/config';
-  import systemService from 'services/systemService';
+  import baseService from 'services/baseService';
   import {MessageBox} from '@/utils/util';
   import router from '@/routers/index';
   import header from 'components/index/header';
@@ -31,7 +31,7 @@
     methods: {
       // 获取用户信息
       getUserInfo (callBack) {
-        systemService.checkUserInfo({}, true, true).then(({data}) => {
+        baseService.checkUserInfo({}, true, true).then(({data}) => {
           if (data.result_code === 0) {
             this.userInfo = data.result_data;
           } else {

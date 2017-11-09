@@ -3,7 +3,7 @@
  */
 import xhr from './xhr/xhr';
 
-class SystemService {
+class BaseService {
   // 登录
   login(data, diyError, diyLoading) {
     return xhr({url: '/api/login', method: 'post', data, diyError, diyLoading});
@@ -35,4 +35,4 @@ class SystemService {
   }
 }
 
-export default new SystemService();
+export default new BaseService();

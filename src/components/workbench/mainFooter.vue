@@ -20,7 +20,7 @@
 
 <script type="text/ecmascript-6">
   import {copyright, locationIP} from '@/config/config';
-  import systemService from '@/services/systemService';
+  import baseService from '@/services/baseService';
 
   export default {
     props: {
@@ -64,7 +64,7 @@
       // 获取当前时间
       this.getTimeT = setInterval(this.getCurrentTime, 1000);
       // 获取天气
-      systemService.getWeather({'location_ip': locationIP}, false, true).then(({data}) => {
+      baseService.getWeather({'location_ip': locationIP}, false, true).then(({data}) => {
         if (data.HeWeather6 !== undefined) {
           this.weather = data.HeWeather6[0];
         } else {

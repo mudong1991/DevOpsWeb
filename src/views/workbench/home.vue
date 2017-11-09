@@ -16,7 +16,7 @@
 
 <script type="text/ecmascript-6">
   import {title} from 'config/config';
-  import systemService from 'services/systemService';
+  import baseService from 'services/baseService';
   import router from '@/routers/index';
   import {MessageBox} from '@/utils/util';
   import workbenchHeader from '@/components/workbench/header.vue';
@@ -31,7 +31,7 @@
     methods: {
       // 获取用户信息
       getUserInfo (callBack) {
-        systemService.checkUserInfo({}, false, true).then(({data}) => {
+        baseService.checkUserInfo({}, false, true).then(({data}) => {
           if (data.result_code === 0) {
             this.userInfoObj = data.result_data;
           } else {

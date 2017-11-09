@@ -78,7 +78,7 @@
 
   import {title, rootPath, loginExpiresTime} from '@/config/config';
   import header2 from '@/components/index/header2';
-  import systemService from '@/services/systemService';
+  import baseService from '@/services/baseService';
 
   export default {
     beforeCreate () {
@@ -166,7 +166,7 @@
 
             // 登录API
             let loginData = {'username': this.loginForm.username, 'password': this.loginForm.password, 'verifyCode': this.loginForm.verifyCode};
-            systemService.login(loginData, false, true).then(({data}) => {
+            baseService.login(loginData, false, true).then(({data}) => {
                 this.loginBtnLoading = false;
                 if (data.result_code === 0) { // 登录成功
                   this.showNotice = false;
@@ -222,7 +222,7 @@
       // 获取验证码
       getVerify() {
         this.showVerifyLoading = true;
-        systemService.getVerfiy({}, true, true).then(({data}) => {
+        baseService.getVerfiy({}, true, true).then(({data}) => {
             this.needVerify = data.need_verify;
             if (this.needVerify) {
               let verifyUrl = data.verify_url;
