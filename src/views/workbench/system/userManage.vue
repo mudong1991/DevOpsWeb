@@ -8,6 +8,7 @@
         <el-table
             :data="tableData"
             border
+            v-loading="userListLoading"
             style="width: 100%">
             <el-table-column
               type="selection"
@@ -15,46 +16,82 @@
             </el-table-column>
 
             <el-table-column
-              prop="date"
-              label="日期"
-              sortable
-              width="180">
+              prop="username"
+              label="用户名"
+              sortable>
             </el-table-column>
 
             <el-table-column
-              prop="name"
-              label="姓名"
-              width="180">
-            </el-table-column>
-
-            <el-table-column
-              prop="address"
-              label="地址">
-            </el-table-column>
-
-            <el-table-column
-              prop="tag"
-              label="标签"
-              width="100"
-              :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
-              :filter-method="filterTag"
-              filter-placement="bottom-end">
+              label="头像">
               <template slot-scope="scope">
-                <el-tag
-                  :type="scope.row.tag === '家' ? 'primary' : 'success'"
-                  close-transition>{{scope.row.tag}}</el-tag>
+                <img class="img-responsive img-circle" :src="scope.row.avatar" width="32" height="32" />
               </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="role_name"
+              label="菜单角色">
+            </el-table-column>
+
+            <el-table-column
+              prop="groups_name"
+              label="功能组">
+            </el-table-column>
+
+            <el-table-column
+              prop="is_active"
+              label="登录授权"
+              :filters="[{ text: '允许', value: true }, { text: '拒绝', value: false }]"
+              :filter-method="filterIsActive"
+              filter-placement="bottom-end"
+              width="100">
+              <template slot-scope="scope">
+                <el-tag :type="scope.row.is_active ? 'success' : 'danger'" close-transition>
+                  <span v-if="scope.row.is_active">允许</span>
+                  <span v-else>拒绝</span>
+                </el-tag>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="is_superuser"
+              label="超级用户">
+              <template slot-scope="scope">
+                  <span v-if="scope.row.is_superuser">是</span>
+                  <span v-else>否</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="isonline"
+              label="在线状态">
+              <template slot-scope="scope">
+                <el-tag :type="scope.row.isonline ? 'success' : 'danger'" close-transition>
+                  <span v-if="scope.row.isonline">在线</span>
+                  <span v-else>离线</span>
+                </el-tag>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="last_login"
+              label="最近登录">
+            </el-table-column>
+
+            <el-table-column
+              prop="login_times"
+              label="登录次数">
             </el-table-column>
 
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                  >编辑</el-button>
                 <el-button
                   size="mini"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                  >删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -64,11 +101,11 @@
           class="text-center margin-top-10"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[10, 15, 30, 50]"
-          :page-size="10"
+          :current-page="pageModel.pageNo"
+          :page-sizes="pageSizeList"
+          :page-size="pageModel.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="50">
+          :total="pageModel.totalCount">
         </el-pagination>
       </div></div>
     </el-main>
@@ -76,51 +113,59 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {title} from 'config/config';
   import mainHeader from '@/components/workbench/mainHeader';
+  import systemSettingsService from 'services/systemSettingsService';
+  import {defaultPageSizeList, defaultPageModel} from 'config/config';
 
   export default {
-    created () {
-      document.title = title;
-    },
     data () {
       return {
+        pageSizeList: defaultPageSizeList,
         breadcrumbList: [
           {'name': '系统设置', 'linkObject': {name: 'wb_system'}, 'icon': 'fa fa-cogs'},
           {'name': '账户管理', 'icon': 'fa fa-users'},
           {'name': '用户管理', 'linkObject': {name: 'wb_userAdmin'}, 'icon': 'fa fa-user'}
         ],
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          tag: '家'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄',
-          tag: '公司'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-          tag: '家'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄',
-          tag: '公司'
-        }]
+        userListLoading: false,  // 显示加载动画
+        searchInfo: {page: 1, username: '', pageSize: 10},  // 搜索信息
+        pageModel: defaultPageModel,  // 分页数据
+        tableData: []
       };
     },
     methods: {
-      filterTag(value, row) {
-        return row.tag === value;
+      filterIsActive(value, row) {
+        return row.is_active === value;
+      },
+      // 绑定用户数据列表
+      bindUserList () {
+        this.userListLoading = true;
+        systemSettingsService.getUserList(this.searchInfo, false, true).then(({data}) => {
+          this.userListLoading = false;
+
+          this.tableData = data.tableData;
+          this.pageModel = data.pageInfo;
+        }, ({data}) => {
+          this.userListLoading = false;
+        });
+      },
+      // 翻页
+      handleCurrentChange(val) {
+        this.searchInfo.page = val;
+        this.bindUserList();
+      },
+      // 每页条数改变
+      handleSizeChange(val) {
+        this.searchInfo.pageSize = val;
+        this.bindUserList();
       }
+    },
+    created () {
+      // 获取用户数据
+      this.bindUserList();
     },
     components: {
       mainHeader
-  }
+    }
   };
 </script>
 

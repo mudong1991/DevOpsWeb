@@ -131,4 +131,5 @@ export const locationIP = returnCitySN.cip;
  * 数据表格相关设置
  * */
 export const defaultPageSize = 10;
-export const defaultPageSizeList = [10, 15, 30, 50];
+export const defaultPageSizeList = [6, 10, 15, 20];
+export const defaultPageModel = {pageNo: 1, pageSize: 10, totalCount: 0};
