@@ -123,7 +123,6 @@
   import mainHeader from '@/components/workbench/mainHeader';
   import systemSettingsService from 'services/systemSettingsService';
   import {defaultPageSizeList, defaultPageModel} from 'config/config';
-  import {MessageBox} from 'utils/util';
 
   export default {
     data () {
@@ -168,13 +167,7 @@
       },
       // 添加用户
       addUser() {
-        MessageBox.open({
-          type: 2,
-          title: '很多时候，我们想最大化看，比如像这个页面。',
-          area: ['893px', '600px'],
-          shadeClose: true,
-          content: '/workbench/systemSettings/addUser/'
-        });
+
       }
     },
     created () {

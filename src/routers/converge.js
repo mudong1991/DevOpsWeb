@@ -3,7 +3,6 @@
  */
 import workbenchViewMap from './map/workbenchViewMap';
 import indexViewMap from './map/indexViewMap';
-import modelViewMap from './modelMap/modelViewMap';
 
 const routes = [
   // 首页相关路由
@@ -21,14 +20,6 @@ const routes = [
       require(['@/views/workbench/main'], resolve);
     },
     children: workbenchViewMap
-  },
-  // 弹出框相关路由
-  {
-    path: '/model',
-    component: resolve => {
-      require(['@/views/model/main'], resolve);
-    },
-    children: modelViewMap
   },
   {
     path: '*',
