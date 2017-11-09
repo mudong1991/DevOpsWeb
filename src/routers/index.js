@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/stores/store';
-import routes from './map/converge';
+import routes from './converge';
 import webpackConfig from 'webpack_config/index';
 import {routerChangeTime, loginExpiresTime} from '@/config/config';
 

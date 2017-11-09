@@ -7,28 +7,28 @@ export default [
     path: '',
     name: 'wb_system',
     component: resolve => {
-      require(['@/views/workbench/system/index'], resolve);
+      require(['@/views/workbench/systemSettings/index'], resolve);
     }
   },
   {
     path: 'userAdmin',
     name: 'wb_userAdmin',
     component: resolve => {
-      require(['@/views/workbench/system/userManage'], resolve);
+      require(['@/views/workbench/systemSettings/userManage'], resolve);
     }
   },
   {
     path: 'permissionAdmin',
     name: 'wb_permissionAdmin',
     component: resolve => {
-      require(['@/views/workbench/system/permissionManage'], resolve);
+      require(['@/views/workbench/systemSettings/permissionManage'], resolve);
     }
   },
   {
     path: 'userLog',
     name: 'wb_userLog',
     component: resolve => {
-      require(['@/views/workbench/system/userLog'], resolve);
+      require(['@/views/workbench/systemSettings/userLog'], resolve);
     }
   }
 ];

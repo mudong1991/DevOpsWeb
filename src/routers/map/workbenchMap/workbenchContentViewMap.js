@@ -28,7 +28,7 @@ export default [
   {
     path: 'system',
     component: resolve => {
-      require(['@/views/workbench/system/main'], resolve);
+      require(['@/views/workbench/systemSettings/main'], resolve);
     },
     children: workbenchSystemViewMap
   }

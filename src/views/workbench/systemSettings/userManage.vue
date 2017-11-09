@@ -6,7 +6,7 @@
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element"><div>
         <div class="margin-bottom-10">
-          <el-button type="primary" size="small"><i class="fa fa-plus"></i>添加用户</el-button>
+          <el-button type="primary" size="small" @click="addUser"><i class="fa fa-plus"></i>添加用户</el-button>
           <el-button type="danger" size="small"><i class="fa fa-trash-o"></i>批量删除</el-button>
         </div>
 
@@ -123,6 +123,7 @@
   import mainHeader from '@/components/workbench/mainHeader';
   import systemSettingsService from 'services/systemSettingsService';
   import {defaultPageSizeList, defaultPageModel} from 'config/config';
+  import {MessageBox} from 'utils/util';
 
   export default {
     data () {
@@ -164,6 +165,16 @@
       handleSizeChange(val) {
         this.searchInfo.pageSize = val;
         this.bindUserList();
+      },
+      // 添加用户
+      addUser() {
+        MessageBox.open({
+          type: 2,
+          title: '很多时候，我们想最大化看，比如像这个页面。',
+          area: ['893px', '600px'],
+          shadeClose: true,
+          content: '/workbench/systemSettings/addUser/'
+        });
       }
     },
     created () {

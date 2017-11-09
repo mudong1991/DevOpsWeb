@@ -222,7 +222,7 @@
       // 获取验证码
       getVerify() {
         this.showVerifyLoading = true;
-        baseService.getVerfiy({}, true, true).then(({data}) => {
+        systemService.getVerfiy({}, true, true).then(({data}) => {
             this.needVerify = data.need_verify;
             if (this.needVerify) {
               let verifyUrl = data.verify_url;
