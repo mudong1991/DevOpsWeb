@@ -134,14 +134,13 @@
 
             <el-form-item label="头像">
               <el-upload
-                class="avatar-uploader"
+                class="upload-demo"
                 action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="true"
-                list-type="picture-card"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                :file-list="fileList"
+                :auto-upload="false"
+                list-type="picture">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
               </el-upload>
             </el-form-item>
           </el-form>
@@ -184,7 +183,6 @@
 
       return {
         pageSizeList: defaultPageSizeList,
-        imageUrl: '',
         breadcrumbList: [
           {'name': '系统设置', 'linkObject': {name: 'wb_system'}, 'icon': 'fa fa-cogs'},
           {'name': '账户管理', 'icon': 'fa fa-users'},
@@ -217,7 +215,8 @@
             { validator: validatePassword2, required: true, trigger: 'blur' }
           ]
         },
-        formLabelWidth: '100px'
+        formLabelWidth: '100px',
+        fileList: []
       };
     },
     methods: {
@@ -292,28 +291,5 @@
   }
   input[type="file"] {
     display: none !important;
-  }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
   }
 </style>
