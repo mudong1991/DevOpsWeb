@@ -6,14 +6,15 @@
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element"><div>
         <div class="margin-bottom-10">
-          <el-button type="primary" size="small" @click="addUser"><i class="fa fa-plus"></i>添加用户</el-button>
-          <el-button type="danger" size="small"><i class="fa fa-trash-o"></i>批量删除</el-button>
+          <el-button type="primary" size="small" @click="operateUser()"><i class="fa fa-plus"></i>添加用户</el-button>
+          <el-button type="danger" size="small" :disabled="multipleSelection.length === 0"><i class="fa fa-trash-o"></i>批量删除</el-button>
         </div>
 
         <el-table
             :data="tableData"
             border
             v-loading="userListLoading"
+            @selection-change="handleSelectionChange"
             style="width: 100%">
             <el-table-column
               type="selection"
@@ -94,6 +95,7 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
+                  @click="operateUser(scope.row.id)"
                   >编辑</el-button>
                 <el-button
                   size="mini"
@@ -114,6 +116,40 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="pageModel.totalCount">
         </el-pagination>
+
+        <!--添加用户-->
+        <el-dialog :title="operateUserDialogInfo.title" :visible.sync="operateUserDialogVisible" custom-class="col-xs-10 col-sm-8 col-md-5 col-lg-4 no-float">
+          <el-form :model="userForm" :rules="userRules" class="demo-ruleForm" ref="ruleForm" :label-width="formLabelWidth" status-icon>
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="userForm.username" auto-complete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="密码" prop="password">
+              <el-input type="password" v-model="userForm.password" auto-complete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="确认密码" prop="checkPassword">
+              <el-input type="password" v-model="userForm.checkPassword" auto-complete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="头像">
+              <el-upload
+                class="avatar-uploader"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="true"
+                list-type="picture-card"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="operateUserDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="operateUserDialogVisible = false" v-text="operateUserDialogInfo.label"></el-button>
+          </div>
+        </el-dialog>
       </div></div>
     </el-main>
   </el-container>
@@ -126,8 +162,29 @@
 
   export default {
     data () {
+      let validatePassword = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.userForm.checkPassword !== '') {
+            this.$refs.ruleForm.validateField('checkPassword');
+          }
+          callback();
+        }
+      };
+      let validatePassword2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.userForm.password) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+
       return {
         pageSizeList: defaultPageSizeList,
+        imageUrl: '',
         breadcrumbList: [
           {'name': '系统设置', 'linkObject': {name: 'wb_system'}, 'icon': 'fa fa-cogs'},
           {'name': '账户管理', 'icon': 'fa fa-users'},
@@ -136,7 +193,31 @@
         userListLoading: false,  // 显示加载动画
         searchInfo: {page: 1, username: '', pageSize: 10},  // 搜索信息
         pageModel: defaultPageModel,  // 分页数据
-        tableData: []
+        tableData: [],
+        multipleSelection: [],  // 列表选择列表
+        operateUserDialogVisible: false, // 操作用户模态框
+        operateUserDialogInfo: {title: '添加用户', label: '添加'},
+        userForm: {
+          username: '',
+          password: '',
+          checkpassword: '',
+          avatar: '',
+          is_active: '',
+          is_superuser: ''
+        },
+        userRules: {
+          username: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { max: 50, message: '用户名最长为 50 个字符', trigger: 'blur' }
+          ],
+          password: [
+            { validator: validatePassword, required: true, trigger: 'blur' }
+          ],
+          checkPassword: [
+            { validator: validatePassword2, required: true, trigger: 'blur' }
+          ]
+        },
+        formLabelWidth: '100px'
       };
     },
     methods: {
@@ -165,9 +246,34 @@
         this.searchInfo.pageSize = val;
         this.bindUserList();
       },
-      // 添加用户
-      addUser() {
+      // 选择改变
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      // 用户操作（添加和编辑）
+      operateUser (userId) {
+        if (userId) {
+          this.operateUserDialogInfo = {title: '编辑用户', label: '确定'};
+          this.operateUserDialogVisible = true;
+        } else {
+          this.operateUserDialogInfo = {title: '添加用户', label: '添加'};
+          this.operateUserDialogVisible = true;
+        }
+      },
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
 
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
       }
     },
     created () {
@@ -180,6 +286,34 @@
   };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-
+<style lang="scss" rel="stylesheet/scss">
+  .no-float{
+    float: none !important;
+  }
+  input[type="file"] {
+    display: none !important;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>

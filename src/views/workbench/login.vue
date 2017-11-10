@@ -22,7 +22,7 @@
         <div class="col-md-8 hidden-sm hidden-xs">
         </div>
         <div class="col-md-4 col-sm-12 login-form animated pulse">
-          <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="login-rule-form">
+          <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="login-rule-form" status-icon>
             <h2 class="title" >用户登录</h2>
             <div class="login-form-content">
               <div class="login-form-error" v-show="showNotice">
@@ -222,7 +222,7 @@
       // 获取验证码
       getVerify() {
         this.showVerifyLoading = true;
-        systemService.getVerfiy({}, true, true).then(({data}) => {
+        baseService.getVerfiy({}, true, true).then(({data}) => {
             this.needVerify = data.need_verify;
             if (this.needVerify) {
               let verifyUrl = data.verify_url;
