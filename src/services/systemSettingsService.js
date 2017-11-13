@@ -10,8 +10,8 @@ class SystemSettingsService {
   }
 
   // 添加用户
-  addUser (data, extraParams, diyError, diyLoading) {
-    return xhr({url: '/api/users', method: 'post', data, extraParams: extraParams, diyError, diyLoading});
+  operateUser (data, action, extraParams, diyError, diyLoading) {
+    return xhr({url: '/api/users', method: action === 'add' ? 'post' : 'put', data, extraParams: extraParams, diyError, diyLoading});
   }
 }
 

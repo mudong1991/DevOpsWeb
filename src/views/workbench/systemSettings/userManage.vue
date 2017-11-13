@@ -95,7 +95,7 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  @click="operateUser(scope.row.id)"
+                  @click="operateUserModel(scope.row)"
                   >编辑</el-button>
                 <el-button
                   size="mini"
@@ -123,7 +123,7 @@
         </el-dialog>
 
         <!--添加用户（模态框）-->
-        <el-dialog :title="operateUserDialogInfo.title" :visible.sync="operateUserDialogVisible" custom-class="col-xs-10 col-sm-8 col-md-5 col-lg-4 no-float">
+        <el-dialog :title="operateUserDialogInfo.title" :visible.sync="operateUserDialogVisible" :before-close="handleUserDialogClose" custom-class="col-xs-10 col-sm-8 col-md-5 col-lg-4 no-float">
           <el-form :model="userForm" :rules="userRules" class="demo-ruleForm"  ref="userForm" :label-width="formLabelWidth" status-icon>
             <el-form-item label="用户名" prop="username">
               <el-input v-model="userForm.username" auto-complete="off"></el-input>
@@ -160,7 +160,7 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="operateUserDialogVisible = false">取 消</el-button>
+            <el-button @click="closeUserDialog()">取 消</el-button>
             <el-button type="primary" @click="operateUser('userForm')"  v-show="!loginBtnLoading" v-text="operateUserDialogInfo.label"></el-button>
             <el-button type="primary" :loading="true" v-show="loginBtnLoading" size="large" class="login-form-content-submit">执    行   中...</el-button>
           </div>
@@ -216,7 +216,7 @@
         userForm: {
           username: '',
           password: '',
-          checkpassword: '',
+          checkPassword: '',
           avatar: '',
           is_active: true,
           is_superuser: ''
@@ -273,16 +273,27 @@
         this.avatarDialogVisible = true;
         this.avatarDialogImageUrl = imgUrl;
       },
+      // 模态框关闭
+      handleUserDialogClose (done) {
+        this.$refs['userForm'].resetFields();
+        done();
+      },
+      closeUserDialog () {
+        this.$refs['userForm'].resetFields();
+        this.operateUserDialogVisible = false;
+      },
       // 用户操作（添加和编辑）
-      operateUserModel (userId) {
-        if (userId) {
+      operateUserModel (rowData) {
+        if (rowData) {
           this.operateUserDialogInfo = {title: '编辑用户', label: '确定', type: 'edit'};
+          this.userForm = Object.assign({}, rowData);
+          this.userForm.checkPassword = this.userForm.password;
           this.operateUserDialogVisible = true;
         } else {
           this.userForm = {
             username: '',
             password: '',
-            checkpassword: '',
+            checkPassword: '',
             avatar: '',
             is_active: true,
             is_superuser: ''
@@ -318,25 +329,24 @@
             let userFormData = new FormData();  // 有文件，必须传入表单对象
 
             userFormData.append('username', this.userForm.username);
-            userFormData.append('password', this.userForm.password);
+            userFormData.append('password', this.userForm.checkPassword);
             userFormData.append('avatar', this.userForm.avatar);
             userFormData.append('is_active', this.userForm.is_active);
             userFormData.append('is_superuser', this.userForm.is_superuser);
             this.loginBtnLoading = true;
-            if (this.operateUserDialogInfo.type === 'add') {
-              systemSettingsService.addUser(userFormData, {headers: {'Content-Type': 'multipart/form-data', 'X-CSRFToken': this.$cookie.get('csrftoken')}}, false, true).then(({data}) => {
-                this.loginBtnLoading = false;
-                this.operateUserDialogVisible = false;
-                this.bindUserList();
-                this.$message({
-                  message: `成功创建用户：${data.username}`,
-                  showClose: true,
-                  type: 'success'
-                });
-              }, ({data}) => {
-                this.loginBtnLoading = false;
+
+            systemSettingsService.operateUser(userFormData, this.operateUserDialogInfo.type, {headers: {'Content-Type': 'multipart/form-data', 'X-CSRFToken': this.$cookie.get('csrftoken')}}, false, true).then(({data}) => {
+              this.loginBtnLoading = false;
+              this.operateUserDialogVisible = false;
+              this.bindUserList();
+              this.$message({
+                message: `成功创建用户：${data.username}`,
+                showClose: true,
+                type: 'success'
               });
-            }
+            }, ({data}) => {
+              this.loginBtnLoading = false;
+            });
           }
         });
       }
