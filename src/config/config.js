@@ -55,6 +55,28 @@ export const errHandler = ({response}) => {  // API错误处理函数
       }
     }
   };
+  let parseErrorResponse = (response) => {
+    let errorData = parseErrorMessage(response);
+    if (errorData instanceof Array) {
+      return Array.map(errorData, (item) => {
+        if (item === Array) {
+          item = item[0];
+        }
+
+        let errorKeyItem = Object.values(item);
+
+        return Array.map(errorKeyItem, (keyItem) => {
+          return `<span style="color: red">${keyItem}</span><br>`;
+        }).join('');
+      }).join('');
+    } else if (errorData instanceof Object) {
+      return Array.map(Object.values(errorData), (item) => {
+        return `<span style="color: red">${item}</span><br>`;
+      }).join('');
+    } else {
+      return errorData;
+    }
+  };
 
   if (response === undefined) { // 没网
     layerTitle = '掉线了？';
@@ -75,7 +97,7 @@ export const errHandler = ({response}) => {  // API错误处理函数
     layerTitle = '接口错误！';
     layerBtnTxt = '原谅你';
     layerContentCode = '响应404';
-    layerContent = '接口访问失败啦，我们会尽快修复的哟';
+    layerContent = '没有该接口，我们会尽快修复的哟';
   } else if (response.status === 500) {  // 接口异常
     layerTitle = '服务走神啦！';
     layerBtnTxt = '原谅你';
@@ -102,10 +124,20 @@ export const errHandler = ({response}) => {  // API错误处理函数
       });
     });
   } else {
-    layerTitle = '接口响应错误！';
-    layerBtnTxt = '确认';
-    layerContentCode = `响应${response.status}`;
-    layerContent = '接口响应错误';
+    layerTitle = '操作失败！';
+    layerBtnTxt = '好的';
+    layerContent = parseErrorResponse(response);
+
+    showAlert = false;
+    layui.use('layer', () => {
+      let layer = layui.layer;
+
+      layer.confirm(`操作失败, 错误原因: <br/>${layerContent}`, {
+        title: '接口错误！',
+        skin: 'layui-more-btn-custom',
+        btn: ['好的']
+      });
+    });
   }
 
   // layui 弹窗

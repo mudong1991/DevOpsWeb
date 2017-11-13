@@ -8,6 +8,11 @@ class SystemSettingsService {
   getUserList (data, diyError, diyLoading) {
     return xhr({url: '/api/users', method: 'get', data, diyError, diyLoading});
   }
+
+  // 添加用户
+  addUser (data, extraParams, diyError, diyLoading) {
+    return xhr({url: '/api/users', method: 'post', data, extraParams: extraParams, diyError, diyLoading});
+  }
 }
 
 export default new SystemSettingsService();

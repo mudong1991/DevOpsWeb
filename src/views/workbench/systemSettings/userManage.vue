@@ -6,7 +6,7 @@
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element"><div>
         <div class="margin-bottom-10">
-          <el-button type="primary" size="small" @click="operateUser()"><i class="fa fa-plus"></i>添加用户</el-button>
+          <el-button type="primary" size="small" @click="operateUserModel()"><i class="fa fa-plus"></i>添加用户</el-button>
           <el-button type="danger" size="small" :disabled="multipleSelection.length === 0"><i class="fa fa-trash-o"></i>批量删除</el-button>
         </div>
 
@@ -30,7 +30,7 @@
             <el-table-column
               label="头像">
               <template slot-scope="scope">
-                <img class="img-responsive img-circle" :src="scope.row.avatar" width="32" height="32" />
+                <img class="img-responsive img-circle" @click="viewAvatar(scope.row.avatar)" :src="scope.row.avatar" width="32" height="32" style="width: 32px; height: 32px; cursor: pointer" />
               </template>
             </el-table-column>
 
@@ -117,9 +117,14 @@
           :total="pageModel.totalCount">
         </el-pagination>
 
-        <!--添加用户-->
+        <!--头像查看模态框-->
+        <el-dialog :visible.sync="avatarDialogVisible" size="tiny" class="text-center" >
+          <img width="100%" :src="avatarDialogImageUrl" alt="" style="height: 400px;">
+        </el-dialog>
+
+        <!--添加用户（模态框）-->
         <el-dialog :title="operateUserDialogInfo.title" :visible.sync="operateUserDialogVisible" custom-class="col-xs-10 col-sm-8 col-md-5 col-lg-4 no-float">
-          <el-form :model="userForm" :rules="userRules" class="demo-ruleForm" ref="ruleForm" :label-width="formLabelWidth" status-icon>
+          <el-form :model="userForm" :rules="userRules" class="demo-ruleForm"  ref="userForm" :label-width="formLabelWidth" status-icon>
             <el-form-item label="用户名" prop="username">
               <el-input v-model="userForm.username" auto-complete="off"></el-input>
             </el-form-item>
@@ -134,19 +139,30 @@
 
             <el-form-item label="头像">
               <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :file-list="fileList"
+                class="avatar-uploader"
+                action="/api/users"
                 :auto-upload="false"
-                list-type="picture">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
+                :show-file-list="false"
+                :on-change="handleChange"
+                :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+            </el-form-item>
+
+
+            <el-form-item label="登录授权">
+              <el-switch v-model="userForm.is_active"></el-switch>
+            </el-form-item>
+
+            <el-form-item label="超级管理员">
+              <el-switch v-model="userForm.is_superuser"></el-switch>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="operateUserDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="operateUserDialogVisible = false" v-text="operateUserDialogInfo.label"></el-button>
+            <el-button type="primary" @click="operateUser('userForm')"  v-show="!loginBtnLoading" v-text="operateUserDialogInfo.label"></el-button>
+            <el-button type="primary" :loading="true" v-show="loginBtnLoading" size="large" class="login-form-content-submit">执    行   中...</el-button>
           </div>
         </el-dialog>
       </div></div>
@@ -166,7 +182,7 @@
           callback(new Error('请输入密码'));
         } else {
           if (this.userForm.checkPassword !== '') {
-            this.$refs.ruleForm.validateField('checkPassword');
+            this.$refs.userForm.validateField('checkPassword');
           }
           callback();
         }
@@ -194,13 +210,15 @@
         tableData: [],
         multipleSelection: [],  // 列表选择列表
         operateUserDialogVisible: false, // 操作用户模态框
-        operateUserDialogInfo: {title: '添加用户', label: '添加'},
+        avatarDialogVisible: false,
+        avatarDialogImageUrl: '',
+        operateUserDialogInfo: {title: '添加用户', label: '添加', type: 'add'},
         userForm: {
           username: '',
           password: '',
           checkpassword: '',
           avatar: '',
-          is_active: '',
+          is_active: true,
           is_superuser: ''
         },
         userRules: {
@@ -216,7 +234,8 @@
           ]
         },
         formLabelWidth: '100px',
-        fileList: []
+        imageUrl: '',
+        loginBtnLoading: false
       };
     },
     methods: {
@@ -249,18 +268,24 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
+      // 查看用户头像
+      viewAvatar (imgUrl) {
+        this.avatarDialogVisible = true;
+        this.avatarDialogImageUrl = imgUrl;
+      },
       // 用户操作（添加和编辑）
-      operateUser (userId) {
+      operateUserModel (userId) {
         if (userId) {
-          this.operateUserDialogInfo = {title: '编辑用户', label: '确定'};
+          this.operateUserDialogInfo = {title: '编辑用户', label: '确定', type: 'edit'};
           this.operateUserDialogVisible = true;
         } else {
-          this.operateUserDialogInfo = {title: '添加用户', label: '添加'};
+          this.operateUserDialogInfo = {title: '添加用户', label: '添加', type: 'add'};
           this.operateUserDialogVisible = true;
         }
       },
-      handleAvatarSuccess(res, file) {
+      handleChange(file, fileList) {
         this.imageUrl = URL.createObjectURL(file.raw);
+        this.userForm.avatar = file.raw;  // file.raw 是文件对象
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -268,11 +293,38 @@
 
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
+          return false;
         }
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!');
+          return false;
         }
+
         return isJPG && isLt2M;
+      },
+
+      // 添加、编辑用户
+      operateUser (formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let userFormData = new FormData();  // 有文件，必须传入表单对象
+
+            userFormData.append('username', this.userForm.username);
+            userFormData.append('password', this.userForm.password);
+            userFormData.append('avatar', this.userForm.avatar);
+            userFormData.append('is_active', this.userForm.is_active);
+            userFormData.append('is_superuser', this.userForm.is_superuser);
+            this.loginBtnLoading = true;
+            if (this.operateUserDialogInfo.type === 'add') {
+              systemSettingsService.addUser(userFormData, {headers: {'Content-Type': 'multipart/form-data', 'X-CSRFToken': this.$cookie.get('csrftoken')}}, false, true).then(({data}) => {
+                this.loginBtnLoading = false;
+                console.log(data);
+              }, ({data}) => {
+                this.loginBtnLoading = false;
+              });
+            }
+          }
+        });
       }
     },
     created () {
@@ -291,5 +343,30 @@
   }
   input[type="file"] {
     display: none !important;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    display: block;
   }
 </style>
