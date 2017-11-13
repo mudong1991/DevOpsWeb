@@ -279,6 +279,14 @@
           this.operateUserDialogInfo = {title: '编辑用户', label: '确定', type: 'edit'};
           this.operateUserDialogVisible = true;
         } else {
+          this.userForm = {
+            username: '',
+            password: '',
+            checkpassword: '',
+            avatar: '',
+            is_active: true,
+            is_superuser: ''
+          };
           this.operateUserDialogInfo = {title: '添加用户', label: '添加', type: 'add'};
           this.operateUserDialogVisible = true;
         }
@@ -318,7 +326,13 @@
             if (this.operateUserDialogInfo.type === 'add') {
               systemSettingsService.addUser(userFormData, {headers: {'Content-Type': 'multipart/form-data', 'X-CSRFToken': this.$cookie.get('csrftoken')}}, false, true).then(({data}) => {
                 this.loginBtnLoading = false;
-                console.log(data);
+                this.operateUserDialogVisible = false;
+                this.bindUserList();
+                this.$message({
+                  message: `成功创建用户：${data.username}`,
+                  showClose: true,
+                  type: 'success'
+                });
               }, ({data}) => {
                 this.loginBtnLoading = false;
               });

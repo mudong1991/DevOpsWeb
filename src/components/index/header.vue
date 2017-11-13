@@ -211,6 +211,7 @@
                 padding-left: 4px;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                white-space: nowrap;
               }
             }
             i{

@@ -99,30 +99,43 @@ export const errHandler = ({response}) => {  // API错误处理函数
     layerContentCode = '响应404';
     layerContent = '没有该接口，我们会尽快修复的哟';
   } else if (response.status === 500) {  // 接口异常
-    layerTitle = '服务走神啦！';
-    layerBtnTxt = '原谅你';
-    layerContentCode = '响应500';
-    layerContent = '服务器内部异常了，我们会尽快修复的哟';
+    layerTitle = '操作失败！';
+    layerBtnTxt = '好的';
+    layerContent = `<span style="color: red">${parseErrorMessage(response)}</span>`;
 
     showAlert = false;
     layui.use('layer', () => {
       let layer = layui.layer;
 
-      layer.confirm(`服务器内部异常了，我们会尽快修复的哟<br />错误原因: <span style="color: red">${layerContentCode}</span>`, {
-        title: '服务器走神啦！',
-        skin: 'layui-more-btn-custom',
-        btn: ['查看详情', '原谅你一次']
-      }, () => {
-        layer.closeAll();
-        layer.open({
-          type: 1,
-          title: '错误详情',
-          area: ['70%; max-width: 480px', 'auto; max-height: 360px'],
-          content: `<pre style="padding: 10px 20px; border: none; background: transparent">${parseErrorMessage(response)}</pre>`,
-          btn: ['请尽快解决']
-        });
+      layer.alert(`操作失败, 错误原因: <br/>${layerContent}`, {
+        title: '操作失败！',
+        icon: 5,
+        btn: ['确定']
       });
     });
+
+    // layerTitle = '服务走神啦！';
+    // layerBtnTxt = '原谅你';
+    // layerContentCode = '响应500';
+    // layerContent = '服务器内部异常了，我们会尽快修复的哟';
+    // layui.use('layer', () => {
+    //   let layer = layui.layer;
+    //
+    //   layer.confirm(`服务器内部异常了，我们会尽快修复的哟<br />错误原因: <span style="color: red">${layerContentCode}</span>`, {
+    //     title: '服务器走神啦！',
+    //     skin: 'layui-more-btn-custom',
+    //     btn: ['查看详情', '原谅你一次']
+    //   }, () => {
+    //     layer.closeAll();
+    //     layer.open({
+    //       type: 1,
+    //       title: '错误详情',
+    //       area: ['70%; max-width: 480px', 'auto; max-height: 360px'],
+    //       content: `<pre style="padding: 10px 20px; border: none; background: transparent">${parseErrorMessage(response)}</pre>`,
+    //       btn: ['请尽快解决']
+    //     });
+    //   });
+    // });
   } else {
     layerTitle = '操作失败！';
     layerBtnTxt = '好的';
@@ -132,9 +145,9 @@ export const errHandler = ({response}) => {  // API错误处理函数
     layui.use('layer', () => {
       let layer = layui.layer;
 
-      layer.confirm(`操作失败, 错误原因: <br/>${layerContent}`, {
-        title: '接口错误！',
-        skin: 'layui-more-btn-custom',
+      layer.alert(`操作失败, 错误原因: <br/>${layerContent}`, {
+        title: '操作失败！',
+        icon: 5,
         btn: ['好的']
       });
     });

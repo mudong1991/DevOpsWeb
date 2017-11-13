@@ -51,7 +51,7 @@
                 <span class="el-dropdown-link clearfix">
                    <span class="user-info">
                      <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
-                      {{ userInfoObj.username !== undefined ? userInfoObj.username : '' }}
+                      <span>{{ userInfoObj.username !== undefined ? userInfoObj.username : '' }}</span>
                    </span><i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -267,7 +267,19 @@
       .avatar{
         width: 32px;
         height: 32px;
+        float: left;
         display: inline-block;
+      }
+      span{
+        float: left;
+        max-width: 88px;
+        display: inline-block;
+        padding-top: 6px;
+        padding-right: 4px;
+        padding-left: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
     i{
