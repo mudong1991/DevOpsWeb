@@ -29,7 +29,7 @@
             <el-menu-item index="2-3">选项3</el-menu-item>
           </el-submenu>
           <el-menu-item index="5"><a href="https://www.ele.me" target="_blank"><i class="fa fa-code-fork"></i>  代码广场</a></el-menu-item>
-          <el-menu-item index="6"><a href="https://www.ele.me" target="_blank"><i class="fa fa-wrench" aria-hidden="true"></i>  自动化运维</a></el-menu-item>
+          <el-menu-item index="wb_maintain" @click="goPage('wb_maintain')"><i class="fa fa-wrench" aria-hidden="true"></i>  自动化运维</a></el-menu-item>
           <el-menu-item index="wb_system" @click="goPage('wb_system')"><i class="fa fa-cogs"></i>  系统设置</el-menu-item>
         </el-menu>
       </div>
@@ -72,6 +72,7 @@
   import {MessageBox} from '@/utils/util';
   import baseService from '@/services/baseService';
   import workbenchSystemViewMap from 'routers/map/workbenchMap/workbenchSystemViewMap';
+  import workbenchMaintainViewMap from 'routers/map/workbenchMap/workbenchMaintainViewMap';
 
   export default {
     props: {
@@ -156,6 +157,10 @@
 
         if (systemRouteList.includes(presentRoute)) {
           this.defaultMenu = 'wb_system';
+        }
+
+        if (workbenchMaintainViewMap.includes(presentRoute)) {
+          this.defaultMenu = 'wb_maintain';
         }
       }
     },

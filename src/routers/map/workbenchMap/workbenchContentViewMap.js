@@ -2,6 +2,7 @@
  * Created by mudong on 2017/10/11 0011.
  */
 import workbenchSystemViewMap from './workbenchSystemViewMap';
+import workbenchMaintainViewMap from './workbenchMaintainViewMap';
 
 export default [
   {
@@ -24,6 +25,13 @@ export default [
     component: resolve => {
       require(['@/views/workbench/project/main'], resolve);
     }
+  },
+  {
+    path: 'maintain',
+    component: resolve => {
+      require(['@/views/workbench/maintain/main'], resolve);
+    },
+    children: workbenchMaintainViewMap
   },
   {
     path: 'system',

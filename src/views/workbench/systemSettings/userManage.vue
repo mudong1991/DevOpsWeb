@@ -5,9 +5,21 @@
     </el-header>
     <el-main class="main-content-container">
       <div v-bar class="vuebar-element"><div>
-        <div class="margin-bottom-10">
-          <el-button type="primary" size="small" @click="operateUserModel()"><i class="fa fa-plus"></i>添加用户</el-button>
-          <el-button type="danger" size="small" :disabled="multipleSelection.length === 0" @click="deleteUserAction()"><i class="fa fa-trash-o"></i>批量删除</el-button>
+        <div class="margin-bottom-10 clearfix">
+          <div class="col-xs-12 col-sm-12 col-md-6 padding-0 margin-bottom-10">
+            <el-button type="primary" size="small" @click="operateUserModel()"><i class="fa fa-plus"></i>添加用户</el-button>
+            <el-button type="danger" size="small" :disabled="multipleSelection.length === 0" @click="deleteUserAction()"><i class="fa fa-trash-o"></i>批量删除</el-button>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 padding-0 text-left " style="line-height: 38px">
+            <el-input
+              placeholder="搜索用户名"
+              v-model="searchInfo.search"
+              size="small"
+              style="width: 200px;display: inline-block; height: 30px">
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
+            <el-button type="primary" size="small" @click="bindUserList()" ><i class="fa fa-search"></i>搜索</el-button>
+          </div>
         </div>
 
         <el-table
@@ -207,7 +219,7 @@
           {'name': '用户管理', 'linkObject': {name: 'wb_userAdmin'}, 'icon': 'fa fa-user'}
         ],
         userListLoading: false,  // 显示加载动画
-        searchInfo: {page: 1, username: '', pageSize: 10},  // 搜索信息
+        searchInfo: {page: 1, search: '', pageSize: 10},  // 搜索信息
         pageModel: defaultPageModel,  // 分页数据
         tableData: [],
         multipleSelection: [],  // 列表选择列表
