@@ -28,7 +28,7 @@
 
           <div class="text-center">
             <a @click="goBack()"><el-button type="success" size="small"><i class="fa fa-reply"></i>  返     回</el-button></a>
-            <router-link :to="{name: 'home'}"><el-button type="info" size="small"><i class="fa fa-home"></i>  主     页</el-button></router-link>
+            <router-link :to="{name: 'index'}"><el-button type="info" size="small"><i class="fa fa-home"></i>  主     页</el-button></router-link>
           </div>
         </div>
 

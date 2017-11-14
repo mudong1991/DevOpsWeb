@@ -7,7 +7,7 @@
       <div v-bar class="vuebar-element"><div>
         <div class="margin-bottom-10">
           <el-button type="primary" size="small" @click="operateUserModel()"><i class="fa fa-plus"></i>添加用户</el-button>
-          <el-button type="danger" size="small" :disabled="multipleSelection.length === 0"><i class="fa fa-trash-o"></i>批量删除</el-button>
+          <el-button type="danger" size="small" :disabled="multipleSelection.length === 0" @click="deleteUserAction()"><i class="fa fa-trash-o"></i>批量删除</el-button>
         </div>
 
         <el-table
@@ -100,6 +100,7 @@
                 <el-button
                   size="mini"
                   type="danger"
+                  @click="deleteUserAction(scope.row)"
                   >删除</el-button>
               </template>
             </el-table-column>
@@ -161,7 +162,7 @@
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="closeUserDialog()">取 消</el-button>
-            <el-button type="primary" @click="operateUser('userForm')"  v-show="!loginBtnLoading" v-text="operateUserDialogInfo.label"></el-button>
+            <el-button type="primary" @click="operateUserAction('userForm')"  v-show="!loginBtnLoading" v-text="operateUserDialogInfo.label"></el-button>
             <el-button type="primary" :loading="true" v-show="loginBtnLoading" size="large" class="login-form-content-submit">执    行   中...</el-button>
           </div>
         </el-dialog>
@@ -174,6 +175,7 @@
   import mainHeader from '@/components/workbench/mainHeader';
   import systemSettingsService from 'services/systemSettingsService';
   import {defaultPageSizeList, defaultPageModel} from 'config/config';
+  import {MessageBox} from '@/utils/util';
 
   export default {
     data () {
@@ -288,6 +290,7 @@
           this.operateUserDialogInfo = {title: '编辑用户', label: '确定', type: 'edit'};
           this.userForm = Object.assign({}, rowData);
           this.userForm.checkPassword = this.userForm.password;
+          this.imageUrl = this.userForm.avatar;
           this.operateUserDialogVisible = true;
         } else {
           this.userForm = {
@@ -298,6 +301,7 @@
             is_active: true,
             is_superuser: ''
           };
+          this.imageUrl = '';
           this.operateUserDialogInfo = {title: '添加用户', label: '添加', type: 'add'};
           this.operateUserDialogVisible = true;
         }
@@ -323,32 +327,82 @@
       },
 
       // 添加、编辑用户
-      operateUser (formName) {
+      operateUserAction (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let userFormData = new FormData();  // 有文件，必须传入表单对象
 
             userFormData.append('username', this.userForm.username);
             userFormData.append('password', this.userForm.checkPassword);
-            userFormData.append('avatar', this.userForm.avatar);
             userFormData.append('is_active', this.userForm.is_active);
             userFormData.append('is_superuser', this.userForm.is_superuser);
+            if (this.userForm.avatar instanceof Object) {
+              userFormData.append('avatar', this.userForm.avatar);
+            }
+
             this.loginBtnLoading = true;
 
-            systemSettingsService.operateUser(userFormData, this.operateUserDialogInfo.type, {headers: {'Content-Type': 'multipart/form-data', 'X-CSRFToken': this.$cookie.get('csrftoken')}}, false, true).then(({data}) => {
-              this.loginBtnLoading = false;
-              this.operateUserDialogVisible = false;
-              this.bindUserList();
+            if (this.operateUserDialogInfo.type === 'add') {
+              systemSettingsService.addUser(userFormData, {headers: {'Content-Type': 'multipart/form-data', 'X-CSRFToken': this.$cookie.get('csrftoken')}}, false, true).then(({data}) => {
+                this.loginBtnLoading = false;
+                this.operateUserDialogVisible = false;
+                this.bindUserList();
+                this.$message({
+                  message: `成功创建用户：${data.username}`,
+                  showClose: true,
+                  type: 'success'
+                });
+              }, ({data}) => {
+                this.loginBtnLoading = false;
+              });
+            } else if (this.operateUserDialogInfo.type === 'edit') {
+              systemSettingsService.editUser(this.userForm.id, userFormData, {headers: {'Content-Type': 'multipart/form-data', 'X-CSRFToken': this.$cookie.get('csrftoken')}}, false, true).then(({data}) => {
+                this.loginBtnLoading = false;
+                this.operateUserDialogVisible = false;
+                this.bindUserList();
+                this.$message({
+                  message: `成功修改用户：${data.username}`,
+                  showClose: true,
+                  type: 'success'
+                });
+              }, ({data}) => {
+                this.loginBtnLoading = false;
+              });
+            }
+          }
+        });
+      },
+
+      // 删除用户
+      deleteUserAction (rowData) {
+        if (rowData) {
+          MessageBox.confirm(`确认要删除用户: ${rowData.username}`, () => {
+            systemSettingsService.deleteUser([rowData.id], false, false).then(({data}) => {
               this.$message({
-                message: `成功创建用户：${data.username}`,
+                message: `成功删除用户：${rowData.username}`,
                 showClose: true,
                 type: 'success'
               });
-            }, ({data}) => {
-              this.loginBtnLoading = false;
+              this.bindUserList();
+              MessageBox.closeAll();
             });
-          }
-        });
+          });
+        } else {
+          let deleteUserList = Array.map(this.multipleSelection, (item) => {
+            return item.id;
+          });
+          MessageBox.confirm(`确认要删除这些用户`, () => {
+            systemSettingsService.deleteUser(deleteUserList, false, false).then(({data}) => {
+              this.$message({
+                message: `删除成功`,
+                showClose: true,
+                type: 'success'
+              });
+              this.bindUserList();
+              MessageBox.closeAll();
+            });
+          });
+        }
       }
     },
     created () {
