@@ -19,7 +19,7 @@
     },
     data () {
       return {
-        transitionName: 'slide-left'
+        transitionName: 'el-fade-in'
       };
     },
     methods: {

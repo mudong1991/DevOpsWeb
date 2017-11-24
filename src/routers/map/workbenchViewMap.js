@@ -17,5 +17,12 @@ export default [
     component: resolve => {
       require(['@/views/workbench/login'], resolve);
     }
+  },
+  {
+    path: 'locking',
+    name: 'locking',
+    component: resolve => {
+      require(['@/views/base/lockscreen/locking-page.vue'], resolve);
+    }
   }
 ];

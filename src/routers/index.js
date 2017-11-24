@@ -1,12 +1,13 @@
 /* eslint-disable no-global-assign */
 import Vue from 'vue';
+import iView from 'iview';
 import VueRouter from 'vue-router';
-import store from '@/stores/store';
 import routes from './converge';
 import webpackConfig from 'webpack_config/index';
-import {routerChangeTime, loginExpiresTime} from '@/config/config';
+import {loginExpiresTime} from '@/config/config';
 
 Vue.use(VueRouter);
+Vue.use(iView);
 
 const router = new VueRouter({
   // mode: 'history',
@@ -20,34 +21,46 @@ router.beforeEach((to, from, next) => {
     console.log(`to: ${toPath} from: ${fromPath}`);
   }
 
+  iView.LoadingBar.start();
+  // store.commit('addLoading', {
+  //   key: 'view',
+  //   text: '加载页面中...'
+  // });
+
   let sessionid = Vue.cookie.get('sessionid');
   let keepLogin = window.localStorage.getItem('keepLogin') || null;
   // 更新超时时间
   if (sessionid !== null && keepLogin === null) {
     Vue.cookie.set('sessionid', sessionid, {expires: loginExpiresTime});
   }
+  // 是否锁屏
+  let lockScreen = Vue.cookie.get('locking');
 
   // 判断用户是否登录，没有登录重定向到登录页面（只过滤workench后台的路由）
-  if (toPath.startsWith('/workbench') && toPath !== '/workbench/login' && toPath !== '/workbench/login/') {
+  if (toPath.startsWith('/workbench') && to.name !== 'wb_login') {
     // 获取用户信息
     try {
       if (sessionid === null) {
-        router.push({name: 'wb_login'});
+        next({
+          replace: true,
+          name: 'wb_login'
+        });
+      } else if ((lockScreen === '1' || lockScreen === 1) && to.name !== 'locking') {
+        next({
+          replace: true,
+          name: 'locking'
+        });
       } else {
-        // 太快了反应不过来
-        setTimeout(next, routerChangeTime);
+        next();
       }
     } catch (e) {
-      router.push({name: 'wb_login'});
+      next({
+        replace: true,
+        name: 'wb_login'
+      });
     }
    } else {
-    store.commit('addLoading', {
-      key: 'view',
-      text: '加载页面中...'
-    });
-
-    // 太快了反应不过来
-    setTimeout(next, routerChangeTime);
+    next();
   }
 });
 
@@ -56,7 +69,8 @@ router.afterEach((to, from, next) => {
     console.log(`成功浏览到: ${to.path}`);
   }
 
-  store.commit('removeLoading', 'view');
+  iView.LoadingBar.finish();
+  // store.commit('removeLoading', 'view');
 });
 
 export default router;

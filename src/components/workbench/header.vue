@@ -35,8 +35,8 @@
       </div>
 
       <div class="col-xs-12 col-sm-12 col-md-4 padding-0 tools clearfix" >
-          <ul>
-            <li class="tools-item tools-alert">
+          <ul class="clearfix">
+            <li class="tools-item tools-alert" >
               <a><i class="fa fa-bell-o"></i>提醒  <span class="badge">50</span></a>
             </li>
             <li class="tools-item tools-message">
@@ -46,24 +46,33 @@
               <a  @click="fullScreen()" v-if="!isFullScreen"><i class="fa fa-arrows-alt"></i><span >开启全屏</span></a>
               <a  @click="exitFullScreen()" v-if="isFullScreen"><i class="fa fa-arrows-alt"></i><span >退出全屏</span></a>
             </li>
+            <li class="tools-item">
+              <a @click="lockScreen()"><i class="fa fa-lock"></i>锁屏</a>
+            </li>
             <li class="user-options tools-item" v-if="userInfoObj !== null">
-              <el-dropdown @command="handleCommand">
-                <span class="el-dropdown-link clearfix">
-                   <span class="user-info">
-                     <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
-                      <span>{{ userInfoObj.username !== undefined ? userInfoObj.username : '' }}</span>
-                   </span><i class="el-icon-caret-bottom el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>个人中心</el-dropdown-item>
-                  <el-dropdown-item>设置</el-dropdown-item>
-                  <el-dropdown-item divided command="logout"><i class="fa fa-power-off"></i>  退出</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+              <a >
+                  <el-dropdown @command="handleCommand" >
+                  <span class="el-dropdown-link clearfix">
+                     <span class="user-info">
+                       <img class="img-responsive img-circle avatar" src="/static/images/user01.png"/>
+                        <span>{{ userInfoObj.username !== undefined ? userInfoObj.username : '' }}</span>
+                     </span><i class="el-icon-caret-bottom el-icon--right"></i>
+                  </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>个人中心</el-dropdown-item>
+                      <el-dropdown-item>设置</el-dropdown-item>
+                      <el-dropdown-item divided command="logout"><i class="fa fa-power-off"></i>  退出</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+              </a>
             </li>
           </ul>
       </div>
     </div>
+
+    <transition name="lock">
+      <div class="lock_action" v-if="showUnlock"></div>
+    </transition>
   </div>
 </template>
 
@@ -88,7 +97,8 @@
         showHeaderMenu: true,  // 显示头部菜单
         showSmMenu: false,
         defaultMenu: this.$route.name,
-        isFullScreen: this.$store.state.common.isFullScreen  // 是否全屏
+        isFullScreen: this.$store.state.common.isFullScreen,  // 是否全屏
+        showUnlock: false // 是否锁屏
       };
     },
     methods: {
@@ -145,6 +155,16 @@
           MessageBox.alert('当前浏览器暂不支持全屏操作');
         }
       },
+      lockScreen () {
+        this.showUnlock = true;
+        this.$cookie.set('last_page_name', this.$route.name, {expires: '1Y'}); // 本地存储锁屏之前打开的页面以便解锁后打开
+        setTimeout(() => {
+          this.$router.push({
+            name: 'locking'
+          });
+        }, 700);
+        this.$cookie.set('locking', '1');
+      },
       // page跳转
       goPage(name) {
         this.$router.push({name});
@@ -200,7 +220,29 @@
   .el-menu--horizontal{
     border: none;
   }
+  .lock_action{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    transition: all .8s;
+    box-shadow: 0 0 0 500px #667aa6 inset;
+  }
+  .lock-enter{
+    box-shadow: 0 0 0 0 #667aa6 inset;
+  }
+  .lock-enter-to{
+    box-shadow: 0 0 0 500px #667aa6 inset;
+  }
+  .lock-enter-active{
+    transition: all .8s;
+  }
 
+  .tools-item{
+    margin-left: 2px !important;
+  }
   .w-logo{
     text-align: left;
     height: 60px;
@@ -228,6 +270,9 @@
     height: auto;
     margin: 10px 0 6px 0;
     text-align: center;
+    ul{
+      display: inline-block;
+    }
     .tools-item{
       display: inline-block;
       margin-left: 10px;
@@ -254,7 +299,10 @@
       background-color: #FF4949 !important;
     }
     .user-options{
-      height: 40px;
+      a{
+        height: 40px;
+        padding-top: 0px;
+      }
     }
   }
   .el-dropdown-link{

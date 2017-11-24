@@ -24,6 +24,11 @@ class BaseService {
     return xhr({url: '/api/checkUserInfo', method: 'get', data, diyError, diyLoading});
   }
 
+  // 验证用户密码
+  checkUserPassword(data, diyError, diyLoading) {
+    return xhr({url: '/api/checkUserPassword', method: 'post', data, diyError, diyLoading});
+  }
+
   // 单点登录验证
   checkUserIsLogin(data, diyError, diyLoading) {
     return xhr({url: '/api/checkUserIsLogin', method: 'get', data, diyError, diyLoading});
