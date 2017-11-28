@@ -6,6 +6,7 @@ import Vuex from 'vuex';
 import loading from './modules/loading';
 import user from './modules/user';
 import common from './modules/common';
+import systemSettings from './modules/systemSettings';
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
   modules: {
     loading,
     user,
-    common
+    common,
+    systemSettings
   }
 });
 

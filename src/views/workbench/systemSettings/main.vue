@@ -24,7 +24,7 @@
               <span slot="title" >系统设置</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="wb_system" @click="goPage('wb_system')">系统设置</el-menu-item>
+              <el-menu-item index="wb_system" @click="goPage({name: 'wb_system', title: '系统设置'})">系统设置</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -34,8 +34,8 @@
               <span slot="title" >账户管理</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="wb_userAdmin" @click="goPage('wb_userAdmin')"><i class="fa fa-user"></i>用户管理</el-menu-item>
-              <el-menu-item index="wb_permissionAdmin" @click="goPage('wb_permissionAdmin')"><i class="fa fa-sitemap"></i>权限管理</el-menu-item>
+              <el-menu-item index="wb_userAdmin" @click="goPage({name: 'wb_userAdmin', title: '用户管理'})"><i class="fa fa-user"></i>用户管理</el-menu-item>
+              <el-menu-item index="wb_permissionAdmin" @click="goPage({name: 'wb_permissionAdmin', title: '权限管理'})"><i class="fa fa-sitemap"></i>权限管理</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -60,6 +60,9 @@
 
     <div class="main">
       <el-container>
+        <el-header>
+          <tags-page-opened :pageTagsList="pageTagsList" :defaultPage="'wb_system'" :closePage="closePageAction"></tags-page-opened>
+        </el-header>
         <el-main>
           <!-- 路由匹配到的组件将渲染在这里 -->
           <router-view></router-view>
@@ -76,6 +79,7 @@
   import {title} from 'config/config';
   import mainFooter from '@/components/workbench/mainFooter';
   import mainHeader from '@/components/workbench/mainHeader';
+  import tagsPageOpened from '@/components/workbench/tagsPageOpened';
 
   export default {
     created () {
@@ -90,13 +94,29 @@
         defaultMenu: this.$route.name
       };
     },
+    computed: {
+      pageTagsList () {
+        return this.$store.state.systemSettings.systemSettingsTags;  // 打开的页面的页面对象
+      }
+    },
     methods: {
       fetchRoute () {
         this.defaultMenu = this.$route.name;
       },
-      // page跳转
-      goPage(name) {
-        this.$router.push({name});
+      // page跳转, 并添加打开的页面
+      goPage(route) {
+        this.$router.push(route, () => {
+          this.$store.commit('addSystemSettingsTag', route);
+        });
+      },
+      closePageAction (name) {
+        this.$store.commit('removeSystemSettingsTag', name);
+        let openPageList = this.$store.state.systemSettings.systemSettingsTags;
+        if (openPageList.length > 1) {
+          this.$router.push(openPageList[1]);
+        } else {
+          this.$router.push(openPageList[0]);
+        }
       },
       collapseMenu () {
         this.isCollapse = !this.isCollapse;
@@ -129,7 +149,8 @@
     },
     components: {
       mainFooter,
-      mainHeader
+      mainHeader,
+      tagsPageOpened
     },
     watch: {
       // 如果路由有变化执行这个方法
@@ -146,13 +167,13 @@
   }
   .noneBlock{
     width: 100%;
-    height: 30px;
+    height: 35px;
     background: #59677B !important;
   }
   .el-menu{
     border: none !important;
     z-index: 100;
-    margin-top: 30px;
+    margin-top: 35px;
   }
   #aside-menu {
     transition: all .4s;
@@ -165,6 +186,12 @@
   }
   .el-menu-item-group__title{
     padding: 0 0 0 20px !important;
+  }
+  .el-header{
+    height: auto !important;
+    background: #F5F7F9;
+    border-bottom: 1px solid #dddddd;
+    padding: 0 12px;
   }
   .el-container{
     height: 100%;
@@ -191,7 +218,7 @@
     background-color: #283446;
     text-align: center;
     color: white;
-    line-height: 30px;
+    line-height: 35px;
     cursor: pointer;
     transition: all 0.4s;
     z-index: 1000;

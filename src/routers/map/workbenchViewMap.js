@@ -22,7 +22,7 @@ export default [
     path: 'locking',
     name: 'locking',
     component: resolve => {
-      require(['@/views/base/lockscreen/locking-page.vue'], resolve);
+      require(['@/components/workbench/lockscreen/locking-page.vue'], resolve);
     }
   }
 ];

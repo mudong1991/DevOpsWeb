@@ -45,7 +45,7 @@
     height: 31px;
     line-height: 31px;
     text-align: left;
-    border-bottom: 1px solid #DDDDDD;
+    background: white;
   }
   .el-breadcrumb{
     margin-top: 8px;
