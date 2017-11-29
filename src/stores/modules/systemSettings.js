@@ -39,7 +39,6 @@ const app = {
     },
     clearAllSystemSettingsTags (state) {
       state.systemSettingsTags.splice(1);
-      state.cachePage.length = 0;
       localStorage.systemSettingsTags = JSON.stringify(state.systemSettingsTags);
     },
     clearOtherSystemSettingsTags (state, vm) {
@@ -56,9 +55,6 @@ const app = {
         state.systemSettingsTags.splice(currentIndex + 1);
         state.systemSettingsTags.splice(1, currentIndex - 1);
       }
-      state.cachePage = state.cachePage.filter(item => {
-        return item === currentName;
-      });
       localStorage.systemSettingsTags = JSON.stringify(state.systemSettingsTags);
     },
     setOpenedSystemSettingsList (state) {

@@ -61,7 +61,12 @@
     <div class="main">
       <el-container>
         <el-header>
-          <tags-page-opened :pageTagsList="pageTagsList" :defaultPage="'wb_system'" :closePage="closePageAction"></tags-page-opened>
+          <tags-page-opened :pageTagsList="pageTagsList"
+                            :defaultPage="'wb_system'"
+                            :closePage="closePageAction"
+                            :closeOtherPage="closeOtherPageAction"
+                            :closeAllPage="closeAllPageAction">
+          </tags-page-opened>
         </el-header>
         <el-main>
           <!-- 路由匹配到的组件将渲染在这里 -->
@@ -117,6 +122,14 @@
         } else {
           this.$router.push(openPageList[0]);
         }
+      },
+      closeOtherPageAction () {
+        this.$store.commit('clearOtherSystemSettingsTags', this);
+      },
+      closeAllPageAction () {
+        this.$store.commit('clearAllSystemSettingsTags');
+        let openPageList = this.$store.state.systemSettings.systemSettingsTags;
+        this.$router.push(openPageList[0]);
       },
       collapseMenu () {
         this.isCollapse = !this.isCollapse;

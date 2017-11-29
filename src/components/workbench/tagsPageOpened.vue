@@ -32,14 +32,14 @@
 <template>
     <div ref="scrollCon" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll" class="tags-outer-scroll-con clearfix">
         <div class="close-all-tag-con">
-          <Dropdown>
+          <Dropdown  @on-click='handleCloseTag'>
             <Button type="primary">
               标签选项
               <Icon type="arrow-down-b"></Icon>
             </Button>
             <DropdownMenu slot="list">
-              <DropdownItem >关闭其他</DropdownItem>
-              <DropdownItem >关闭所有</DropdownItem>
+              <DropdownItem name="closeOther">关闭其他</DropdownItem>
+              <DropdownItem name="closeAll">关闭所有</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -80,10 +80,12 @@ export default {
           required: true
         },
         closeAllPage: {
-          type: Function
+          type: Function,
+          required: true
         },
         closeOtherPage: {
-          type: Function
+          type: Function,
+          required: true
         },
         beforePush: {
             type: Function,
@@ -98,63 +100,70 @@ export default {
         }
     },
     methods: {
-        linkTo (item) {
-            let routerObj = {};
-            routerObj.name = item.name;
-            if (item.argu) {
-                routerObj.params = item.argu;
-            }
-            if (item.query) {
-                routerObj.query = item.query;
-            }
-            if (this.beforePush(item)) {
-                this.$router.push(routerObj);
-            }
-        },
-        handlescroll (e) {
-            var type = e.type;
-            let delta = 0;
-            if (type === 'DOMMouseScroll' || type === 'mousewheel') {
-                delta = (e.wheelDelta) ? e.wheelDelta : -(e.detail || 0) * 40;
-            }
-            let left = 0;
-            if (delta > 0) {
-                left = Math.min(0, this.tagBodyLeft + delta);
-            } else {
-                if (this.$refs.scrollCon.offsetWidth - 100 < this.$refs.scrollBody.offsetWidth) {
-                    if (this.tagBodyLeft < -(this.$refs.scrollBody.offsetWidth - this.$refs.scrollCon.offsetWidth + 100)) {
-                        left = this.tagBodyLeft;
-                    } else {
-                        left = Math.max(this.tagBodyLeft + delta, this.$refs.scrollCon.offsetWidth - this.$refs.scrollBody.offsetWidth - 100);
-                    }
-                } else {
-                    this.tagBodyLeft = 0;
-                }
-            }
-            this.tagBodyLeft = left;
-        },
-        handleTagsOption (type) {
-            if (type === 'clearAll') {
-                this.$store.commit('clearAllTags');
-                this.$router.push({
-                    name: 'home_index'
-                });
-            } else {
-                this.$store.commit('clearOtherTags', this);
-            }
-            this.tagBodyLeft = 0;
-        },
-        moveToView (tag) {
-            if (tag.offsetLeft < -this.tagBodyLeft) {
-                // 标签在可视区域左侧
-                this.tagBodyLeft = -tag.offsetLeft + 10;
-            } else if (tag.offsetLeft + 10 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + this.$refs.scrollCon.offsetWidth - 100) {
-                // 标签在可视区域
-            } else {
-                // 标签在可视区域右侧
-                this.tagBodyLeft = -(tag.offsetLeft - (this.$refs.scrollCon.offsetWidth - 100 - tag.offsetWidth) + 20);
-            }
+      handleCloseTag (name) {
+        if (name === 'closeOther') {
+          this.closeOtherPage();
+        } else if (name === 'closeAll') {
+          this.closeAllPage();
         }
+      },
+      linkTo (item) {
+          let routerObj = {};
+          routerObj.name = item.name;
+          if (item.argu) {
+              routerObj.params = item.argu;
+          }
+          if (item.query) {
+              routerObj.query = item.query;
+          }
+          if (this.beforePush(item)) {
+              this.$router.push(routerObj);
+          }
+      },
+      handlescroll (e) {
+          var type = e.type;
+          let delta = 0;
+          if (type === 'DOMMouseScroll' || type === 'mousewheel') {
+              delta = (e.wheelDelta) ? e.wheelDelta : -(e.detail || 0) * 40;
+          }
+          let left = 0;
+          if (delta > 0) {
+              left = Math.min(0, this.tagBodyLeft + delta);
+          } else {
+              if (this.$refs.scrollCon.offsetWidth - 100 < this.$refs.scrollBody.offsetWidth) {
+                  if (this.tagBodyLeft < -(this.$refs.scrollBody.offsetWidth - this.$refs.scrollCon.offsetWidth + 100)) {
+                      left = this.tagBodyLeft;
+                  } else {
+                      left = Math.max(this.tagBodyLeft + delta, this.$refs.scrollCon.offsetWidth - this.$refs.scrollBody.offsetWidth - 100);
+                  }
+              } else {
+                  this.tagBodyLeft = 0;
+              }
+          }
+          this.tagBodyLeft = left;
+      },
+      handleTagsOption (type) {
+          if (type === 'clearAll') {
+              this.$store.commit('clearAllTags');
+              this.$router.push({
+                  name: 'home_index'
+              });
+          } else {
+              this.$store.commit('clearOtherTags', this);
+          }
+          this.tagBodyLeft = 0;
+      },
+      moveToView (tag) {
+          if (tag.offsetLeft < -this.tagBodyLeft) {
+              // 标签在可视区域左侧
+              this.tagBodyLeft = -tag.offsetLeft + 10;
+          } else if (tag.offsetLeft + 10 > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + this.$refs.scrollCon.offsetWidth - 100) {
+              // 标签在可视区域
+          } else {
+              // 标签在可视区域右侧
+              this.tagBodyLeft = -(tag.offsetLeft - (this.$refs.scrollCon.offsetWidth - 100 - tag.offsetWidth) + 20);
+          }
+      }
     },
     mounted () {
         this.refsTag = this.$refs.tagsPageOpened;
