@@ -196,11 +196,13 @@
           this.showSmMenu = false;
           $('#header-menu').css('float', 'none');
           $('#w-logo').css('width', '220px');
+          $('.tools ul').css('float', 'right');
         } else {
           this.showHeaderMenu = false;
           this.showSmMenu = true;
           $('#header-menu').css('float', 'left');
           $('#w-logo').css('width', '100%');
+          $('.tools ul').css('float', 'left');
         }
       };
       windowSizeChange();
@@ -269,13 +271,13 @@
   .tools{
     height: auto;
     margin: 10px 0 6px 0;
-    text-align: center;
+    float: right;
     ul{
       display: inline-block;
+      float: right;
     }
     .tools-item{
       display: inline-block;
-      margin-left: 10px;
       float: left;
       a{
         display: block;
