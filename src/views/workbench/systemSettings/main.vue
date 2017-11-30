@@ -1,6 +1,6 @@
 <template>
   <div id="system-app" class="clearfix">
-    <div class="aside" id="aside"  :class="{'aside-overflow': !isCollapse}">
+    <div class="aside" id="aside" ref="aside" :class="{'aside-overflow': !isCollapse}">
         <div class="handle-menu" @click="collapseMenu()">
           <i class="fa fa-reorder"></i>
         </div>
@@ -41,8 +41,8 @@
 
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title" >日志管理</span>
+              <i class="fa fa-location-arrow"></i>
+              <span slot="title">日志管理</span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="/workbench/system/userLog">用户日志</el-menu-item>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="main">
+    <div class="main" ref="main">
       <el-container>
         <el-header>
           <tags-page-opened :pageTagsList="pageTagsList"
@@ -135,6 +135,11 @@
         this.isCollapse = !this.isCollapse;
         if (!this.isCollapse) {
           this.menuMarginTop = 0;
+          this.$refs.main.style.paddingLeft = '220px';
+          this.$refs.aside.style.width = '220px';
+        } else {
+          this.$refs.main.style.paddingLeft = '64px';
+          this.$refs.aside.style.width = '64px';
         }
       },
       moveMenu(direction) {
@@ -214,7 +219,13 @@
     height: 100%;
     float: left;
     position: relative;
-    background-color: #59677B;
+    background-color: #304156;
+    width: 220px;
+    transition: all 0.4s ease-in-out;
+  }
+  .main {
+    height: 100%;
+    transition: all 0.4s ease-in-out;
   }
   .wrapper-menu{
     height: 100%;
@@ -223,9 +234,6 @@
   .aside-overflow{
     overflow-x: hidden;
     overflow-y: auto;
-  }
-  .main {
-    height: 100%;
   }
   .handle-menu{
     background-color: #283446;

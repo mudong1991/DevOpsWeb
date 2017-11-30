@@ -5,9 +5,8 @@
         <strong>位置：</strong>
       </div>
       <el-breadcrumb separator="/" class="pull-left">
-        <el-breadcrumb-item v-for="breadcrumb in breadcrumbList" :key="breadcrumb.id">
-          <router-link  :to="breadcrumb.linkObject" v-if="breadcrumb.linkObject"><i :class="breadcrumb.icon"></i>  {{ breadcrumb.name }}</router-link>
-          <span v-else><i :class="breadcrumb.icon"></i> {{ breadcrumb.name }}</span>
+        <el-breadcrumb-item v-for="breadcrumb in breadcrumbList" :key="breadcrumb.id" :to="breadcrumb.linkObject">
+          <span><i :class="breadcrumb.icon"></i> {{ breadcrumb.name }}</span>
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -42,9 +41,10 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   .main-header{
     width: 100%;
-    height: 31px;
+    height: 41px;
     line-height: 31px;
     text-align: left;
+    padding-top: 10px;
     background: white;
   }
   .el-breadcrumb{

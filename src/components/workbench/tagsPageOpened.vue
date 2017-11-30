@@ -9,13 +9,49 @@
       overflow: visible;
       white-space: nowrap;
       transition: left .3s ease;
-    }
-    .ivu-tag{
-      margin: 3px 8px 2px 0;
-    }
-    .ivu-tag-dot{
-      height: 30px;
-      line-height: 30px;
+      margin-top: 3px;
+      padding: 0 4px;
+      .open-tags-list{
+        float: left;
+        height: 100%;
+        li{
+          display: inline-block;
+          position: relative;
+          height: 30px;
+          line-height: 28px;
+          border-radius: 4px;
+          box-sizing: border-box;
+          border:1px solid #DDDEE2;
+          padding: 0 8px;
+          cursor: pointer;
+          margin-right: 8px;
+          .dot{
+            width: 10px;
+            height: 10px;
+            margin-right: 2px;
+            border-radius: 5px;
+            background: #409EFF;
+            display: inline-block;
+          }
+          .el-icon-close:hover{
+            background-color: #878D99;
+            color: white;
+            border-radius: 7px;
+            border: none;
+          }
+        }
+        .primary{
+          color: #409eff;
+          border-color: #CAE4FF;
+          background: #ECF5FF;
+          .el-icon-close:hover{
+            background-color: #409EFF;
+            color: white;
+            border-radius: 7px;
+            border: none;
+          }
+        }
+      }
     }
     .close-all-tag-con{
       position: absolute;
@@ -32,31 +68,31 @@
 <template>
     <div ref="scrollCon" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll" class="tags-outer-scroll-con clearfix">
         <div class="close-all-tag-con">
-          <Dropdown  @on-click='handleCloseTag'>
-            <Button type="primary">
-              标签选项
-              <Icon type="arrow-down-b"></Icon>
-            </Button>
-            <DropdownMenu slot="list">
-              <DropdownItem name="closeOther">关闭其他</DropdownItem>
-              <DropdownItem name="closeAll">关闭所有</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <el-dropdown @command="handleCloseTag">
+            <el-button type="primary" size="small">
+              更多菜单<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="closeOther">关闭其他</el-dropdown-item>
+              <el-dropdown-item command="closeAll">关闭所有</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
         <div ref="scrollBody" class="tags-inner-scroll-body" :style="{left: tagBodyLeft + 'px'}">
-            <transition-group name="taglist-moving-animation">
-                <Tag
-                    type="dot"
-                    v-for="(item, index) in pageTagsList"
-                    ref="tagsPageOpened"
-                    :key="item.name"
-                    :name="item.name"
-                    @on-close="closePage(item.name)"
-                    @click.native="linkTo(item)"
-                    :closable="item.name === defaultPage ? false:true"
-                    :color="item.children?(item.children[0].name===currentPageName?'blue':'default'):(item.name===currentPageName?'blue':'default')"
-                >{{ item.title }}</Tag>
-            </transition-group>
+              <ul class="open-tags-list">
+                <li :class="item.children?(item.children[0].name===currentPageName?'primary':''):(item.name===currentPageName?'primary':'')" v-for="(item, index) in pageTagsList">
+                  <span class="dot" v-if="item.children?(item.children[0].name===currentPageName):(item.name===currentPageName)">
+
+                  </span>
+                  <span class="open-tags-item-content">
+                    {{ item.title }}
+                  </span>
+                  <i class="el-tag__close el-icon-close" v-if="item.name === defaultPage ? false:true">
+
+                  </i>
+                </li>
+              </ul>
+
         </div>
     </div>
 </template>
@@ -100,10 +136,10 @@ export default {
         }
     },
     methods: {
-      handleCloseTag (name) {
-        if (name === 'closeOther') {
+      handleCloseTag (command) {
+        if (command === 'closeOther') {
           this.closeOtherPage();
-        } else if (name === 'closeAll') {
+        } else if (command === 'closeAll') {
           this.closeAllPage();
         }
       },
@@ -164,32 +200,6 @@ export default {
               this.tagBodyLeft = -(tag.offsetLeft - (this.$refs.scrollCon.offsetWidth - 100 - tag.offsetWidth) + 20);
           }
       }
-    },
-    mounted () {
-        this.refsTag = this.$refs.tagsPageOpened;
-        setTimeout(() => {
-            this.refsTag.forEach((item, index) => {
-                if (this.$route.name === item.name) {
-                    let tag = this.refsTag[index].$el;
-                    this.moveToView(tag);
-                }
-            });
-        }, 1);  // 这里不设定时器就会有偏移bug
-        this.tagsCount = this.tagsList.length;
-    },
-    watch: {
-        '$route' (to) {
-            this.currentPageName = to.name;
-            this.$nextTick(() => {
-                this.refsTag.forEach((item, index) => {
-                    if (to.name === item.name) {
-                        let tag = this.refsTag[index].$el;
-                        this.moveToView(tag);
-                    }
-                });
-            });
-            this.tagsCount = this.tagsList.length;
-        }
     }
 };
 </script>

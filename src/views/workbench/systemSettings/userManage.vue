@@ -10,7 +10,7 @@
             <el-button type="primary" size="small" @click="operateUserModel()"><i class="fa fa-plus"></i>添加用户</el-button>
             <el-button type="danger" size="small" :disabled="multipleSelection.length === 0" @click="deleteUserAction()"><i class="fa fa-trash-o"></i>批量删除</el-button>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 padding-0 text-left " style="line-height: 38px">
+          <div class="col-xs-12 col-sm-12 col-md-6 padding-0 text-right ">
             <el-input
               placeholder="搜索用户名"
               v-model="searchInfo.search"

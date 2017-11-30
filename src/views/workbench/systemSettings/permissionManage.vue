@@ -24,9 +24,9 @@
     data () {
       return {
         breadcrumbList: [
-          {'name': '系统设置', 'linkObject': {name: 'wb_system'}},
-          {'name': '账户管理'},
-          {'name': '用户管理', 'linkObject': {name: 'wb_userAdmin'}}
+          {'name': '系统设置', 'linkObject': {name: 'wb_system'}, 'icon': 'fa fa-cogs'},
+          {'name': '账户管理', 'icon': 'fa fa-users'},
+          {'name': '权限管理', 'linkObject': {name: 'wb_userAdmin'}, 'icon': 'fa fa-sitemap'}
         ]
       };
     },

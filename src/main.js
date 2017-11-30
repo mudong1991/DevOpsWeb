@@ -1,13 +1,11 @@
 /* eslint-disable no-unused-vars */
 import Vue from 'vue';
 import ElementUI from 'element-ui';
-import iView from 'iview';
 import axios from 'axios';
 import VueAxios from 'vue-axios';   //  axios请求插件
 import VueCookie from 'vue-cookie';   // cookie插件
 import Vuebar from 'vuebar';  // 滚动条优化插件
 import '../theme/index.css';
-import 'iview/dist/styles/iview.css';
 import config from 'webpack_config/index';
 
 // 引入全局js
@@ -31,7 +29,6 @@ import store from './stores/store';
 import App from './App.vue';
 
 Vue.use(ElementUI);
-Vue.use(iView);
 Vue.use(VueAxios, axios);
 Vue.use(VueCookie);
 Vue.use(Vuebar);
