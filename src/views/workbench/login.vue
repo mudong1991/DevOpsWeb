@@ -8,7 +8,7 @@
     <div class="login-container">
       <!--广告-->
       <div class="login-adv animated zoomIn hidden-sm hidden-xs">
-        <h1 class="login-adv-title "><img src="/static/images/icon-ops-white.png" class="img-responsive" /><span>   四方开发云</span></h1>
+        <h1 class="login-adv-title "><img src="/static/images/icon-ops-white.png" class="img-responsive" /><span>   {{ title }}</span></h1>
         <p class="login-adv-content-1">一站式云端DevOps平台</p>
         <p class="login-adv-content-2">全生命周期的一站式研发服务，使软件开发更加简单高效</p>
       </div>
@@ -89,7 +89,7 @@
       }
     },
     created () {
-      document.title = `欢迎登陆${title}`;
+      document.title = `欢迎登陆  ${title}`;
       // 获取验证码
       this.getVerify();
     },
@@ -125,6 +125,7 @@
     data () {
       return {
         showNotice: false,  // 显示提示信息
+        title: title,
         noticeTxt: '',  // 提示信息
         needVerify: false,  // 显示验证码
         loginBtnLoading: false,  // 显示登录中按钮

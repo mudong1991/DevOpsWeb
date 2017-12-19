@@ -10,7 +10,7 @@
 /**
  * 网站页面相关配置
  * */
-export const title = '四方开发云'; // 页面标题
+export const title = '阿东开发云'; // 页面标题
 export const copyright = '东风残雪@版权所有';  // 页面版权
 
 /**
